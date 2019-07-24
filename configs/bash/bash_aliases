@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+shopt -s expand_aliases
+
+export DEBIAN_FRONTEND=noninteractive
+
+export GREENBOTS_ROOT=/opt/thegreenbots
+export SUPERVISOR_ROOT=$GREENBOTS_ROOT/supervisor
+export API_SERVER_ROOT=$GREENBOTS_ROOT/api
+export WEB_INTERFACE_ROOT=$GREENBOTS_ROOT/web
+
+# [ -f "/opt/ros/melodic/setup.bash" ] && sudo /opt/ros/melodic/setup.bash
+export TURTLEBOT3_MODEL=waffle_pi

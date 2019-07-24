@@ -1,0 +1,12 @@
+{
+    "intelligence": {
+        "autonomous-driving": false, 
+        "voice-command": false, 
+        "nightvision-camera": false, 
+        "ultrasonic-distance-meter": false
+    }, 
+    "wifi": {
+        "password": "pass", 
+        "ssid": "network"
+    }
+}
