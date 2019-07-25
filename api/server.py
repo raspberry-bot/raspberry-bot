@@ -2,6 +2,7 @@ import argparse
 import json
 import os.path
 import subprocess
+import time
 from datetime import datetime
 
 import netifaces
@@ -9,6 +10,7 @@ from wifi import Cell, Scheme
 
 import tornado.httpserver
 import tornado.ioloop
+import tornado.websocket
 from tornado import web
 from tornado.options import define, options
 from datetime import timedelta
@@ -39,11 +41,11 @@ class Application(web.Application):
             (r"/api/wifi", WifiHandler),
             (r"/api/logs", LogHandler),
             (r"/api/events", EventHandler),
-            (r"/api/intelligence", IntelligenceHandler),
+            # (r"/api/intelligence", IntelligenceHandler),
             (r"/api/update", UpdateHandler),
             (r"/api/ping", PingHandler)
         ]
-        web.Application.__init__(self, handlers)
+        web.Application.__init__(self, handlers, debug=True)
 
 
 class BaseHandler(web.RequestHandler):
@@ -152,9 +154,23 @@ class UpdateHandler(BaseHandler):
         restart_supervisord()
 
 
-class PingHandler(BaseHandler):
-    def get(self):
-        self.write(json.dumps(True))
+class PingHandler(tornado.websocket.WebSocketHandler):
+    clients = set()
+
+    def check_origin(self, origin):
+        # Allow access from every origin
+        return True
+
+    def open(self):
+        PingHandler.clients.add(self)
+        print("WebSocket opened from: " + self.request.remote_ip)
+        
+    def on_message(self, message):
+        self.write_message(str(int(time.time() * 1000)))
+
+    def on_close(self):
+        PingHandler.clients.remove(self)
+        print("WebSocket closed from: " + self.request.remote_ip)
 
 
 class LogHandler(BaseHandler):

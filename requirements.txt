@@ -1,0 +1,8 @@
+tornado
+supervisor
+wifi
+psutil
+pillow
+pygame
+RPi.GPIO
+

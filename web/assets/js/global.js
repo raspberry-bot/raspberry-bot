@@ -1,6 +1,5 @@
 var serverURL = "http://thegreenbot.local";
 // var serverURL = "http://localhost:8000";
-const pingServerUrl = serverURL + '/api/ping';
 const systemUrl = serverURL + '/api/system';
 
 
@@ -8,6 +7,7 @@ function SuccessFuncAfterNavBarLoaded(){
 
   $('#systemInfoButton').click( function() {
     let sysInfo = $('#sysinfolist');
+    sysInfo.empty();
     $.getJSON(systemUrl, function (data) {
       data.forEach(function (item) {
         sysInfo.append($('<li>' + item + '</li>'));
@@ -75,40 +75,61 @@ function includeHTML() {
     }
 };
 
+function setupWebSocket() {
+  var wsProtocol = (location.protocol === "https:") ? "wss://" : "ws://";
+
+  var wsPing = new WebSocket(wsProtocol + "thegreenbot.local" + "/api/ping");
+  // ws.binaryType = 'arraybuffer';
+
+  wsPing.onopen = function() {
+      console.log("connection was established for Ping");
+      if (wsPing != null && wsPing.readyState === WebSocket.OPEN) {
+        wsPing.send(1)
+      }
+  };
+  
+  wsPing.onmessage = function(evt) {
+      var message = evt.data;
+      // console.log('Last Ping Timestamp: ' + message)
+      $("#loadingScreen").fadeOut(500, function() {
+        $("#loadingScreen" ).hide(); //makes page more lightweight 
+        $('nav').show();
+      });
+  };
+
+  wsPing.onerror = function (e) {
+      console.log(e);
+      console.log('Error connecting to server!');
+      $('#loadingScreen').show();
+      $('nav').hide();
+      // setTimeout(setupWebSocket, 1000);
+      
+  };
+
+  wsPing.onclose = function (e) {
+      console.log(e);
+      console.log('Closing connection to server!');
+      $('#loadingScreen').show();
+      $('nav').hide();
+      setTimeout(setupWebSocket, 1000);
+  };
+  return wsPing;
+}
 
 $(document).ready(function() {
-    'use strict'
-    includeHTML();
+  'use strict'
+  includeHTML();
 
-    var pingInternal = 100;
+  $('nav').hide();
+  $('body').append('<div style="" class="loading text-center" id="loadingScreen">This page will referesh once the robot becomes online again...</div>');
 
-    $('nav').hide();
-    $('body').append('<div style="" class="loading text-center" id="loadingScreen">This page will referesh once the robot becomes online again...</div>');
-
-    $(window).on('load', function(){
-      setTimeout(pingServer, pingInternal);
-    });
-    
-    function pingServer() {
-      $.ajax({
-          url: pingServerUrl + "?t=" + new Date().getTime(),
-          type: 'get',
-          cache: false,
-          success: function(data){
-            $("#loadingScreen").fadeOut(500, function() {
-              // fadeOut complete. Remove the loading div
-              $("#loadingScreen" ).hide(); //makes page more lightweight 
-              $('nav').show();
-            }); 
-            setTimeout(pingServer, pingInternal);
-          },
-          error: function(){
-              console.log('Error connecting to server!');
-              $('#loadingScreen').show();
-              $('nav').hide();
-              setTimeout(pingServer, pingInternal);
-          }
-      });
+  if ("WebSocket" in window) {
+    var wsPing = setupWebSocket();
+    if (wsPing != null && wsPing.readyState === WebSocket.OPEN) {
+      wsPing.send(1);
     }
-    pingServer();
+  } else {
+    alert("WebSocket not supported");
+  }
+
 });

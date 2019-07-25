@@ -64,21 +64,21 @@ $(document).ready(function() {
 
 
   // Populate Intelligence Toggle Form
-  $.getJSON(intelligenceUrl, function (data) {
-    for (var item in data) {
-      let toggle = $("#intelligence-" + item);
-      if (data[item] == true) {
-        toggle.bootstrapToggle('on');
-      } else {
-        toggle.bootstrapToggle('off');
-      }
+  // $.getJSON(intelligenceUrl, function (data) {
+  //   for (var item in data) {
+  //     let toggle = $("#intelligence-" + item);
+  //     if (data[item] == true) {
+  //       toggle.bootstrapToggle('on');
+  //     } else {
+  //       toggle.bootstrapToggle('off');
+  //     }
       
-    }
-  });
+  //   }
+  // });
 
-  $("#intelligenceForm").submit(function(e) {
-    e.preventDefault();
-  });
+  // $("#intelligenceForm").submit(function(e) {
+  //   e.preventDefault();
+  // });
 
 
 

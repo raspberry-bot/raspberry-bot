@@ -10,8 +10,6 @@ sudo apt -y install nginx python3-pip wireless-tools pkg-config python-dev \
 
 sudo apt -y auto-remove
 
-sudo pip3 install tornado supervisor wifi psutil pillow pygame RPi.GPIO
-
 # Enable thegreenbot.local
 sudo -E bash -c "echo thegreenbot > /etc/hostname"
 sudo snap refresh core --edge
@@ -26,6 +24,8 @@ cd $GREENBOTS_ROOT/src
 git pull
 sudo cp configs/bash/bash_aliases /etc/profile.d/bash_aliases.sh
 source /etc/profile
+
+sudo pip3 install -r $GREENBOTS_ROOT/src/requirements.txt
 
 $GREENBOTS_ROOT/src/scripts/folders_and_links.sh
 

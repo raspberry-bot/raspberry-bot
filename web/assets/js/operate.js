@@ -11,15 +11,15 @@ var time_smoothing = 0.9; // larger=more smoothing
 var request_time_smoothing = 0.2; // larger=more smoothing
 var target_time = 1000 / target_fps;
 
-var ws;
+var wsCamera;
+var wsDrive;
 
 function requestImage() {
     request_start_time = performance.now();
-    ws.send(1);
+    wsCamera.send(1);
 }
 
 
-var controlSignal;
 $(document).ready(function() {
     'use strict'
 
@@ -30,17 +30,18 @@ $(document).ready(function() {
 
     if ("WebSocket" in window) {
         var wsProtocol = (location.protocol === "https:") ? "wss://" : "ws://";
+        // Camera
 
-        ws = new WebSocket(wsProtocol + "thegreenbot.local" + "/api/operate/camera");
-        ws.binaryType = 'arraybuffer';
+        wsCamera = new WebSocket(wsProtocol + "thegreenbot.local" + "/api/operate/camera");
+        wsCamera.binaryType = 'arraybuffer';
 
-        ws.onopen = function() {
-            console.log("connection was established");
+        wsCamera.onopen = function() {
+            console.log("connection was established for Camera");
             start_time = performance.now();
             requestImage();
         };
         
-        ws.onmessage = function(evt) {
+        wsCamera.onmessage = function(evt) {
             var arrayBuffer = evt.data;
             var blob  = new Blob([new Uint8Array(arrayBuffer)], {type: "image/jpeg"});
             img.src = window.URL.createObjectURL(blob);
@@ -60,55 +61,36 @@ $(document).ready(function() {
             setTimeout(requestImage, timeout);
         };
 
-        ws.onerror = function (e) {
+        wsCamera.onerror = function (e) {
             console.log(e);
-            ws.send(1);
+            wsCamera.send(1);
         };
+
+        // Drive
+
+        wsDrive = new WebSocket(wsProtocol + "thegreenbot.local" + "/api/operate/drive");
+        
+
+        wsDrive.onopen = function() {
+            console.log("connection was established for Drive");
+        };
+        
+        wsDrive.onmessage = function(evt) {
+            var message = evt.data;
+            document.getElementById('control').value = message;
+        };
+
+        wsDrive.onerror = function (e) {
+            console.log(e);
+            wsDrive.send('stop');
+        };
+
     } else {
         alert("WebSocket not supported");
     }
-    // const refreshInterval = 1;
-
-    // function timedRefresh() {
-    //     $.ajax({
-    //         url: cameraURL + "?t=" + new Date().getTime(),
-    //         type: 'get',
-    //         cache: false,
-    //         success: function(data){
-    //             imageObj.src = "data:image/jpeg;base64," + data;
-    //         },
-    //         error: function(){
-    //             console.log('error!');
-    //             setTimeout(timedRefresh, refreshInterval);
-    //         }
-    //     });
-    // }
-    // function drawOnCanvas() {
-    //     var canvas = document.getElementById("canvas");
-    //     var ctx = canvas.getContext("2d");
-    //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    //     ctx.drawImage(imageObj, 0, 0, canvas.width, canvas.height);
-    // }
-
-    // var imageObj = new Image();
-    // imageObj.onload = function () {
-    //     drawOnCanvas();
-    //     setTimeout(timedRefresh, refreshInterval);
-    // }
-
-    // timedRefresh();
 
     function sendControlData(controlKey) {
-        $.ajax({
-            url: controlURL,
-            type: 'post',
-            dataType: 'json',
-            data: JSON.stringify(controlKey),
-            success: function(data) {
-                document.getElementById('control').value = controlKey;
-                console.log('Control key sent to backend...')
-            }
-        });
+        wsDrive.send(controlKey)
     }
 
     document.onkeydown = checkKey;
@@ -144,10 +126,6 @@ $(document).ready(function() {
         if (controlKey != null){
             sendControlData(controlKey);
         }
-    }
-    controlSignal = function (key) {
-        console.log(key)
-        sendControlData(key);
     }
 
     // window.addEventListener('resize', resizeCanvas, false);
