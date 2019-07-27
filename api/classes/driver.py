@@ -29,8 +29,8 @@ class Driver:
 
         self._set_state(left_motor_speed, right_motor_speed)
 
-        self._left_motor.move(left_motor_speed)
-        self._right_motor.move(right_motor_speed)
+        self.left_motor_speed = self._left_motor.move(left_motor_speed)
+        self.right_motor_speed = self._right_motor.move(right_motor_speed)
 
     def _set_state(self, left_motor_speed, right_motor_speed):
         self._state = {

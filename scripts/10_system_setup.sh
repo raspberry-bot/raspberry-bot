@@ -10,6 +10,9 @@ sudo apt -y install nginx python3-pip wireless-tools pkg-config python-dev \
 
 sudo apt -y auto-remove
 
+sudo pip3 install tornado supervisor wifi psutil pillow pygame RPi.GPIO jupyter
+sudo pip2 install ipykernel
+
 # Enable thegreenbot.local
 sudo -E bash -c "echo thegreenbot > /etc/hostname"
 sudo snap refresh core --edge

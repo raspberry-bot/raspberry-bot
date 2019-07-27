@@ -1,6 +1,9 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#" style="color:green;">The Green Bot</a>
-    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+    <a class="navbar-brand" href="#">The Green Bot</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse id="collapsibleNavbar">
         <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
             <a class="nav-link" href="index.html"><span data-feather="home"></span> Dashboard</a>
@@ -9,18 +12,21 @@
             <a class="nav-link" href="operate.html"><span data-feather="airplay"></span> Operate</a>
         </li>
         <li class="nav-item active">
-            <a class="nav-link" href="shell.html"><span data-feather="terminal"></span> Bash Terminal</a>
+            <a class="nav-link" href="/jupyter/" target="_blank"><span data-feather="zap"></span> Jupyter Notebook</a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link" href="/jupyter/terminals/1" target="_blank"><span data-feather="terminal"></span> Bash Terminal</a>
         </li>
         </ul>
-    </div>
-    <div class="dropdown">
-        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-        <span data-feather="cpu"></span>
-        </button>
-        <div class="dropdown-menu" style="left: auto; right: 0;">
-        <a class="dropdown-item" id="systemInfoButton" data-toggle="modal" data-target="#sysInfoModal"><span data-feather="info"></span> System Info</a>
-        <a class="dropdown-item" id="shutdownButton"><span data-feather="power"></span> Shutdown</a>
-        <a class="dropdown-item" id="rebootButton"><span data-feather="repeat"></span> Reboot</a>
+        <div class="dropdown">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+            <span data-feather="cpu"></span>
+            </button>
+            <div class="dropdown-menu" style="left: auto; right: 0;">
+            <a class="dropdown-item" id="systemInfoButton" data-toggle="modal" data-target="#sysInfoModal"><span data-feather="info"></span> System Info</a>
+            <a class="dropdown-item" id="shutdownButton"><span data-feather="power"></span> Shutdown</a>
+            <a class="dropdown-item" id="rebootButton"><span data-feather="repeat"></span> Reboot</a>
+            </div>
         </div>
     </div>
 </nav>

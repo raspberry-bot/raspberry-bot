@@ -1,5 +1,10 @@
 # The Green Bots
 
+## Sourcing Virtualenvt
+cd TheGreenBot/
+python -m venv .venv
+source .venv/bin/activate.[fish/sh]
+
 
 ## Linux image
 ### Steps

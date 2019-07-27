@@ -1,10 +1,5 @@
 from expects import equal, expect
-import os
-import sys
-
-parent = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-sys.path.append(parent)
-from classes.direction_resolver import DirectionResolver
+from api.classes.direction_resolver import DirectionResolver
 
 
 def test_forward():

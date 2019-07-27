@@ -1,11 +1,7 @@
 from expects import equal, expect
-import os
-import sys
 
-parent = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-sys.path.append(parent)
-from classes.speed_resolver import SpeedResolver
-from classes import constants
+from api.classes.speed_resolver import SpeedResolver
+from api.classes import constants
 
 
 ################################################
