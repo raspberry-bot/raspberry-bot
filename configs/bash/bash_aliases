@@ -9,5 +9,7 @@ export SUPERVISOR_ROOT=$GREENBOTS_ROOT/supervisor
 export API_SERVER_ROOT=$GREENBOTS_ROOT/api
 export WEB_INTERFACE_ROOT=$GREENBOTS_ROOT/web
 
+export PYTHONPATH="$GREENBOTS_ROOT/src:$PYTHONPATH"
+
 # [ -f "/opt/ros/melodic/setup.bash" ] && sudo /opt/ros/melodic/setup.bash
 export TURTLEBOT3_MODEL=waffle_pi

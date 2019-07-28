@@ -12,8 +12,8 @@
     "python.testing.pytestEnabled": false,
     "python.testing.nosetestsEnabled": true,
     "python.testing.unittestEnabled": false,
+    "python.testing.nosetestPath": "./.venv/bin/nosetests",
     "python.testing.nosetestArgs": [
-        "-w",
-        "tests/"
+        "-s"
     ]
 }

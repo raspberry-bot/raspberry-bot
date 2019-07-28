@@ -1,7 +1,8 @@
 from . import constants
+from api.utils.clip import clip
 from .motor import Motor
 from .direction_resolver import DirectionResolver
-from .speed_resolver import SpeedResolver
+from .motor_speed_resolver import MotorSpeedResolver
 
 
 class Driver:
@@ -11,31 +12,31 @@ class Driver:
         self._right_motor = Motor(right_motor_pins)
 
         self.direction_resolver = DirectionResolver()
-        self.speed_resolver = SpeedResolver()
+        self.speed_resolver = MotorSpeedResolver()
+
+        self._state = {}
 
         self.stop()
 
     def _current_direction(self):
-        left_motor_speed = self._state['left_motor_speed']
-        right_motor_speed = self._state['right_motor_speed']
-
-        return self.direction_resolver.resolve(left_motor_speed, right_motor_speed)
+        return self.direction_resolver.resolve(self._state)
 
     def _set_speed(self, target_action):
         speeds = self.speed_resolver.resolve(self._state, target_action)
 
-        left_motor_speed = speeds['left_motor_speed']
-        right_motor_speed = speeds['right_motor_speed']
+        self._left_motor.move(speeds['left_motor_speed'])
+        self._right_motor.move(speeds['right_motor_speed'])
 
-        self._set_state(left_motor_speed, right_motor_speed)
+        self._set_state(speeds)
 
-        self.left_motor_speed = self._left_motor.move(left_motor_speed)
-        self.right_motor_speed = self._right_motor.move(right_motor_speed)
+    def _set_state(self, speeds):
+        self._state.pop('old_state', None)
+        old_state = self._state
 
-    def _set_state(self, left_motor_speed, right_motor_speed):
         self._state = {
-            'left_motor_speed': left_motor_speed,
-            'right_motor_speed': right_motor_speed
+            'old_state': old_state,
+            'left_motor_speed': speeds['left_motor_speed'],
+            'right_motor_speed': speeds['right_motor_speed']
         }
 
         self._state['current_direction'] = self._current_direction()
@@ -46,7 +47,7 @@ class Driver:
         self._left_motor.move(0)
         self._right_motor.move(0)
 
-        return self._set_state(0, 0)
+        return self._set_state({'left_motor_speed': 0, 'right_motor_speed': 0})
 
     def forward(self):
         self._set_speed(constants.TARGET_ACTION_FORWARD)

@@ -1,6 +1,6 @@
 from expects import equal, expect
 
-from api.classes.speed_resolver import SpeedResolver
+from api.classes.motor_speed_resolver import MotorSpeedResolver
 from api.classes import constants
 
 
@@ -14,7 +14,7 @@ def test_direction_forward_to_forward():
         'left_motor_speed': 50,
         'right_motor_speed': 50
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_FORWARD)).to(equal({
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_FORWARD)).to(equal({
         'left_motor_speed': 60,
         'right_motor_speed': 60
     }))
@@ -26,7 +26,7 @@ def test_direction_forward_to_reverse():
         'left_motor_speed': 50,
         'right_motor_speed': 50
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_REVERSE)).to(equal({
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_REVERSE)).to(equal({
         'left_motor_speed': 40,
         'right_motor_speed': 40
     }))
@@ -38,9 +38,9 @@ def test_direction_forward_to_right():
         'left_motor_speed': 50,
         'right_motor_speed': 50
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_RIGHT)).to(equal({
-        'left_motor_speed': 60,
-        'right_motor_speed': 40
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_RIGHT)).to(equal({
+        'left_motor_speed': 55,
+        'right_motor_speed': 45
     }))
 
 
@@ -50,9 +50,9 @@ def test_direction_forward_to_left():
         'left_motor_speed': 50,
         'right_motor_speed': 50
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_LEFT)).to(equal({
-        'left_motor_speed': 40,
-        'right_motor_speed': 60
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_LEFT)).to(equal({
+        'left_motor_speed': 45,
+        'right_motor_speed': 55
     }))
 
 ################################################
@@ -66,7 +66,7 @@ def test_direction_reverse_to_forward():
         'left_motor_speed': -50,
         'right_motor_speed': -50
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_FORWARD)).to(equal({
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_FORWARD)).to(equal({
         'left_motor_speed': -40,
         'right_motor_speed': -40
     }))
@@ -78,7 +78,7 @@ def test_direction_reverse_to_reverse():
         'left_motor_speed': -50,
         'right_motor_speed': -50
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_REVERSE)).to(equal({
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_REVERSE)).to(equal({
         'left_motor_speed': -60,
         'right_motor_speed': -60
     }))
@@ -90,9 +90,9 @@ def test_direction_reverse_to_right():
         'left_motor_speed': -50,
         'right_motor_speed': -50
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_RIGHT)).to(equal({
-        'left_motor_speed': -60,
-        'right_motor_speed': -40
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_RIGHT)).to(equal({
+        'left_motor_speed': -55,
+        'right_motor_speed': -45
     }))
 
 
@@ -102,9 +102,9 @@ def test_direction_reverse_to_left():
         'left_motor_speed': -50,
         'right_motor_speed': -50
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_LEFT)).to(equal({
-        'left_motor_speed': -40,
-        'right_motor_speed': -60
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_LEFT)).to(equal({
+        'left_motor_speed': -45,
+        'right_motor_speed': -55
     }))
 
 ################################################
@@ -118,7 +118,7 @@ def test_direction_right_to_forward():
         'left_motor_speed': 50,
         'right_motor_speed': -50
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_FORWARD)).to(equal({
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_FORWARD)).to(equal({
         'left_motor_speed': 50,
         'right_motor_speed': 50
     }))
@@ -130,7 +130,7 @@ def test_direction_right_to_reverse():
         'left_motor_speed': 50,
         'right_motor_speed': -50
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_REVERSE)).to(equal({
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_REVERSE)).to(equal({
         'left_motor_speed': -50,
         'right_motor_speed': -50
     }))
@@ -142,7 +142,7 @@ def test_direction_right_to_right():
         'left_motor_speed': 50,
         'right_motor_speed': -50
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_RIGHT)).to(equal({
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_RIGHT)).to(equal({
         'left_motor_speed': 60,
         'right_motor_speed': -60
     }))
@@ -154,7 +154,7 @@ def test_direction_right_to_left():
         'left_motor_speed': 50,
         'right_motor_speed': -50
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_LEFT)).to(equal({
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_LEFT)).to(equal({
         'left_motor_speed': 40,
         'right_motor_speed': -40
     }))
@@ -171,7 +171,7 @@ def test_direction_left_to_forward():
         'right_motor_speed': 50
     }
     # TODO
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_FORWARD)).to(equal({
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_FORWARD)).to(equal({
         'left_motor_speed': 50,
         'right_motor_speed': 50
     }))
@@ -183,7 +183,7 @@ def test_direction_left_to_reverse():
         'left_motor_speed': -50,
         'right_motor_speed': 50
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_REVERSE)).to(equal({
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_REVERSE)).to(equal({
         'left_motor_speed': -50,
         'right_motor_speed': -50
     }))
@@ -195,7 +195,7 @@ def test_direction_left_to_right():
         'left_motor_speed': -50,
         'right_motor_speed': 50
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_RIGHT)).to(equal({
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_RIGHT)).to(equal({
         'left_motor_speed': -40,
         'right_motor_speed': 40
     }))
@@ -208,7 +208,7 @@ def test_direction_left_to_left():
         'right_motor_speed': 50
     }
     # TODO
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_LEFT)).to(equal({
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_LEFT)).to(equal({
         'left_motor_speed': -60,
         'right_motor_speed': 60
     }))
@@ -224,7 +224,7 @@ def test_direction_forward_right_to_forward():
         'left_motor_speed': 50,
         'right_motor_speed': 40
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_FORWARD)).to(equal({
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_FORWARD)).to(equal({
         'left_motor_speed': 50,
         'right_motor_speed': 50
     }))
@@ -237,7 +237,7 @@ def test_direction_forward_right_to_reverse():
         'right_motor_speed': 40
     }
     # TODO
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_REVERSE)).to(equal({
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_REVERSE)).to(equal({
         'left_motor_speed': 40,
         'right_motor_speed': 30
     }))
@@ -249,9 +249,9 @@ def test_direction_forward_right_to_right():
         'left_motor_speed': 50,
         'right_motor_speed': 40
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_RIGHT)).to(equal({
-        'left_motor_speed': 60,
-        'right_motor_speed': 30
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_RIGHT)).to(equal({
+        'left_motor_speed': 55,
+        'right_motor_speed': 35
     }))
 
 
@@ -262,9 +262,9 @@ def test_direction_forward_right_to_left():
         'right_motor_speed': 40
     }
     # TODO
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_LEFT)).to(equal({
-        'left_motor_speed': 40,
-        'right_motor_speed': 50
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_LEFT)).to(equal({
+        'left_motor_speed': 45,
+        'right_motor_speed': 45
     }))
 
 ################################################
@@ -278,7 +278,7 @@ def test_direction_forward_left_to_forward():
         'left_motor_speed': 40,
         'right_motor_speed': 60
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_FORWARD)).to(equal({
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_FORWARD)).to(equal({
         'left_motor_speed': 60,
         'right_motor_speed': 60
     }))
@@ -291,7 +291,7 @@ def test_direction_forward_left_to_reverse():
         'right_motor_speed': 60
     }
     # TODO
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_REVERSE)).to(equal({
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_REVERSE)).to(equal({
         'left_motor_speed': 30,
         'right_motor_speed': 50
     }))
@@ -303,9 +303,9 @@ def test_direction_forward_left_to_right():
         'left_motor_speed': 40,
         'right_motor_speed': 60
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_RIGHT)).to(equal({
-        'left_motor_speed': 50,
-        'right_motor_speed': 50
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_RIGHT)).to(equal({
+        'left_motor_speed': 45,
+        'right_motor_speed': 55
     }))
 
 
@@ -315,9 +315,9 @@ def test_direction_forward_left_to_left():
         'left_motor_speed': 40,
         'right_motor_speed': 60
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_LEFT)).to(equal({
-        'left_motor_speed': 30,
-        'right_motor_speed': 70
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_LEFT)).to(equal({
+        'left_motor_speed': 35,
+        'right_motor_speed': 65
     }))
 
 ################################################
@@ -331,7 +331,7 @@ def test_direction_reverse_left_to_forward():
         'left_motor_speed': -50,
         'right_motor_speed': -80
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_FORWARD)).to(equal({
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_FORWARD)).to(equal({
         'left_motor_speed': -40,
         'right_motor_speed': -70
     }))
@@ -343,7 +343,7 @@ def test_direction_reverse_left_to_reverse():
         'left_motor_speed': -50,
         'right_motor_speed': -80
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_REVERSE)).to(equal({
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_REVERSE)).to(equal({
         'left_motor_speed': -80,
         'right_motor_speed': -80
     }))
@@ -355,9 +355,9 @@ def test_direction_reverse_left_to_right():
         'left_motor_speed': -50,
         'right_motor_speed': -80
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_RIGHT)).to(equal({
-        'left_motor_speed': -60,
-        'right_motor_speed': -70
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_RIGHT)).to(equal({
+        'left_motor_speed': -55,
+        'right_motor_speed': -75
     }))
 
 
@@ -367,9 +367,9 @@ def test_direction_reverse_left_to_left():
         'left_motor_speed': -50,
         'right_motor_speed': -80
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_LEFT)).to(equal({
-        'left_motor_speed': -40,
-        'right_motor_speed': -90
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_LEFT)).to(equal({
+        'left_motor_speed': -45,
+        'right_motor_speed': -85
     }))
 
 ################################################
@@ -383,7 +383,7 @@ def test_direction_reverse_right_to_forward():
         'left_motor_speed': -80,
         'right_motor_speed': -50
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_FORWARD)).to(equal({
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_FORWARD)).to(equal({
         'left_motor_speed': -70,
         'right_motor_speed': -40
     }))
@@ -395,7 +395,7 @@ def test_direction_reverse_right_to_reverse():
         'left_motor_speed': -80,
         'right_motor_speed': -50
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_REVERSE)).to(equal({
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_REVERSE)).to(equal({
         'left_motor_speed': -80,
         'right_motor_speed': -80
     }))
@@ -407,9 +407,9 @@ def test_direction_reverse_right_to_right():
         'left_motor_speed': -80,
         'right_motor_speed': -50
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_RIGHT)).to(equal({
-        'left_motor_speed': -90,
-        'right_motor_speed': -40
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_RIGHT)).to(equal({
+        'left_motor_speed': -85,
+        'right_motor_speed': -45
     }))
 
 
@@ -419,7 +419,7 @@ def test_direction_reverse_right_to_left():
         'left_motor_speed': -80,
         'right_motor_speed': -50
     }
-    expect(SpeedResolver().resolve(state, constants.TARGET_ACTION_LEFT)).to(equal({
-        'left_motor_speed': -70,
-        'right_motor_speed': -60
+    expect(MotorSpeedResolver().resolve(state, constants.TARGET_ACTION_LEFT)).to(equal({
+        'left_motor_speed': -75,
+        'right_motor_speed': -55
     }))
