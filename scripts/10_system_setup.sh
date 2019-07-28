@@ -6,12 +6,9 @@ sudo apt -y upgrade
 sudo apt -y install nginx python3-pip wireless-tools pkg-config python-dev \
     libsdl-image1.2-dev libsdl-mixer1.2-dev libsdl-ttf2.0-dev libsdl1.2-dev \
     libsmpeg-dev python-numpy subversion libportmidi-dev ffmpeg \
-    libswscale-dev libavformat-dev libavcodec-dev
+    libswscale-dev libavformat-dev libavcodec-dev netdata
 
 sudo apt -y auto-remove
-
-sudo pip3 install tornado supervisor wifi psutil pillow pygame RPi.GPIO jupyter
-sudo pip2 install ipykernel
 
 # Enable thegreenbot.local
 sudo -E bash -c "echo thegreenbot > /etc/hostname"
@@ -29,6 +26,7 @@ sudo cp configs/bash/bash_aliases /etc/profile.d/bash_aliases.sh
 source /etc/profile
 
 sudo pip3 install -r $GREENBOTS_ROOT/src/requirements.txt
+sudo pip2 install -r $GREENBOTS_ROOT/src/requirements-python2.txt
 
 $GREENBOTS_ROOT/src/scripts/folders_and_links.sh
 
@@ -45,5 +43,6 @@ sudo ifconfig wlan0 up
 
 sudo /etc/init.d/nginx force-reload
 sudo /etc/init.d/greenbots-api.sh force-reload
+sudo /etc/init.d/netdata force-reload
 
 sudo update-rc.d greenbots-api.sh defaults

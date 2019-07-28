@@ -1,4 +1,4 @@
-# The Green Bots
+# The Green Bots [![Build Status](https://travis-ci.org/aeldaly/The-Green-Bots.svg?branch=master)](https://travis-ci.org/aeldaly/The-Green-Bots.svg?branch=master)[![Maintainability](https://api.codeclimate.com/v1/badges/07867935e7f69c2da324/maintainability)](https://codeclimate.com/github/aeldaly/The-Green-Bots/maintainability)
 
 ## Sourcing Virtualenvt
 cd TheGreenBot/

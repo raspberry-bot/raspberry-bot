@@ -15,6 +15,7 @@ sudo ln -s $GREENBOTS_ROOT/src/web $GREENBOTS_ROOT
 sudo cp $GREENBOTS_ROOT/src/configs/bot-config.json $API_SERVER_ROOT/bot-config.json
 
 sudo cp $GREENBOTS_ROOT/src/configs/firmware-config.txt /boot/firmware/config.txt
+sudo cp $GREENBOTS_ROOT/src/configs/netdata.conf /etc/netdata/netdata.conf
 
 sudo -E bash -c "rm $SUPERVISOR_ROOT/conf/supervisord.conf"
 sudo rm /etc/init.d/greenbots-api.sh
