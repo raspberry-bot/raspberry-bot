@@ -5,52 +5,118 @@
     </button>
     <div class="navbar-collapse collapse id="collapsibleNavbar">
         <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-            <a class="nav-link" href="index.html"><span data-feather="home"></span> Dashboard</a>
-        </li>
-        <li class="nav-item active">
-            <a class="nav-link" href="operate.html"><span data-feather="airplay"></span> Operate</a>
-        </li>
-        <li class="nav-item active">
-            <a class="nav-link" href="/jupyter/" target="_blank"><span data-feather="zap"></span> Jupyter Notebook</a>
-        </li>
-        <li class="nav-item active">
-            <a class="nav-link" href="/jupyter/terminals/1" target="_blank"><span data-feather="terminal"></span> Bash Terminal</a>
-        </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="index.html"><span data-feather="home"></span> Dashboard</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="operate.html"><span data-feather="airplay"></span> Operate</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/jupyter/" target="_blank"><span data-feather="zap"></span> Jupyter Notebook</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/jupyter/terminals/1" target="_blank"><span data-feather="terminal"></span> Bash Terminal</a>
+            </li>
         </ul>
+        <div class="dropdown">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="wifidropdown">
+            <span data-feather="wifi"></span>
+            </button>
+            <div class="dropdown-menu" style="left: auto; right: 0;">
+                <div class="d-flex justify-content-center" id="ssid-search-status">
+                    <div class="spinner-border text-success" role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                <div id="wifiConnectionList"></div>
+                <hr>
+                <a class="dropdown-item" id="wifiConnectInfoButton" data-toggle="modal" data-target="#wifiConnectionInfoModal"><span data-feather="info"></span> Connection Info</a>
+            </div>
+        </div>
+        <span> </span>
         <div class="dropdown">
             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
             <span data-feather="cpu"></span>
             </button>
             <div class="dropdown-menu" style="left: auto; right: 0;">
-            <a class="dropdown-item" id="systemInfoButton" data-toggle="modal" data-target="#sysInfoModal"><span data-feather="info"></span> System Info</a>
-            <a class="dropdown-item" id="shutdownButton"><span data-feather="power"></span> Shutdown</a>
-            <a class="dropdown-item" id="rebootButton"><span data-feather="repeat"></span> Reboot</a>
+                <a class="dropdown-item" id="systemInfoButton" data-toggle="modal" data-target="#sysInfoModal"><span data-feather="info"></span> System Info</a>
+                <a class="dropdown-item" id="shutdownButton"><span data-feather="power"></span> Shutdown</a>
+                <a class="dropdown-item" id="rebootButton"><span data-feather="repeat"></span> Reboot</a>
             </div>
         </div>
     </div>
 </nav>
-<div class="modal" id="sysInfoModal">
-    <div class="modal-dialog">
-    <div class="modal-content">
 
-        <!-- Modal Header -->
-        <div class="modal-header">
-        <h4 class="modal-title">Green Bot - System Info</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+<div class="modal" id="wifiConnectModal">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Green Bot - Connect to Wifi</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body text-center">
+                <form id="wifiForm">
+                    <div class="form-group">
+                        <label for="ssid">Wifi SSID:</label>
+                        <input class="form-control" type="text" id="selected-ssid" name="selected-ssid" readonly></input>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input class="form-control" type="password" id="password" name="password"></input>
+                    </div>
+                    <div class="alert alert-primary" role="alert" id="connectionResponse">
+                        <p id="connectionResult">Enter the password and click on the Connect button.</p>
+                    </div>
+                    <button type="submit" class="btn btn-success" id="connectButton">Connect</button>
+                </form>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
         </div>
-
-        <!-- Modal body -->
-        <div class="modal-body">
-        <p id="sysinfo"></p>
-        <ul id="sysinfolist"></ul>
-        </div>
-
-        <!-- Modal footer -->
-        <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-        </div>
-
-    </div>
     </div>
 </div>
+<div class="modal" id="wifiConnectionInfoModal">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Green Bot - Wifi Connection Info</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body text-center">
+                <!-- <p id="wifiConnectionInfo"></p> -->
+                <textarea rows="17" cols="80" id="wifiConnectionInfo" readonly></textarea>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="sysInfoModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Green Bot - System Info</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <p id="sysinfo"></p>
+                <ul id="sysinfolist"></ul>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+

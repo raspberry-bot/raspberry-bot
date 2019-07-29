@@ -1,9 +1,77 @@
 var serverURL = "http://thegreenbot.local";
 // var serverURL = "http://localhost:8000";
 const systemUrl = serverURL + '/api/system';
+const wifiUrl = serverURL + '/api/wifi';
+const wifiStatusUrl = serverURL + '/api/wifi-status';
 
+var currentWifiConnection = null;
+
+function getFormDataInJson(form){
+  var object = {};
+  form.forEach((item) => {object[item.name] = item.value});
+  return object;
+}
 
 function SuccessFuncAfterNavBarLoaded(){
+
+    // Populate dropdown with list of Wifis
+    function populateWifiList(){
+      let wifiConnectionList = $('#wifiConnectionList');
+      wifiConnectionList.empty();
+      $.getJSON(wifiUrl, function (data) {
+        $.each(data, function (key, entry) {
+          if (entry.length > 0) {
+            var newItem = $('<a class="dropdown-item ssidConnect" data-toggle="modal" data-target="#wifiConnectModal"></a>')
+            .attr('data-id', entry)
+            .attr('id', entry)
+            .attr('value', entry)
+            .text(entry);
+            wifiConnectionList.append(newItem);
+          }
+        });
+        var spinner = document.getElementById("ssid-search-status"); 
+        if (spinner != null){
+          spinner.parentNode.removeChild(spinner);
+        }
+      });
+    };
+
+    $("#wifidropdown").click(populateWifiList);
+
+    $(document).on("click", ".ssidConnect", function () {
+      $("#selected-ssid").val($(this).data('id'));
+    });
+
+    function populateWifiConnectionInfo(){
+      $.getJSON(wifiStatusUrl, function (data) {
+        document.getElementById("wifiConnectionInfo").innerHTML = data;
+      });
+    }
+    $('#wifiConnectInfoButton').click(populateWifiConnectionInfo);
+
+  
+    $("#wifiForm").submit(function(e) {
+      e.preventDefault();
+    });
+    $('#connectButton').click( function() {
+      var jsonData = getFormDataInJson($('form#wifiForm').serializeArray());
+      document.getElementById("connectionResult").innerHTML = 'Connecting to: ' + jsonData["selected-ssid"];
+      $.ajax({
+          url: wifiUrl,
+          type: 'post',
+          dataType: 'json',
+          data: JSON.stringify(jsonData),
+          success: function(response) {
+            $("#connectionResult").innerHTML = response;
+            currentWifiConnection = jsonData["selected-ssid"];
+            document.getElementById("connectionResult").innerHTML = "Successfully Connected To: " + jsonData["selected-ssid"]
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            console.log(thrownError);
+            document.getElementById("connectionResult").innerHTML = thrownError;
+          }
+      });
+    });
 
   $('#systemInfoButton').click( function() {
     let sysInfo = $('#sysinfolist');

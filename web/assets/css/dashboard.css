@@ -94,3 +94,18 @@ body {
     padding-top: 48px; /* Space for fixed navbar */
   }
 }
+
+body > div:nth-child(1) > nav > div > div:nth-child(2) > button {
+  margin-left: -4rem;
+  margin-right: -4rem;
+}
+
+.modal-sm {
+  max-width: 30% !important;
+}
+.modal-md {
+  max-width: 50% !important;
+}
+.modal-lg {
+  max-width: 80% !important;
+}
