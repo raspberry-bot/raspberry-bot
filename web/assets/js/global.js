@@ -32,11 +32,12 @@ function SuccessFuncAfterNavBarLoaded(){
               newItem.text(key);
               newItem.attr('style', "color:green; background-color:white;");
               newItem.prepend("<span data-feather=\"wifi\"></span>&nbsp;");
+              wifiConnectionList.prepend(newItem);
             } else if (entry == 'disconnect'){
               newItem.text(key);
               newItem.prepend("<span data-feather=\"wifi-off\"></span>&nbsp;");
+              wifiConnectionList.append(newItem);
             }
-            wifiConnectionList.append(newItem);
           }
         });
         if (spinner != null){
