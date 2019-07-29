@@ -292,6 +292,9 @@ network:
 
     def get(self):
         try:
+            wlan0_was_not_currently_connected = WifiManager.get_currently_connected_ssid() == 'off/any'
+            if wlan0_was_not_currently_connected:
+                cmd(['sudo', 'ifconfig', 'wlan0', 'up'])  # Make sure it's up
             ssid_dict = WifiManager.get_dict_of_ssids_with_status()
             self.write(json.dumps(ssid_dict))
         except Exception as ex:
