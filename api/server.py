@@ -308,6 +308,7 @@ network:
             wirelesss_yaml_f.write(wireless_yaml)
             cmd(['sudo', 'netplan', 'generate'])
             cmd(['sudo', 'netplan', 'apply'])
+            cmd(['sudo', 'ifconfig', 'wlan0', 'up'])
 
 def main(args):
     define("port", default=args.port, help="Run on the given port", type=int)
