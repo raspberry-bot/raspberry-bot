@@ -283,9 +283,11 @@ network:
         if WifiManager.connect(data['selected-ssid'], data['password']):
             add_event('Connected to WiFi: %s' % data['selected-ssid'])
         else:
-            add_event('Failed to connect to WiFi: %s' % data['selected-ssid'])
-        # new_ip = self.configure_netplan(data)
-        # self.write(json.dumps(new_ip))
+            add_event('Failed to connect to WiFi using WifiManager')
+            add_event('Trying to connect using netplan')
+            new_ip = self.configure_netplan(data)
+            add_event('Connected to wifi using netplan: %s' % data['selected-ssid'])
+            add_event('Netplan New IP Address: %s' % new_ip)
 
     def get(self):
         try:
