@@ -278,6 +278,7 @@ network:
                 'password': data['password'],
             }
         })
+        cmd("sudo ifconfig wlan0 up")
         if WifiManager.connect(data['selected-ssid'], data['password']):
             add_event('Connected to WiFi: %s' % data['selected-ssid'])
         else:
@@ -298,7 +299,7 @@ network:
                     ssid_dict[ssid] = 'disconnect'
             self.write(json.dumps(ssid_dict))
         except Exception as ex:
-            self.write(json.dumps(['wlan0 Network Interface Is Down.', str(ex)]))
+            self.write(json.dumps(str(ex)))
 
     def get_currently_connected_ssid(self):
         p = subprocess.Popen("iwconfig wlan0 |grep SSID", stdout=subprocess.PIPE, shell=True)
