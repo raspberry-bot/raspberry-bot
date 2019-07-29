@@ -1,3 +1,6 @@
 #!/bin/sh
 
-sudo /etc/init.d/greenbots-api.sh restart
+sudo /etc/init.d/greenbots-api.sh restart;
+sudo /etc/init.d/greenbots-api.sh restart;
+sudo /etc/init.d/greenbots-api.sh restart;
+sudo /etc/init.d/greenbots-api.sh restart;
