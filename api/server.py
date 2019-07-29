@@ -278,7 +278,9 @@ network:
                 'password': data['password'],
             }
         })
-        cmd("sudo ifconfig wlan0 up")
+        wlan0_was_not_currently_connected = self.get_currently_connected_ssid() == 'off/any'
+        if wlan0_was_not_currently_connected:
+            cmd("sudo ifconfig wlan0 up")  # Make sure it's up
         if WifiManager.connect(data['selected-ssid'], data['password']):
             add_event('Connected to WiFi: %s' % data['selected-ssid'])
         else:
@@ -304,7 +306,7 @@ network:
     def get_currently_connected_ssid(self):
         p = subprocess.Popen("iwconfig wlan0 |grep SSID", stdout=subprocess.PIPE, shell=True)
         (output, err) = p.communicate()
-        return str(output).strip().split("\"")[1].replace("\"", "")
+        return output.decode('utf-8').strip().split('ESSID:')[-1]
 
     def generate_wireless_yaml(self, data):
         return WifiHandler.WIRELESS_YAML_TEMPLATE % data
