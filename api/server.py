@@ -290,7 +290,7 @@ network:
                     ssid_dict[ssid] = 'connected'
                 else:
                     ssid_dict[ssid] = 'disconnect'
-            self.write(json.dumps(SSIDs))
+            self.write(json.dumps(ssid_dict))
         except Exception as ex:
             self.write(json.dumps(['wlan0 Network Interface Is Down.', str(ex)]))
 
