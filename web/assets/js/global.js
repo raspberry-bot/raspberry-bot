@@ -20,12 +20,17 @@ function SuccessFuncAfterNavBarLoaded(){
       wifiConnectionList.empty();
       $.getJSON(wifiUrl, function (data) {
         $.each(data, function (key, entry) {
-          if (entry.length > 0) {
+          if (key.length > 0) {
             var newItem = $('<a class="dropdown-item ssidConnect" data-toggle="modal" data-target="#wifiConnectModal"></a>')
-            .attr('data-id', entry)
-            .attr('id', entry)
-            .attr('value', entry)
-            .text(entry);
+            .attr('data-id', key)
+            .attr('id', key)
+            .attr('value', key);
+            if (entry == 'connected'){
+              newItem.text(entry + "<span data-feather=\"wifi\"></span>");
+            } else if (entry == 'disconnect'){
+              newItem.text(entry + "<span data-feather=\"wifi-off\"></span>");
+            }
+            
             wifiConnectionList.append(newItem);
           }
         });

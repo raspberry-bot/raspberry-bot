@@ -272,7 +272,7 @@ network:
         add_event('Connecting to WiFi: %s' % data['ssid'])
         update_config_file({
             'wifi': {
-                'ssid': data['ssid'],
+                'ssid': data['selected-ssid'],
                 'password': data['password'],
             }
         })
@@ -283,9 +283,21 @@ network:
         try:
             wifis = Cell.all('wlan0')
             SSIDs = [wifi.ssid for wifi in wifis]
+            current_ssid = self.get_currently_connected_ssid()
+            ssid_dict = {}
+            for ssid in SSIDs:
+                if ssid == current_ssid:
+                    ssid_dict[ssid] = 'connected'
+                else:
+                    ssid_dict[ssid] = 'disconnect'
             self.write(json.dumps(SSIDs))
         except Exception as ex:
-            self.write(json.dumps(['wlan0 Network Interface Is Down.', ]))
+            self.write(json.dumps(['wlan0 Network Interface Is Down.', str(ex)]))
+
+    def get_currently_connected_ssid(self):
+        p = subprocess.Popen("iwconfig wlan0 |grep SSID", stdout=subprocess.PIPE, shell=True)
+        (output, err) = p.communicate()
+        return str(output).strip().split("\"")[1].replace("\"", "")
 
     def generate_wireless_yaml(self, data):
         return WifiHandler.WIRELESS_YAML_TEMPLATE % data
