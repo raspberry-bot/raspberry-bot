@@ -5,8 +5,7 @@ import subprocess
 class WifiManager:
     @staticmethod
     def get_dict_of_ssids_with_status():
-        wifis = WifiManager.scan()
-        SSIDs = [wifi.ssid for wifi in wifis]
+        SSIDs = WifiManager.scan()
         current_ssid = WifiManager.get_currently_connected_ssid()
         ssid_dict = {}
         for ssid in SSIDs:
@@ -27,7 +26,7 @@ class WifiManager:
 
     @staticmethod
     def scan():
-        return [wifi.Cell.all('wlan0')]
+        return [wifi.ssid for wifi in wifi.Cell.all('wlan0')]
 
     @staticmethod
     def find_from_search_list(ssid):
