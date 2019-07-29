@@ -306,7 +306,6 @@ network:
             wirelesss_yaml_f.write(wireless_yaml)
             cmd(['sudo', 'netplan', 'generate'])
             cmd(['sudo', 'netplan', 'apply'])
-            cmd(['sudo', 'netplan', 'generate'])
             ip = netifaces.ifaddresses('wlan0')[netifaces.AF_INET][0]['addr']
             return ip
 

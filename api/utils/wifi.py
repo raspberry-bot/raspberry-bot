@@ -27,7 +27,7 @@ class WifiManager:
 
     @staticmethod
     def scan():
-        return list(wifi.Cell.all('wlan0'))
+        return [wifi.Cell.all('wlan0')]
 
     @staticmethod
     def find_from_search_list(ssid):

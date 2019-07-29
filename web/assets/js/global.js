@@ -89,7 +89,7 @@ function SuccessFuncAfterNavBarLoaded(){
             document.getElementById("connectionResult").innerHTML = "Successfully Connected To: " + jsonData["selected-ssid"]
           },
           error: function(xhr, ajaxOptions, thrownError) {
-            console.log(thrownError);
+            // console.log(thrownError);
             document.getElementById("connectionResult").innerHTML = thrownError;
           }
       });
