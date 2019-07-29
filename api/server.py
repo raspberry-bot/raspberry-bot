@@ -269,7 +269,7 @@ network:
 
     def post(self):
         data = tornado.escape.json_decode(self.request.body)
-        add_event('Connecting to WiFi: %s' % data['ssid'])
+        add_event('Connecting to WiFi: %s' % data['selected-ssid'])
         update_config_file({
             'wifi': {
                 'ssid': data['selected-ssid'],

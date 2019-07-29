@@ -23,11 +23,7 @@
             <span data-feather="wifi"></span>
             </button>
             <div class="dropdown-menu" style="left: auto; right: 0;">
-                <div class="d-flex justify-content-center" id="ssid-search-status">
-                    <div class="spinner-border text-success" role="status">
-                      <span class="sr-only">Loading...</span>
-                    </div>
-                </div>
+                <div id="wifiSpinner"></div>
                 <div id="wifiConnectionList"></div>
                 <hr>
                 <a class="dropdown-item" id="wifiConnectInfoButton" data-toggle="modal" data-target="#wifiConnectionInfoModal"><span data-feather="info"></span> Connection Info</a>
@@ -119,4 +115,3 @@
         </div>
     </div>
 </div>
-

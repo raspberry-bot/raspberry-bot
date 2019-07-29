@@ -12,10 +12,15 @@ function getFormDataInJson(form){
   return object;
 }
 
+var wifiSpinner = "<div class=\"d-flex justify-content-center\" id=\"ssid-search-status\"><div class=\"spinner-border text-success\" role=\"status\"><span class=\"sr-only\">Loading...</span></div></div>"
+
 function SuccessFuncAfterNavBarLoaded(){
 
     // Populate dropdown with list of Wifis
     function populateWifiList(){
+      var spinner = document.getElementById("wifiSpinner");
+      spinner.innerHTML = wifiSpinner;
+
       let wifiConnectionList = $('#wifiConnectionList');
       wifiConnectionList.empty();
       $.getJSON(wifiUrl, function (data) {
@@ -26,18 +31,20 @@ function SuccessFuncAfterNavBarLoaded(){
             .attr('id', key)
             .attr('value', key);
             if (entry == 'connected'){
-              newItem.text(entry + "<span data-feather=\"wifi\"></span>");
+              // newItem.text("<span data-feather=\"wifi\"></span>" + key);
+              newItem.text(key);
+              newItem.attr('style', "color:green; background-color:black;");
             } else if (entry == 'disconnect'){
-              newItem.text(entry + "<span data-feather=\"wifi-off\"></span>");
+              // newItem.text("<span data-feather=\"wifi-off\"></span>" + key);
+              newItem.text(key);
             }
-            
             wifiConnectionList.append(newItem);
           }
         });
-        var spinner = document.getElementById("ssid-search-status"); 
         if (spinner != null){
-          spinner.parentNode.removeChild(spinner);
-        }
+          spinner.innerHTML = "";
+        };
+        feather.replace();
       });
     };
 
@@ -114,7 +121,6 @@ function SuccessFuncAfterNavBarLoaded(){
         }
     });
   });
-  feather.replace();
 }
 
 function includeHTML() {
@@ -133,6 +139,7 @@ function includeHTML() {
                 if (this.status == 200) {
                   elmnt.innerHTML = this.responseText;
                   SuccessFuncAfterNavBarLoaded();
+                  feather.replace();
                 }
                 if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
                 /*remove the attribute, and call this function once more:*/
@@ -202,4 +209,5 @@ $(document).ready(function() {
   } else {
     alert("WebSocket not supported");
   }
+
 });
