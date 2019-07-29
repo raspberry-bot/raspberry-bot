@@ -292,18 +292,22 @@ network:
 
     def get(self):
         try:
-            wifis = WifiManager.scan()
-            SSIDs = [wifi.ssid for wifi in wifis]
-            current_ssid = self.get_currently_connected_ssid()
-            ssid_dict = {}
-            for ssid in SSIDs:
-                if ssid == current_ssid:
-                    ssid_dict[ssid] = 'connected'
-                else:
-                    ssid_dict[ssid] = 'disconnect'
+            ssid_dict = self.get_dict_of_ssids_with_status()
             self.write(json.dumps(ssid_dict))
         except Exception as ex:
             self.write(json.dumps(str(ex)))
+
+    def get_dict_of_ssids_with_status(self):
+        wifis = WifiManager.scan()
+        SSIDs = [wifi.ssid for wifi in wifis]
+        current_ssid = self.get_currently_connected_ssid()
+        ssid_dict = {}
+        for ssid in SSIDs:
+            if ssid == current_ssid:
+                ssid_dict[ssid] = 'connected'
+            else:
+                ssid_dict[ssid] = 'disconnect'
+        return ssid_dict
 
     def get_currently_connected_ssid(self):
         p = subprocess.Popen("iwconfig wlan0 |grep SSID", stdout=subprocess.PIPE, shell=True)
@@ -319,8 +323,7 @@ network:
             wirelesss_yaml_f.write(wireless_yaml)
             cmd(['sudo', 'netplan', 'generate'])
             cmd(['sudo', 'netplan', 'apply'])
-            cmd(['sudo', 'netplan', 'apply'])
-            cmd(['sudo', 'netplan', 'apply'])
+            cmd(['sudo', 'netplan', 'generate'])
             ip = netifaces.ifaddresses('wlan0')[netifaces.AF_INET][0]['addr']
             return ip
 
