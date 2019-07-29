@@ -1,7 +1,26 @@
 import wifi
+import subprocess
 
 
 class WifiManager:
+    @staticmethod
+    def get_dict_of_ssids_with_status():
+        wifis = WifiManager.scan()
+        SSIDs = [wifi.ssid for wifi in wifis]
+        current_ssid = WifiManager.get_currently_connected_ssid()
+        ssid_dict = {}
+        for ssid in SSIDs:
+            if ssid == current_ssid:
+                ssid_dict[ssid] = 'connected'
+            else:
+                ssid_dict[ssid] = 'disconnect'
+        return ssid_dict
+
+    @staticmethod
+    def get_currently_connected_ssid():
+        p = subprocess.Popen("iwconfig wlan0 |grep SSID", stdout=subprocess.PIPE, shell=True)
+        (output, err) = p.communicate()
+        return output.decode('utf-8').strip().split('ESSID:')[-1]
 
     @staticmethod
     def scan():
