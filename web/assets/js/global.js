@@ -31,12 +31,12 @@ function SuccessFuncAfterNavBarLoaded(){
             .attr('id', key)
             .attr('value', key);
             if (entry == 'connected'){
-              // newItem.text("<span data-feather=\"wifi\"></span>" + key);
               newItem.text(key);
-              newItem.attr('style', "color:green; background-color:black;");
+              newItem.attr('style', "color:green; background-color:white;");
+              newItem.prepend("<span data-feather=\"wifi\"></span>&nbsp;");
             } else if (entry == 'disconnect'){
-              // newItem.text("<span data-feather=\"wifi-off\"></span>" + key);
               newItem.text(key);
+              newItem.prepend("<span data-feather=\"wifi-off\"></span>&nbsp;");
             }
             wifiConnectionList.append(newItem);
           }

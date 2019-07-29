@@ -263,7 +263,7 @@ network:
       dhcp4: yes
       dhcp6: yes
       access-points:
-        "%(ssid)s":
+        "%(selected-ssid)s":
           password: "%(password)s"
 '''
 
