@@ -106,8 +106,7 @@ def get_version():
 
 
 def cmd(command):
-    proc = subprocess.Popen(
-        command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     log, _err = proc.communicate()
     try:
         log = log.decode("utf-8")
@@ -280,7 +279,7 @@ network:
         })
         wlan0_was_not_currently_connected = self.get_currently_connected_ssid() == 'off/any'
         if wlan0_was_not_currently_connected:
-            cmd("sudo ifconfig wlan0 up")  # Make sure it's up
+            cmd(['sudo', 'ifconfig', 'wlan0', 'up'])  # Make sure it's up
         if WifiManager.connect(data['selected-ssid'], data['password']):
             add_event('Connected to WiFi: %s' % data['selected-ssid'])
         else:
