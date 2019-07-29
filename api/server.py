@@ -308,7 +308,7 @@ network:
             wirelesss_yaml_f.write(wireless_yaml)
             cmd(['sudo', 'ifconfig', 'wlan0', 'up'])
             cmd(['sudo', 'netplan', 'generate'])
-            time.sleep(10)
+            time.sleep(40)
             cmd(['sudo', 'netplan', 'apply'])
 
 def main(args):
