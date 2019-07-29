@@ -280,15 +280,15 @@ network:
         wlan0_was_not_currently_connected = self.get_currently_connected_ssid() == 'off/any'
         if wlan0_was_not_currently_connected:
             cmd(['sudo', 'ifconfig', 'wlan0', 'up'])  # Make sure it's up
-        try:
-            if WifiManager.connect(data['selected-ssid'], data['password']):
-                add_event('Connected to WiFi: %s' % data['selected-ssid'])
-        except Exception as ex:
-            add_event('Failed to connect to WiFi using WifiManager: %s' % str(ex))
-            add_event('Trying to connect using netplan')
-            new_ip = self.configure_netplan(data)
-            add_event('Connected to wifi using netplan: %s' % data['selected-ssid'])
-            add_event('Netplan New IP Address: %s' % new_ip)
+        # try:
+        #     if WifiManager.connect(data['selected-ssid'], data['password']):
+        #         add_event('Connected to WiFi: %s' % data['selected-ssid'])
+        # except (Exception, subprocess.CalledProcessError):
+            # add_event('Failed to connect to WiFi using WifiManager: %s' % str(ex))
+        add_event('Trying to connect to wifi using netplan')
+        new_ip = self.configure_netplan(data)
+        add_event('Connected to wifi using netplan: %s' % data['selected-ssid'])
+        add_event('Netplan New IP Address: %s' % new_ip)
 
     def get(self):
         try:
