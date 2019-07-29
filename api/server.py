@@ -279,7 +279,7 @@ network:
         })
         wlan0_was_not_currently_connected = WifiManager.get_currently_connected_ssid() == 'off/any'
         if wlan0_was_not_currently_connected:
-            cmd(['sudo', 'ifconfig', 'wlan0', 'up'])  # Make sure it's up
+            cmd(['sudo', 'ip', 'link', 'set', 'wlan0', 'up'])  # Make sure it's up
         # try:
         #     if WifiManager.connect(data['selected-ssid'], data['password']):
         #         add_event('Connected to WiFi: %s' % data['selected-ssid'])
@@ -293,7 +293,7 @@ network:
         try:
             wlan0_was_not_currently_connected = WifiManager.get_currently_connected_ssid() == 'off/any'
             if wlan0_was_not_currently_connected:
-                cmd(['sudo', 'ifconfig', 'wlan0', 'up'])  # Make sure it's up
+                cmd(['sudo', 'ip', 'link', 'set', 'wlan0', 'up'])  # Make sure it's up
             ssid_dict = WifiManager.get_dict_of_ssids_with_status()
             self.write(json.dumps(ssid_dict))
         except Exception as ex:
@@ -306,10 +306,10 @@ network:
         wireless_yaml = self.generate_wireless_yaml(data)
         with open('/run/netplan/wpa-wlan0.conf', 'w+') as wirelesss_yaml_f:
             wirelesss_yaml_f.write(wireless_yaml)
-            cmd(['sudo', 'ifconfig', 'wlan0', 'up'])
+            # cmd(['sudo', 'ip', 'link', 'set', 'wlan0', 'up'])
             cmd(['sudo', 'netplan', 'generate'])
-            time.sleep(10)
             cmd(['sudo', 'netplan', 'apply'])
+            time.sleep(30)
             cmd(['sudo', 'reboot'])
 
 def main(args):
