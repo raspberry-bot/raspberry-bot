@@ -1,0 +1,78 @@
+import wifi
+
+
+class WifiManager:
+
+    @staticmethod
+    def scan():
+        wifilist = []
+        cells = wifi.Cell.all('wlan0')
+        for cell in cells:
+            wifilist.append(cell)
+        return wifilist
+
+    @staticmethod
+    def find_from_search_list(ssid):
+        wifilist = WifiManager.scan()
+        for cell in wifilist:
+            if cell.ssid == ssid:
+                return cell
+        return False
+
+    @staticmethod
+    def find_from_saved_list(ssid):
+        cell = wifi.Scheme.find('wlan0', ssid)
+        if cell:
+            return cell
+        return False
+
+    @staticmethod
+    def connect(ssid, password=None):
+        cell = WifiManager.find_from_search_list(ssid)
+        if cell:
+            savedcell = WifiManager.find_from_saved_list(cell.ssid)
+            # Already Saved from Setting
+            if savedcell:
+                savedcell.activate()
+                return cell
+            # First time to conenct
+            else:
+                if cell.encrypted:
+                    if password:
+                        scheme = WifiManager.add(cell, password)
+                        try:
+                            scheme.activate()
+                        # Wrong Password
+                        except wifi.exceptions.ConnectionError:
+                            WifiManager.delete(ssid)
+                            return False
+                        return cell
+                    else:
+                        return False
+                else:
+                    scheme = WifiManager.add(cell)
+                    try:
+                        scheme.activate()
+                    except wifi.exceptions.ConnectionError:
+                        WifiManager.delete(ssid)
+                        return False
+                    return cell
+        return False
+
+    @staticmethod
+    def add(cell, password=None):
+        if not cell:
+            return False
+        scheme = wifi.Scheme.for_cell('wlan0', cell.ssid, cell, password)
+        scheme.save()
+        return scheme
+
+    @staticmethod
+    def delete(ssid):
+        if not ssid:
+            return False
+        cell = WifiManager.find_from_saved_list(ssid)
+        if cell:
+            cell.delete()
+            return True
+        return False

@@ -12,6 +12,8 @@ function getFormDataInJson(form){
   return object;
 }
 
+
+
 var wifiSpinner = "<div class=\"d-flex justify-content-center\" id=\"ssid-search-status\"><div class=\"spinner-border text-success\" role=\"status\"><span class=\"sr-only\">Loading...</span></div></div>"
 
 function SuccessFuncAfterNavBarLoaded(){
@@ -65,6 +67,14 @@ function SuccessFuncAfterNavBarLoaded(){
     $("#wifiForm").submit(function(e) {
       e.preventDefault();
     });
+
+    function countdown(remaining) {
+      if(remaining <= 0)
+          location.reload(true);
+          document.getElementById("connectionResult").innerHTML = "Page will be refreshed after " + remaining + " seconds...";
+      setTimeout(function(){ countdown(remaining - 1); }, 1000);
+    }
+
     $('#connectButton').click( function() {
       var jsonData = getFormDataInJson($('form#wifiForm').serializeArray());
       document.getElementById("connectionResult").innerHTML = 'Connecting to: ' + jsonData["selected-ssid"];
@@ -83,6 +93,7 @@ function SuccessFuncAfterNavBarLoaded(){
             document.getElementById("connectionResult").innerHTML = thrownError;
           }
       });
+      countdown(60);
     });
 
   $('#systemInfoButton').click( function() {

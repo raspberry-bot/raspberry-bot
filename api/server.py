@@ -17,6 +17,8 @@ from datetime import timedelta
 
 import psutil
 
+from utils.wifi import WifiManager
+
 # import cv2
 # import base64
 # import rospy
@@ -276,12 +278,16 @@ network:
                 'password': data['password'],
             }
         })
-        new_ip = self.configure_netplan(data)
-        self.write(json.dumps(new_ip))
+        if WifiManager.connect(data['selected-ssid'], data['password']):
+            add_event('Connected to WiFi: %s' % data['selected-ssid'])
+        else:
+            add_event('Failed to connect to WiFi: %s' % data['selected-ssid'])
+        # new_ip = self.configure_netplan(data)
+        # self.write(json.dumps(new_ip))
 
     def get(self):
         try:
-            wifis = Cell.all('wlan0')
+            wifis = WifiManager.scan()
             SSIDs = [wifi.ssid for wifi in wifis]
             current_ssid = self.get_currently_connected_ssid()
             ssid_dict = {}
