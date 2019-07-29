@@ -4,15 +4,11 @@ const systemUrl = serverURL + '/api/system';
 const wifiUrl = serverURL + '/api/wifi';
 const wifiStatusUrl = serverURL + '/api/wifi-status';
 
-var currentWifiConnection = null;
-
 function getFormDataInJson(form){
   var object = {};
   form.forEach((item) => {object[item.name] = item.value});
   return object;
 }
-
-
 
 var wifiSpinner = "<div class=\"d-flex justify-content-center\" id=\"ssid-search-status\"><div class=\"spinner-border text-success\" role=\"status\"><span class=\"sr-only\">Loading...</span></div></div>"
 
@@ -85,7 +81,6 @@ function SuccessFuncAfterNavBarLoaded(){
           data: JSON.stringify(jsonData),
           success: function(response) {
             $("#connectionResult").innerHTML = response;
-            currentWifiConnection = jsonData["selected-ssid"];
             document.getElementById("connectionResult").innerHTML = "Successfully Connected To: " + jsonData["selected-ssid"]
           },
           error: function(xhr, ajaxOptions, thrownError) {
@@ -93,7 +88,7 @@ function SuccessFuncAfterNavBarLoaded(){
             document.getElementById("connectionResult").innerHTML = thrownError;
           }
       });
-      countdown(60);
+      countdown(120);
     });
 
   $('#systemInfoButton').click( function() {
