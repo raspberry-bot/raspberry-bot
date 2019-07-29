@@ -20,7 +20,10 @@ class WifiManager:
     def get_currently_connected_ssid():
         p = subprocess.Popen("iwconfig wlan0 |grep SSID", stdout=subprocess.PIPE, shell=True)
         (output, err) = p.communicate()
-        return output.decode('utf-8').strip().split('ESSID:')[-1]
+        value = output.decode('utf-8').strip().split('ESSID:')[-1]
+        if value != 'off/any':
+            return value.replace("\"","")
+        return value
 
     @staticmethod
     def scan():
