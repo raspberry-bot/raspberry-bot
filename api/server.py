@@ -304,12 +304,13 @@ network:
 
     def configure_netplan(self, data):
         wireless_yaml = self.generate_wireless_yaml(data)
-        with open('/etc/netplan/wireless.yaml', 'w+') as wirelesss_yaml_f:
+        with open('/run/netplan/wpa-wlan0.conf', 'w+') as wirelesss_yaml_f:
             wirelesss_yaml_f.write(wireless_yaml)
             cmd(['sudo', 'ifconfig', 'wlan0', 'up'])
             cmd(['sudo', 'netplan', 'generate'])
-            time.sleep(40)
+            time.sleep(10)
             cmd(['sudo', 'netplan', 'apply'])
+            cmd(['sudo', 'reboot'])
 
 def main(args):
     define("port", default=args.port, help="Run on the given port", type=int)
