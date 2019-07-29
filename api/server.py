@@ -286,9 +286,8 @@ network:
         # except (Exception, subprocess.CalledProcessError):
             # add_event('Failed to connect to WiFi using WifiManager: %s' % str(ex))
         add_event('Trying to connect to wifi using netplan')
-        new_ip = self.configure_netplan(data)
+        self.configure_netplan(data)
         add_event('Connected to wifi using netplan: %s' % data['selected-ssid'])
-        add_event('Netplan New IP Address: %s' % new_ip)
 
     def get(self):
         try:
@@ -309,9 +308,6 @@ network:
             wirelesss_yaml_f.write(wireless_yaml)
             cmd(['sudo', 'netplan', 'generate'])
             cmd(['sudo', 'netplan', 'apply'])
-            ip = netifaces.ifaddresses('wlan0')[netifaces.AF_INET][0]['addr']
-            return ip
-
 
 def main(args):
     define("port", default=args.port, help="Run on the given port", type=int)
