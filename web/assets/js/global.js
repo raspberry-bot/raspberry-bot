@@ -1,9 +1,96 @@
 var serverURL = "http://thegreenbot.local";
 // var serverURL = "http://localhost:8000";
 const systemUrl = serverURL + '/api/system';
+const wifiUrl = serverURL + '/api/wifi';
+const wifiStatusUrl = serverURL + '/api/wifi-status';
 
+function getFormDataInJson(form){
+  var object = {};
+  form.forEach((item) => {object[item.name] = item.value});
+  return object;
+}
+
+var wifiSpinner = "<div class=\"d-flex justify-content-center\" id=\"ssid-search-status\"><div class=\"spinner-border text-success\" role=\"status\"><span class=\"sr-only\">Loading...</span></div></div>"
 
 function SuccessFuncAfterNavBarLoaded(){
+
+    // Populate dropdown with list of Wifis
+    function populateWifiList(){
+      var spinner = document.getElementById("wifiSpinner");
+      spinner.innerHTML = wifiSpinner;
+
+      let wifiConnectionList = $('#wifiConnectionList');
+      wifiConnectionList.empty();
+      $.getJSON(wifiUrl, function (data) {
+        $.each(data, function (key, entry) {
+          if (key.length > 0) {
+            var newItem = $('<a class="dropdown-item ssidConnect" data-toggle="modal" data-target="#wifiConnectModal"></a>')
+            .attr('data-id', key)
+            .attr('id', key)
+            .attr('value', key);
+            if (entry == 'connected'){
+              newItem.text(key);
+              newItem.attr('style', "color:green; background-color:white;");
+              newItem.prepend("<span data-feather=\"wifi\"></span>&nbsp;");
+              wifiConnectionList.prepend(newItem);
+            } else if (entry == 'disconnect'){
+              newItem.text(key);
+              newItem.prepend("<span data-feather=\"wifi-off\"></span>&nbsp;");
+              wifiConnectionList.append(newItem);
+            }
+          }
+        });
+        if (spinner != null){
+          spinner.innerHTML = "";
+        };
+        feather.replace();
+      });
+    };
+
+    $("#wifidropdown").click(populateWifiList);
+
+    $(document).on("click", ".ssidConnect", function () {
+      $("#selected-ssid").val($(this).data('id'));
+    });
+
+    function populateWifiConnectionInfo(){
+      $.getJSON(wifiStatusUrl, function (data) {
+        document.getElementById("wifiConnectionInfo").innerHTML = data;
+      });
+    }
+    $('#wifiConnectInfoButton').click(populateWifiConnectionInfo);
+
+  
+    $("#wifiForm").submit(function(e) {
+      e.preventDefault();
+    });
+
+    function countdown(remaining) {
+      if(remaining <= 0)
+          location.reload(true);
+          document.getElementById("connectionResult").innerHTML = "Page will be refreshed after " + remaining + " seconds...";
+      setTimeout(function(){ countdown(remaining - 1); }, 1000);
+    }
+
+    $('#connectButton').click( function() {
+      var jsonData = getFormDataInJson($('form#wifiForm').serializeArray());
+      document.getElementById("connectionResult").innerHTML = 'Connecting to: ' + jsonData["selected-ssid"];
+      $.ajax({
+          url: wifiUrl,
+          type: 'post',
+          dataType: 'json',
+          data: JSON.stringify(jsonData),
+          success: function(response) {
+            $("#connectionResult").innerHTML = response;
+            document.getElementById("connectionResult").innerHTML = "Successfully Connected To: " + jsonData["selected-ssid"]
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            // console.log(thrownError);
+            document.getElementById("connectionResult").innerHTML = thrownError;
+          }
+      });
+      countdown(120);
+    });
 
   $('#systemInfoButton').click( function() {
     let sysInfo = $('#sysinfolist');
@@ -41,7 +128,6 @@ function SuccessFuncAfterNavBarLoaded(){
         }
     });
   });
-  feather.replace();
 }
 
 function includeHTML() {
@@ -60,6 +146,7 @@ function includeHTML() {
                 if (this.status == 200) {
                   elmnt.innerHTML = this.responseText;
                   SuccessFuncAfterNavBarLoaded();
+                  feather.replace();
                 }
                 if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
                 /*remove the attribute, and call this function once more:*/
@@ -129,4 +216,5 @@ $(document).ready(function() {
   } else {
     alert("WebSocket not supported");
   }
+
 });

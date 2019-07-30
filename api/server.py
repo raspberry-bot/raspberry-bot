@@ -17,6 +17,8 @@ from datetime import timedelta
 
 import psutil
 
+from utils.wifi import WifiManager
+
 # import cv2
 # import base64
 # import rospy
@@ -104,8 +106,7 @@ def get_version():
 
 
 def cmd(command):
-    proc = subprocess.Popen(
-        command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     log, _err = proc.communicate()
     try:
         log = log.decode("utf-8")
@@ -263,44 +264,53 @@ network:
       dhcp4: yes
       dhcp6: yes
       access-points:
-        "%(ssid)s":
+        "%(selected-ssid)s":
           password: "%(password)s"
 '''
 
     def post(self):
         data = tornado.escape.json_decode(self.request.body)
-        add_event('Connecting to WiFi: %s' % data['ssid'])
+        add_event('Connecting to WiFi: %s' % data['selected-ssid'])
         update_config_file({
             'wifi': {
-                'ssid': data['ssid'],
+                'ssid': data['selected-ssid'],
                 'password': data['password'],
             }
         })
-        new_ip = self.configure_netplan(data)
-        self.write(json.dumps(new_ip))
+        wlan0_was_not_currently_connected = WifiManager.get_currently_connected_ssid() == 'off/any'
+        if wlan0_was_not_currently_connected:
+            cmd(['sudo', 'ip', 'link', 'set', 'wlan0', 'up'])  # Make sure it's up
+        # try:
+        #     if WifiManager.connect(data['selected-ssid'], data['password']):
+        #         add_event('Connected to WiFi: %s' % data['selected-ssid'])
+        # except (Exception, subprocess.CalledProcessError):
+            # add_event('Failed to connect to WiFi using WifiManager: %s' % str(ex))
+        add_event('Trying to connect to wifi using netplan')
+        self.configure_netplan(data)
+        add_event('Connected to wifi using netplan: %s' % data['selected-ssid'])
 
     def get(self):
         try:
-            wifis = Cell.all('wlan0')
-            SSIDs = [wifi.ssid for wifi in wifis]
-            self.write(json.dumps(SSIDs))
+            wlan0_was_not_currently_connected = WifiManager.get_currently_connected_ssid() == 'off/any'
+            if wlan0_was_not_currently_connected:
+                cmd(['sudo', 'ip', 'link', 'set', 'wlan0', 'up'])  # Make sure it's up
+            ssid_dict = WifiManager.get_dict_of_ssids_with_status()
+            self.write(json.dumps(ssid_dict))
         except Exception as ex:
-            self.write(json.dumps(['wlan0 Network Interface Is Down.', ]))
+            self.write(json.dumps(str(ex)))
 
     def generate_wireless_yaml(self, data):
         return WifiHandler.WIRELESS_YAML_TEMPLATE % data
 
     def configure_netplan(self, data):
         wireless_yaml = self.generate_wireless_yaml(data)
-        with open('/etc/netplan/wireless.yaml', 'w+') as wirelesss_yaml_f:
+        with open('/run/netplan/wireless.yaml', 'w+') as wirelesss_yaml_f:
             wirelesss_yaml_f.write(wireless_yaml)
+            # cmd(['sudo', 'ip', 'link', 'set', 'wlan0', 'up'])
             cmd(['sudo', 'netplan', 'generate'])
             cmd(['sudo', 'netplan', 'apply'])
-            cmd(['sudo', 'netplan', 'apply'])
-            cmd(['sudo', 'netplan', 'apply'])
-            ip = netifaces.ifaddresses('wlan0')[netifaces.AF_INET][0]['addr']
-            return ip
-
+            time.sleep(30)
+            cmd(['sudo', 'reboot'])
 
 def main(args):
     define("port", default=args.port, help="Run on the given port", type=int)
