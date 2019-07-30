@@ -1,10 +1,10 @@
-<nav class="navbar navbar-expand-md navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">The Green Bot</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="navbar-collapse collapse id="collapsibleNavbar">
-        <ul class="navbar-nav mr-auto">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
             <li class="nav-item">
                 <a class="nav-link" href="index.html"><span data-feather="airplay"></span> Operate</a>
             </li>
@@ -21,28 +21,33 @@
                     <a class="nav-link" href="system.html"><span data-feather="activity"></span> System</a>
             </li>
         </ul>
-        <div class="dropdown">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="wifidropdown">
-            <span data-feather="wifi"></span>
-            </button>
-            <div class="dropdown-menu" style="left: auto; right: 0;">
-                <div id="wifiSpinner"></div>
-                <div id="wifiConnectionList"></div>
-                <hr>
-                <a class="dropdown-item" id="wifiConnectInfoButton" data-toggle="modal" data-target="#wifiConnectionInfoModal"><span data-feather="info"></span> Connection Info</a>
-            </div>
-        </div>
-        <span> </span>
-        <div class="dropdown">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-            <span data-feather="cpu"></span>
-            </button>
-            <div class="dropdown-menu" style="left: auto; right: 0;">
-                <a class="dropdown-item" id="systemInfoButton" data-toggle="modal" data-target="#sysInfoModal"><span data-feather="info"></span> System Info</a>
-                <a class="dropdown-item" id="shutdownButton"><span data-feather="power"></span> Shutdown</a>
-                <a class="dropdown-item" id="rebootButton"><span data-feather="repeat"></span> Reboot</a>
-            </div>
-        </div>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <div class="dropdown">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="wifidropdown">
+                    <span data-feather="wifi"></span>
+                    </button>
+                    <div class="dropdown-menu" style="left: auto; right: 0;">
+                        <div id="wifiSpinner"></div>
+                        <div id="wifiConnectionList"></div>
+                        <hr>
+                        <a class="dropdown-item" id="wifiConnectInfoButton" data-toggle="modal" data-target="#wifiConnectionInfoModal"><span data-feather="info"></span> Connection Info</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <div class="dropdown">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    <span data-feather="cpu"></span>
+                    </button>
+                    <div class="dropdown-menu" style="left: auto; right: 0;">
+                        <a class="dropdown-item" id="systemInfoButton" data-toggle="modal" data-target="#sysInfoModal"><span data-feather="info"></span> System Info</a>
+                        <a class="dropdown-item" id="shutdownButton"><span data-feather="power"></span> Shutdown</a>
+                        <a class="dropdown-item" id="rebootButton"><span data-feather="repeat"></span> Reboot</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
     </div>
 </nav>
 

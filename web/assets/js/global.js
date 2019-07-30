@@ -236,5 +236,5 @@ $(document).ready(function() {
   } else {
     alert("WebSocket not supported");
   }
-
+  $('.nav-tabs a:first').tab('show');
 });
