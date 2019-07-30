@@ -71,7 +71,7 @@ $(document).ready(function() {
 
   $("#updateForm").submit(function(e) {
     e.preventDefault();
-    countdown(60);
+    countdown(30);
   });
 
   $('#updateButton').click( function() {

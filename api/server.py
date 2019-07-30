@@ -156,6 +156,7 @@ class UpdateHandler(BaseHandler):
         })
         add_event('UPDATING!\n\t' + result)
         self.write(json.dumps(result))
+        time.sleep(10);
         self.restart_supervisord()
 
     def get_version(self):
