@@ -1,12 +1,16 @@
 {
     "intelligence": {
-        "autonomous-driving": false, 
-        "voice-command": false, 
-        "nightvision-camera": false, 
+        "autonomous-driving": false,
+        "voice-command": false,
+        "nightvision-camera": false,
         "ultrasonic-distance-meter": false
-    }, 
+    },
     "wifi": {
-        "password": "pass", 
+        "password": "pass",
         "ssid": "network"
+    },
+    "firmware": {
+        "version": 1.0,
+        "latest_update": null
     }
 }

@@ -81,17 +81,17 @@ $(document).ready(function() {
 
   $.getJSON(updateUrl, function (data) {
     var msg;
+    var versionComparison = '(Your System Version: ' + data.firmware.version + ') < (Latest Version: ' + data.latest_version + ')';
     if (data.new_update_available == true) {
-      msg = 'New Update Is Available! (Your System Version: ' + data.firmware.version + ') < Latest Version: (' + data.latest_version + ')';
+      msg = 'New Update Is Available!' + versionComparison;
       // TODO: Add a help tooltip here :
       // if you are using a forked repo make sure to have a /VERSION file in the root of your repo with a float value higher than your current firmware version.
       $('#updateButton').prop('enabled', true);
     } else {
-      msg = 'Your system is up to date! (Your System Version: ' + data.firmware.version + ') = Latest Version: (' + data.latest_version + ')';
+      msg = 'Your system is up to date! ' + versionComparison;
       $('#updateButton').prop('disabled', true);
     }
     document.querySelector("#updateInfo").innerHTML = msg;
-    
   });
 
 });

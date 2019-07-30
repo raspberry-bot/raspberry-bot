@@ -29,9 +29,9 @@ from utils.wifi import WifiManager
 API_SERVER_ROOT = os.environ.get('API_SERVER_ROOT')
 BOT_ROOT = os.environ.get('GREENBOTS_ROOT')
 
-CONFIG_FILE = os.path.join(API_SERVER_ROOT, 'bot-config.json')
 EVENTS_FILE = os.path.join(BOT_ROOT, 'logs/events.log')
 VERSION_FILE = os.path.join(BOT_ROOT, 'src/VERSION')
+CONFIG_FILE = os.path.join(BOT_ROOT, 'src/configs/bot-config.json')
 
 REPO_LATEST_VERSION_URL = 'https://raw.githubusercontent.com/aeldaly/The-Green-Bots/master/VERSION'
 
@@ -119,12 +119,6 @@ def tail(filename, lines=20):
     return cmd(['tail', '-%d' % lines, filename])
 
 
-def restart_supervisord():
-    add_event('Restarting supervisord now ...')
-    cmd(['sudo', 'killall', 'supervisord', '&&', 'sudo',
-         'supervisord', '-c', '/etc/supervisord.conf'])
-
-
 class UpdateHandler(BaseHandler):
 
     def get(self):
@@ -162,11 +156,15 @@ class UpdateHandler(BaseHandler):
         })
         add_event('UPDATING!\n\t' + result)
         self.write(json.dumps(result))
-        restart_supervisord()
+        self.restart_supervisord()
 
     def get_version(self):
         version_f = open(VERSION_FILE, 'r')
         return version_f.read()
+    
+    def restart_supervisord(self):
+        add_event('Restarting supervisord now ...')
+        cmd(['sudo' '/etc/init.d/greenbots-api.sh' 'restart'])
 
 
 class PingHandler(tornado.websocket.WebSocketHandler):
