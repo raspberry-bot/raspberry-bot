@@ -304,7 +304,7 @@ network:
 
     def configure_netplan(self, data):
         wireless_yaml = self.generate_wireless_yaml(data)
-        with open('/run/netplan/wpa-wlan0.conf', 'w+') as wirelesss_yaml_f:
+        with open('/run/netplan/wireless.yaml', 'w+') as wirelesss_yaml_f:
             wirelesss_yaml_f.write(wireless_yaml)
             # cmd(['sudo', 'ip', 'link', 'set', 'wlan0', 'up'])
             cmd(['sudo', 'netplan', 'generate'])
