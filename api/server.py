@@ -32,7 +32,7 @@ BOT_ROOT = os.environ.get('GREENBOTS_ROOT')
 EVENTS_FILE = os.path.join(BOT_ROOT, 'logs/events.log')
 VERSION_FILE = os.path.join(BOT_ROOT, 'src/VERSION')
 CONFIG_FILE = os.path.join(BOT_ROOT, 'src/configs/bot-config.json')
-SUPERVISORD_LOGS_PATH = os.path.join(BOT_ROOT, 'supervisor/logs/*.log')
+SUPERVISORD_LOGS_PATH = os.path.join(BOT_ROOT, 'supervisor/logs/')
 
 REPO_LATEST_VERSION_URL = 'https://raw.githubusercontent.com/aeldaly/The-Green-Bots/master/VERSION'
 
@@ -189,11 +189,27 @@ class PingHandler(tornado.websocket.WebSocketHandler):
 
 class LogHandler(BaseHandler):
     def get(self):
+        tornado_logs = ''
+        tornado_logs += tail(SUPERVISORD_LOGS_PATH + 'tornado-stdout.log', lines=100)
+        tornado_logs += tail(SUPERVISORD_LOGS_PATH + 'tornado-operate-stdout.log', lines=100)
+        
+        jupyter_logs = ''
+        jupyter_logs += tail(SUPERVISORD_LOGS_PATH + 'jupyter-stderr.log', lines=100)
+        jupyter_logs += tail(SUPERVISORD_LOGS_PATH + 'jupyter-stdout.log', lines=100)
+
+        supervisord_logs = tail(SUPERVISORD_LOGS_PATH + 'supervisord.log', lines=100)
+        
+        nginx_logs = ''
+        nginx_logs += tail('/var/log/nginx/access.log', lines=100)
+        nginx_logs += tail('/var/log/nginx/error.log', lines=100)
+
         logs = {
             'events': tail(EVENTS_FILE),
             'syslog': tail('/var/log/syslog', lines=100),
-            'supervisord': tail(SUPERVISORD_LOGS_PATH, lines=100),
-            'nginx': tail('/var/log/nginx/*.log', lines=100),
+            'tornado': tornado_logs,
+            'jupyter': jupyter_logs,
+            'supervisord': supervisord_logs,
+            'nginx': nginx_logs,
         }
         self.write(json.dumps(logs))
 

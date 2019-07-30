@@ -22,6 +22,8 @@ function populateLogs(){
     document.querySelector("#syslogTabContent").innerHTML = data.syslog;
     document.querySelector("#eventsTabContent").innerHTML = data.events;
     document.querySelector("#supervisordTabContent").innerHTML = data.supervisord;
+    document.querySelector("#tornadoTabContent").innerHTML = data.tornado;
+    document.querySelector("#jupyterTabContent").innerHTML = data.jupyter;
     document.querySelector("#nginxTabContent").innerHTML = data.nginx;
   });
 }
