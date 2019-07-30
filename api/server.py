@@ -164,7 +164,7 @@ class UpdateHandler(BaseHandler):
     
     def restart_supervisord(self):
         add_event('Restarting supervisord now ...')
-        cmd(['sudo' '/etc/init.d/greenbots-api.sh' 'restart'])
+        cmd(['sudo', '/etc/init.d/greenbots-api.sh', 'restart'])
 
 
 class PingHandler(tornado.websocket.WebSocketHandler):

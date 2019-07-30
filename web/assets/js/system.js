@@ -9,6 +9,7 @@ function getToggleFormDataInJson(form){
   return JSON.stringify(object);
 }
 
+
 $(document).ready(function() {
   'use strict'
 
@@ -60,8 +61,17 @@ $(document).ready(function() {
   //   });
   // });
 
+  
+  function countdown(remaining) {
+    if(remaining <= 0)
+        location.reload(true);
+        document.querySelector("#updateInfo").innerHTML = "Updating... \n Page will be refreshed after " + remaining + " seconds...";
+    setTimeout(function(){ countdown(remaining - 1); }, 1000);
+  }
+
   $("#updateForm").submit(function(e) {
     e.preventDefault();
+    countdown(60);
   });
 
   $('#updateButton').click( function() {
@@ -74,6 +84,7 @@ $(document).ready(function() {
         data: JSON.stringify(formDataInJson),
         success: function(data) {
           console.log('Getting response back from git...')
+          debugger;
           $('#gitresult').val(data);
         }
     });
@@ -81,14 +92,15 @@ $(document).ready(function() {
 
   $.getJSON(updateUrl, function (data) {
     var msg;
-    var versionComparison = '(Your System Version: ' + data.firmware.version + ') < (Latest Version: ' + data.latest_version + ')';
+    var versionLocal = '(Your System Version: ' + data.firmware.version + ')';
+    var versionRemote = '(Latest Version: ' + data.latest_version + ')';
     if (data.new_update_available == true) {
-      msg = 'New Update Is Available!' + versionComparison;
+      msg = 'New Update Is Available!' + versionLocal + ' < ' + versionRemote;
       // TODO: Add a help tooltip here :
       // if you are using a forked repo make sure to have a /VERSION file in the root of your repo with a float value higher than your current firmware version.
       $('#updateButton').prop('enabled', true);
     } else {
-      msg = 'Your system is up to date! ' + versionComparison;
+      msg = 'Your system is up to date! ' + versionLocal + ' == ' + versionRemote;
       $('#updateButton').prop('disabled', true);
     }
     document.querySelector("#updateInfo").innerHTML = msg;
