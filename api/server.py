@@ -27,11 +27,11 @@ from utils.wifi import WifiManager
 # from geometry_msgs.msg import Twist
 
 API_SERVER_ROOT = os.environ.get('API_SERVER_ROOT')
-GREENBOTS_ROOT = os.environ.get('GREENBOTS_ROOT')
+BOT_ROOT = os.environ.get('GREENBOTS_ROOT')
 
 CONFIG_FILE = os.path.join(API_SERVER_ROOT, 'bot-config.json')
-EVENTS_FILE = os.path.join(GREENBOTS_ROOT, 'logs/events.log')
-VERSION_FILE = os.path.join(API_SERVER_ROOT, 'VERSION')
+EVENTS_FILE = os.path.join(BOT_ROOT, 'logs/events.log')
+VERSION_FILE = os.path.join(BOT_ROOT, 'VERSION')
 
 
 class Application(web.Application):

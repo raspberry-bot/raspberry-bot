@@ -66,11 +66,12 @@ $(document).ready(function() {
 
   $('#updateButton').click( function() {
     console.log('connectButton is clicked...')
+    let formDataInJson = getFormDataInJson($('form#updateForm').serializeArray());
     $.ajax({
         url: updateUrl,
         type: 'post',
         dataType: 'json',
-        data: getFormDataInJson($('form#updateForm').serializeArray()),
+        data: JSON.stringify(formDataInJson),
         success: function(data) {
           console.log('Getting response back from git...')
           $('#gitresult').val(data);
