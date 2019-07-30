@@ -79,8 +79,17 @@ $(document).ready(function() {
   });
 
   $.getJSON(updateUrl, function (data) {
-    debugger;
-    document.querySelector("#eventsview").innerHTML = data;
+    var msg;
+    if (data.new_update_available == true) {
+      msg = 'New Update Is Available! (Your System Version: ' + data.firmware.version + ') < Latest Version: (' + data.latest_version + ')';
+      msg += '\n Click on the [Update] button to update your raspberry-robot software.'
+      $('#updateButton').prop('enabled', true);
+    } else {
+      msg = 'Your system is up to date! (Your System Version: ' + data.firmware.version + ') = Latest Version: (' + data.latest_version + ')';
+      $('#updateButton').prop('disabled', true);
+    }
+    document.querySelector("#updateInfo").innerHTML = msg;
+    
   });
 
 });
