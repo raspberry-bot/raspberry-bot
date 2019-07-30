@@ -220,12 +220,11 @@ class IntelligenceHandler(BaseHandler):
 class SystemHandler(BaseHandler):
     def get(self):
         config = get_config_file()
-        sys_lines = []
-        sys_lines.append('System Uptime: %s\n' % self._uptime())
-        sys_lines.append('CPU Usage: %.2f%% \t Memory Usage: %.2f%% ' % (psutil.cpu_percent(), psutil.virtual_memory().percent))
-        sys_lines.append('Firmware Version: %s\n' % config.get('firmware', {}).get('version'))
-        sys_lines.append('Last Updated: %s\n' % config.get('firmware', {}).get('last_updated'))
-        sys_lines.append('$ uname: \n\t%s' % '\n\t'.join(os.uname()))
+        sys_lines = 'System Uptime: %s\n' % self._uptime()
+        sys_lines += 'CPU Usage: %.2f%% \t Memory Usage: %.2f%% ' % (psutil.cpu_percent(), psutil.virtual_memory().percent)
+        sys_lines += 'Firmware Version: %s\n' % config.get('firmware', {}).get('version')
+        sys_lines += 'Last Updated: %s\n' % config.get('firmware', {}).get('last_updated')
+        sys_lines += '$ uname: \n\t%s' % '\n\t'.join(os.uname())
         self.write(json.dumps(sys_lines))
 
     def post(self):

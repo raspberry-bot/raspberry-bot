@@ -93,12 +93,9 @@ function SuccessFuncAfterNavBarLoaded(){
     });
 
   $('#systemInfoButton').click( function() {
-    let sysInfo = $('#sysinfolist');
-    sysInfo.empty();
     $.getJSON(systemUrl, function (data) {
-      data.forEach(function (item) {
-        sysInfo.append($('<li>' + item + '</li>'));
-      })
+      debugger;
+      document.querySelector("#sysInfo").innerHTML = data;
     });
   });
 
