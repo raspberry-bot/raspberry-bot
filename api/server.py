@@ -147,6 +147,8 @@ class UpdateHandler(BaseHandler):
         result += 'Replacing old repo at %s with new cloned repo from %s\n' % (final_destination, tmp_destination)
         result += 'Restarting supervisord...\n'
         result += 'You need to refresh this page!\n'
+        add_event('UPDATING!\n\t' + result)
+        self.write(json.dumps(result))
         cmd(['mv', tmp_destination, final_destination])
         update_config_file({
             'firmware': {
@@ -154,9 +156,7 @@ class UpdateHandler(BaseHandler):
                 'last_updated': datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
             }
         })
-        add_event('UPDATING!\n\t' + result)
-        self.write(json.dumps(result))
-        time.sleep(10);
+        time.sleep(10)
         self.restart_supervisord()
 
     def get_version(self):
