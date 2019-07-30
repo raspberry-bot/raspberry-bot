@@ -73,12 +73,12 @@ def update_config_file(new_dict):
                 'ssid': '',
                 'password': ''
             },
-            'intelligence': {
-                'voice-command': True,
-                'autonomous-driving': True,
-                'nightvision-camera': True,
-                'ultrasonic-distance-meter': True,
-            },
+            # 'intelligence': {
+            #     'voice-command': True,
+            #     'autonomous-driving': True,
+            #     'nightvision-camera': True,
+            #     'ultrasonic-distance-meter': True,
+            # },
             'firmware': {
                 'version': '1.0',
                 'last_update': ''
@@ -131,7 +131,7 @@ class UpdateHandler(BaseHandler):
         latest_version = response.content.decode('utf-8')
         firmware = config.get('firmware', {})
         self.write(json.dumps({
-            'new_update_available': float(latest_version) > float(firmware.get('version')),
+            'new_update_available': float(latest_version) > float(firmware.get('version', 0.0)),
             'latest_version': latest_version,
             'firmware': firmware
         }))
