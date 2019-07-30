@@ -8,17 +8,28 @@
             <li class="nav-item">
                 <a class="nav-link" href="index.html"><span data-feather="airplay"></span> Operate</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="/jupyter/" target="_blank"><span data-feather="zap"></span> Jupyter Notebook</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="terminal.html"><span data-feather="terminal"></span> Bash Terminal</a>
-            </li>
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link" href="monitoring.html"><span data-feather="monitor"></span> Activity Monitor</a>
             </li>
             <li class="nav-item">
                     <a class="nav-link" href="system.html"><span data-feather="activity"></span> System</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="developDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span data-feather="code"></span> Develop
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/jupyter/" target="_blank"><span data-feather="zap"></span> Jupyter Notebook</a>
+                    <a class="dropdown-item" href="terminal.html"><span data-feather="terminal"></span> Bash Terminal</a>
+                    <!-- <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a> -->
+                </div>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
@@ -30,7 +41,7 @@
                     <div class="dropdown-menu" style="left: auto; right: 0;">
                         <div id="wifiSpinner"></div>
                         <div id="wifiConnectionList"></div>
-                        <hr>
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" id="wifiConnectInfoButton" data-toggle="modal" data-target="#wifiConnectionInfoModal"><span data-feather="info"></span> Connection Info</a>
                     </div>
                 </div>

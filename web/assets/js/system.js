@@ -11,11 +11,11 @@ $(document).ready(function() {
 
     // Populate Logs
     $.getJSON(logsUrl, function (data) {
-      $('#logsview').val(data);
+      document.querySelector("#logsview").innerHTML = data;
     });
 
     $.getJSON(eventsUrl, function (data) {
-      $('#eventsview').val(data);
+      document.querySelector("#eventsview").innerHTML = data;
     });
 
 
