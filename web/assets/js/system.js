@@ -1,29 +1,34 @@
+function getFormDataInJson(form){
+  var object = {};
+  form.forEach((item) => {object[item.name] = item.value});
+  return JSON.stringify(object);
+}
+function getToggleFormDataInJson(form){
+  var object = {};
+  form.forEach((item) => {object[item.name] = item.value});
+  return JSON.stringify(object);
+}
+
 $(document).ready(function() {
-    'use strict'
+  'use strict'
 
-    var serverURL = "http://thegreenbot.local";
-    // var serverURL = "http://localhost:8000";
+  var serverURL = "http://thegreenbot.local";
+  // var serverURL = "http://localhost:8000";
 
-    const logsUrl = serverURL + '/api/logs';
-    const eventsUrl = serverURL + '/api/events';
-    const intelligenceUrl = serverURL + '/api/intelligence';
-    const updateUrl = serverURL + '/api/update';
+  const logsUrl = serverURL + '/api/logs';
+  const eventsUrl = serverURL + '/api/events';
+  const intelligenceUrl = serverURL + '/api/intelligence';
+  const updateUrl = serverURL + '/api/update';
 
-    // Populate Logs
-    $.getJSON(logsUrl, function (data) {
-      document.querySelector("#logsview").innerHTML = data;
-    });
+  // Populate Logs
+  $.getJSON(logsUrl, function (data) {
+    document.querySelector("#logsview").innerHTML = data;
+  });
 
-    $.getJSON(eventsUrl, function (data) {
-      document.querySelector("#eventsview").innerHTML = data;
-    });
+  $.getJSON(eventsUrl, function (data) {
+    document.querySelector("#eventsview").innerHTML = data;
+  });
 
-
-  function getFormDataInJson(form){
-    var object = {};
-    form.forEach((item) => {object[item.name] = item.value});
-    return JSON.stringify(object);
-  }
 
   // Populate Intelligence Toggle Form
   // $.getJSON(intelligenceUrl, function (data) {
@@ -42,27 +47,18 @@ $(document).ready(function() {
   //   e.preventDefault();
   // });
 
-
-
-  function getToggleFormDataInJson(form){
-    var object = {};
-    form.forEach((item) => {object[item.name] = item.value});
-    return JSON.stringify(object);
-  }
-
-
-  $('#intelligenceSaveButton').click( function() {
-    console.log('intelligenceSaveButton is clicked...')
-    $.ajax({
-        url: intelligenceUrl,
-        type: 'post',
-        dataType: 'json',
-        data: getToggleFormDataInJson($('form#intelligenceForm').serializeArray()),
-        success: function(data) {
-          console.log('Saving Intelligence Modules Configuration...')
-        }
-    });
-  });
+  // $('#intelligenceSaveButton').click( function() {
+  //   console.log('intelligenceSaveButton is clicked...')
+  //   $.ajax({
+  //       url: intelligenceUrl,
+  //       type: 'post',
+  //       dataType: 'json',
+  //       data: getToggleFormDataInJson($('form#intelligenceForm').serializeArray()),
+  //       success: function(data) {
+  //         console.log('Saving Intelligence Modules Configuration...')
+  //       }
+  //   });
+  // });
 
   $("#updateForm").submit(function(e) {
     e.preventDefault();
@@ -80,6 +76,11 @@ $(document).ready(function() {
           $('#gitresult').val(data);
         }
     });
+  });
+
+  $.getJSON(updateUrl, function (data) {
+    debugger;
+    document.querySelector("#eventsview").innerHTML = data;
   });
 
 });

@@ -17,6 +17,8 @@ from datetime import timedelta
 
 import psutil
 
+import requests
+
 from utils.wifi import WifiManager
 
 # import cv2
@@ -100,11 +102,6 @@ def get_config_file():
     return config
 
 
-def get_version():
-    version_f = open(VERSION_FILE, 'r')
-    return version_f.read()
-
-
 def cmd(command):
     proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     log, _err = proc.communicate()
@@ -127,6 +124,18 @@ def restart_supervisord():
 
 
 class UpdateHandler(BaseHandler):
+
+    def get(self):
+        config = get_config_file()
+        response = requests.get('https://raw.githubusercontent.com/aeldaly/The-Green-Bots/master/VERSION')
+        latest_version = response.content.decode('utf-8')
+        firmware = config.get('firmware', {})
+        self.write(json.dumps({
+            'new_update_available': float(latest_version) > float(firmware.get('version')),
+            'latest_version': latest_version,
+            'firmware': firmware
+        }))
+
     def post(self):
         data = tornado.escape.json_decode(self.request.body)
         tmp_destination = '/tmp/thegreenbots'
@@ -146,13 +155,17 @@ class UpdateHandler(BaseHandler):
         cmd(['mv', tmp_destination, final_destination])
         update_config_file({
             'firmware': {
-                'version': get_version(),
+                'version': self.get_version(),
                 'last_updated': datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
             }
         })
         add_event('UPDATING!\n\t' + result)
         self.write(json.dumps(result))
         restart_supervisord()
+
+    def get_version(self):
+        version_f = open(VERSION_FILE, 'r')
+        return version_f.read()
 
 
 class PingHandler(tornado.websocket.WebSocketHandler):
@@ -228,7 +241,7 @@ class SystemHandler(BaseHandler):
         uptime_string = None
         with open('/proc/uptime', 'r') as f:
             uptime_seconds = float(f.readline().split()[0])
-            uptime_string = str(timedelta(seconds = uptime_seconds))
+            uptime_string = str(timedelta(seconds=uptime_seconds))
         return uptime_string
 
     def _shutdown(self):

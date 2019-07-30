@@ -141,17 +141,19 @@
                     <input class="form-control" type="text" id="gitrepo" name="gitrepo"
                       value="https://github.com/aeldaly/The-Green-Bots.git"></input>
                   </div>
-                  <p>Note: You can specify a Branch name or leave it to default as Master.</p>
                   <div class="form-group">
-                    <label for="gitbranch">Branch:</label>
+                    <label for="gitbranch">Branch: (Note: You can specify a Branch name or leave it to default as Master.)</label>
                     <input class="form-control" type="text" id="gitbranch" name="gitbranch" value="master"></input>
                   </div>
                   <button type="submit" class="btn btn-success" id="updateButton">Update</button>
                 </form>
               </div>
-              <div class="col-md-5">
+              <div class="col-md-5" id="updateStatus">
                 <h4>Update Status</h4>
-                <textarea rows="10" cols="80" id="gitresult" readonly></textarea>
+                <div class="alert alert-primary" role="alert" id="updateInfoAlert">
+                    <p id="updateInfo"></p>
+                </div>
+                <pre id="gitresult"></pre>
               </div>
             </div>
             </div>
