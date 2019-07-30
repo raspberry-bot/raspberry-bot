@@ -13,7 +13,7 @@ function getFormDataInJson(form){
 function countdown(remaining) {
   if(remaining <= 0)
       location.reload(true);
-      document.getElementById("connectionResult").innerHTML = "Page will be refreshed after " + remaining + " seconds...";
+      document.getElementById("connectionResult").innerHTML = "This page will be refreshed after " + remaining + " seconds...";
   setTimeout(function(){ countdown(remaining - 1); }, 1000);
 }
 
