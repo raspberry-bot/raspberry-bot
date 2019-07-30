@@ -83,7 +83,8 @@ $(document).ready(function() {
     var msg;
     if (data.new_update_available == true) {
       msg = 'New Update Is Available! (Your System Version: ' + data.firmware.version + ') < Latest Version: (' + data.latest_version + ')';
-      msg += '\n Click on the [Update] button to update your raspberry-robot software.'
+      // TODO: Add a help tooltip here :
+      // if you are using a forked repo make sure to have a /VERSION file in the root of your repo with a float value higher than your current firmware version.
       $('#updateButton').prop('enabled', true);
     } else {
       msg = 'Your system is up to date! (Your System Version: ' + data.firmware.version + ') = Latest Version: (' + data.latest_version + ')';

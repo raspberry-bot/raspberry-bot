@@ -31,7 +31,9 @@ BOT_ROOT = os.environ.get('GREENBOTS_ROOT')
 
 CONFIG_FILE = os.path.join(API_SERVER_ROOT, 'bot-config.json')
 EVENTS_FILE = os.path.join(BOT_ROOT, 'logs/events.log')
-VERSION_FILE = os.path.join(BOT_ROOT, 'VERSION')
+VERSION_FILE = os.path.join(BOT_ROOT, 'src/VERSION')
+
+REPO_LATEST_VERSION_URL = 'https://raw.githubusercontent.com/aeldaly/The-Green-Bots/master/VERSION'
 
 
 class Application(web.Application):
@@ -127,7 +129,7 @@ class UpdateHandler(BaseHandler):
 
     def get(self):
         config = get_config_file()
-        response = requests.get('https://raw.githubusercontent.com/aeldaly/The-Green-Bots/master/VERSION')
+        response = requests.get(REPO_LATEST_VERSION_URL)
         latest_version = response.content.decode('utf-8')
         firmware = config.get('firmware', {})
         self.write(json.dumps({
