@@ -18,7 +18,7 @@ function getToggleFormDataInJson(form){
 }
 
 function populateLogs(){
-  $.getJSON(logsUrl, function (data) {
+  $.getJSON(logsUrl + '?t=' + new Date().getTime(), function (data) {
     document.querySelector("#syslogTabContent").innerHTML = data.syslog;
     document.querySelector("#eventsTabContent").innerHTML = data.events;
     document.querySelector("#supervisordTabContent").innerHTML = data.supervisord;
