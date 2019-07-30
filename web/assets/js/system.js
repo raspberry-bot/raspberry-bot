@@ -1,3 +1,11 @@
+var serverURL = "http://thegreenbot.local";
+// var serverURL = "http://localhost:8000";
+
+const logsUrl = serverURL + '/api/logs';
+const eventsUrl = serverURL + '/api/events';
+const intelligenceUrl = serverURL + '/api/intelligence';
+const updateUrl = serverURL + '/api/update';
+
 function getFormDataInJson(form){
   var object = {};
   form.forEach((item) => {object[item.name] = item.value});
@@ -9,28 +17,19 @@ function getToggleFormDataInJson(form){
   return JSON.stringify(object);
 }
 
+function populateLogs(){
+  $.getJSON(logsUrl, function (data) {
+    document.querySelector("#syslogTabContent").innerHTML = data.syslog;
+    document.querySelector("#eventsTabContent").innerHTML = data.events;
+    document.querySelector("#supervisordTabContent").innerHTML = data.supervisord;
+    document.querySelector("#nginxTabContent").innerHTML = data.nginx;
+  });
+}
 
 $(document).ready(function() {
   'use strict'
-
-  var serverURL = "http://thegreenbot.local";
-  // var serverURL = "http://localhost:8000";
-
-  const logsUrl = serverURL + '/api/logs';
-  const eventsUrl = serverURL + '/api/events';
-  const intelligenceUrl = serverURL + '/api/intelligence';
-  const updateUrl = serverURL + '/api/update';
-
-  // Populate Logs
-  $.getJSON(logsUrl, function (data) {
-    document.querySelector("#logsview").innerHTML = data;
-  });
-
-  $.getJSON(eventsUrl, function (data) {
-    document.querySelector("#eventsview").innerHTML = data;
-  });
-
-
+  populateLogs();
+  $('#refreshLogs').click(populateLogs);
   // Populate Intelligence Toggle Form
   // $.getJSON(intelligenceUrl, function (data) {
   //   for (var item in data) {

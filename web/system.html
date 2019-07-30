@@ -159,22 +159,36 @@
             </div>
           <hr>
 
-          <h2 id="logs">Logs</h2>
+          <div class='row'>
+              <h3 class='mx-auto'>Logs
+                  <button type="button" class="btn btn-default btn-sm" id="refreshLogs">
+                      <span data-feather="refresh-cw">Refresh</span>
+                  </button>
+              </h3> 
+            </div>
           <nav>
               <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-logs-events" role="tab" aria-controls="nav-logs-events" aria-selected="true">Bot Events</a>
                 <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-logs-syslog" role="tab" aria-controls="nav-logs-syslog" aria-selected="false">Syslog</a>
+                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-logs-supervisord" role="tab" aria-controls="nav-logs-supervisord" aria-selected="false">Supervisord (backend)</a>
+                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-logs-nginx" role="tab" aria-controls="nav-logs-nginx" aria-selected="false">Nginx</a>
                 <!-- <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a> -->
               </div>
           </nav>
+
           <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-logs-events" role="tabpanel" aria-labelledby="nav-logs-events-tab">
-              <pre id="eventsview" class="pre-scrollable">Log file is loading...</pre>
+              <pre id="eventsTabContent" class="pre-scrollable">Log file is loading...</pre>
             </div>
             <div class="tab-pane fade" id="nav-logs-syslog" role="tabpanel" aria-labelledby="nav-logs-syslog-tab">
-              <pre id="logsview" class="pre-scrollable">Log file is loading...</pre>
+              <pre id="syslogTabContent" class="pre-scrollable">Log file is loading...</pre>
             </div>
-            <!-- <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div> -->
+            <div class="tab-pane fade" id="nav-logs-syslog" role="tabpanel" aria-labelledby="nav-logs-supervisord-tab">
+              <pre id="supervisordTabContent" class="pre-scrollable">Log file is loading...</pre>
+            </div>
+            <div class="tab-pane fade" id="nav-logs-syslog" role="tabpanel" aria-labelledby="nav-logs-nginx-tab">
+              <pre id="nginxTabContent" class="pre-scrollable">Log file is loading...</pre>
+            </div>
           </div>
 
           <!-- <h2 id="logs">Logs</h2> -->

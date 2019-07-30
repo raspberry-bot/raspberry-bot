@@ -32,6 +32,7 @@ BOT_ROOT = os.environ.get('GREENBOTS_ROOT')
 EVENTS_FILE = os.path.join(BOT_ROOT, 'logs/events.log')
 VERSION_FILE = os.path.join(BOT_ROOT, 'src/VERSION')
 CONFIG_FILE = os.path.join(BOT_ROOT, 'src/configs/bot-config.json')
+SUPERVISORD_LOGS_PATH = os.path.join(BOT_ROOT, 'supervisor/logs/*.log')
 
 REPO_LATEST_VERSION_URL = 'https://raw.githubusercontent.com/aeldaly/The-Green-Bots/master/VERSION'
 
@@ -46,7 +47,6 @@ class Application(web.Application):
             (r"/api/wifi-status", WifiStatusHandler),
             (r"/api/wifi", WifiHandler),
             (r"/api/logs", LogHandler),
-            (r"/api/events", EventHandler),
             # (r"/api/intelligence", IntelligenceHandler),
             (r"/api/update", UpdateHandler),
             (r"/api/ping", PingHandler)
@@ -115,8 +115,8 @@ def cmd(command):
         return log
 
 
-def tail(filename, lines=20):
-    return cmd(['tail', '-%d' % lines, filename])
+def tail(path, lines=20):
+    return cmd(['tail', '-%d' % lines, path])
 
 
 class UpdateHandler(BaseHandler):
@@ -189,12 +189,13 @@ class PingHandler(tornado.websocket.WebSocketHandler):
 
 class LogHandler(BaseHandler):
     def get(self):
-        self.write(json.dumps(tail('/var/log/syslog', lines=100)))
-
-
-class EventHandler(BaseHandler):
-    def get(self):
-        self.write(json.dumps(tail(EVENTS_FILE)))
+        logs = {
+            'events': tail(EVENTS_FILE),
+            'syslog': tail('/var/log/syslog', lines=100),
+            'supervisord': tail(SUPERVISORD_LOGS_PATH, lines=100),
+            'nginx': tail('/var/log/nginx/*.log', lines=100),
+        }
+        self.write(json.dumps(logs))
 
 
 class IntelligenceHandler(BaseHandler):
