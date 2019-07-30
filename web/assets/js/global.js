@@ -94,7 +94,6 @@ function SuccessFuncAfterNavBarLoaded(){
 
   $('#systemInfoButton').click( function() {
     $.getJSON(systemUrl, function (data) {
-      debugger;
       document.querySelector("#sysInfo").innerHTML = data;
     });
   });
