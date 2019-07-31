@@ -15,6 +15,7 @@ class DriverHandler(tornado.websocket.WebSocketHandler):
 
     def on_message(self, message):
         print('Receiveed msg from Driver Websocket: %s' % message)
+        left_speed, right_speed = 0, 0
         if message == 'forward':
             left_speed, right_speed = self.application.driver.command_to_diff(0, 1)
         elif message == 'reverse':
