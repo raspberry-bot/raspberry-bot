@@ -19,8 +19,8 @@ class DriverHandler(tornado.websocket.WebSocketHandler):
         left_speed, right_speed = 0, 0
         try:
             data = tornado.escape.json_decode(message)
-            x = data['x']
-            y = data['y']
+            x = int(data['x'])
+            y = int(data['y'])
             if x and y:
                 left_speed, right_speed = self.application.driver.command_to_diff(x, y)
         except Exception as ex:

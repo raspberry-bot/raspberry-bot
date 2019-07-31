@@ -31,7 +31,7 @@ class Driver:
         self,
         left_motor_pins=LEFT_MOTOR_PINS, right_motor_pins=RIGHT_MOTOR_PINS,
         min_speed=-100, max_speed=100,
-        min_cmd=-1, max_cmd=1
+        min_cmd=-50, max_cmd=50
     ):
         # Assign pins to motors.
         self.left_motor = Motor(left_motor_pins)
