@@ -22,8 +22,9 @@ class DriverHandler(tornado.websocket.WebSocketHandler):
             x = data['x']
             y = data['y']
             if x and y:
-                left_speed, right_speed = self.application.driver.command_to_diff(0, 0)
+                left_speed, right_speed = self.application.driver.command_to_diff(x, y)
         except Exception as ex:
+            print(ex)
             if message == 'forward':
                 left_speed, right_speed = self.application.driver.command_to_diff(0, 1)
             elif message == 'reverse':
