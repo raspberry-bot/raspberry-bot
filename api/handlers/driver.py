@@ -15,21 +15,29 @@ class DriverHandler(tornado.websocket.WebSocketHandler):
 
     def on_message(self, message):
         print('Receiveed msg from Driver Websocket: %s' % message)
+        x, y = 0, 0
         left_speed, right_speed = 0, 0
-        if message == 'forward':
-            left_speed, right_speed = self.application.driver.command_to_diff(0, 1)
-        elif message == 'reverse':
-            left_speed, right_speed = self.application.driver.command_to_diff(0, -1)
-        elif message == 'left':
-            left_speed, right_speed = self.application.driver.command_to_diff(-1, 0)
-        elif message == 'right':
-            left_speed, right_speed = self.application.driver.command_to_diff(1, 0)
-        elif message == 'stop':
-            left_speed, right_speed = self.application.driver.command_to_diff(0, 0)
-        self.application.driver.left_motor.move(left_speed)
-        self.application.driver.right_motor.move(right_speed)
-
-        self.write_message(json.dumps({'left_speed': left_speed, 'right_speed': right_speed}))
+        try:
+            data = tornado.escape.json_decode(message)
+            x = data['x']
+            y = data['y']
+            if x and y:
+                left_speed, right_speed = self.application.driver.command_to_diff(0, 0)
+        except Exception as ex:
+            if message == 'forward':
+                left_speed, right_speed = self.application.driver.command_to_diff(0, 1)
+            elif message == 'reverse':
+                left_speed, right_speed = self.application.driver.command_to_diff(0, -1)
+            elif message == 'left':
+                left_speed, right_speed = self.application.driver.command_to_diff(-1, 0)
+            elif message == 'right':
+                left_speed, right_speed = self.application.driver.command_to_diff(1, 0)
+            elif message == 'stop':
+                left_speed, right_speed = self.application.driver.command_to_diff(0, 0)
+        finally:
+            self.application.driver.left_motor.move(left_speed)
+            self.application.driver.right_motor.move(right_speed)
+            self.write_message(json.dumps({'left_speed': left_speed, 'right_speed': right_speed}))
 
     # def on_message(self, message):
     #     print('Receiveed msg from Driver Websocket: %s' % message)
