@@ -13,9 +13,29 @@ from api.classes.camera import Camera
 from api.classes.motor import Motor
 import math
 
+LEFT_MOTOR_PINS = {
+    'forward': 20,
+    'reverse': 21,
+    'control': 12
+}
+
+RIGHT_MOTOR_PINS = {
+    'forward': 19,
+    'reverse': 26,
+    'control': 13
+}
+
 
 class Driver:
-    def __init__(self, left_motor_pins, right_motor_pins,  min_speed=-100, max_speed=100, min_cmd=-1, max_cmd=1):
+    def __init__(
+        self,
+        left_motor_pins=LEFT_MOTOR_PINS,
+        right_motor_pins=RIGHT_MOTOR_PINS,
+        min_speed=-100,
+        max_speed=100,
+        min_cmd=-1,
+        max_cmd=1
+    ):
         # Assign pins to motors.
         self.left_motor = Motor(left_motor_pins)
         self.right_motor = Motor(right_motor_pins)
@@ -57,8 +77,7 @@ class Driver:
             raw_left = 0 - raw_left
             raw_right = 0 - raw_right
 
-        # minJoystick, maxJoystick, self.min_speed, self.max_speed
-        # Map the values onto the defined rang
+        # Map the values onto the defined ranges
         left_out = self.map(raw_left)
         right_out = self.map(raw_right)
         return (left_out, right_out)
@@ -85,22 +104,9 @@ class Application(web.Application):
 
 
 def main(args):
-
-    left_motor_pins = {
-        'forward': 20,
-        'reverse': 21,
-        'control': 12
-    }
-
-    right_motor_pins = {
-        'forward': 19,
-        'reverse': 26,
-        'control': 13
-    }
-
     app = Application(
         camera=Camera(args.camera, args.width, args.height, args.quality, args.stopdelay),
-        driver=Driver(left_motor_pins, right_motor_pins)
+        driver=Driver(LEFT_MOTOR_PINS, RIGHT_MOTOR_PINS)
     )
     app.listen(args.port)
     tornado.ioloop.IOLoop.current().start()
