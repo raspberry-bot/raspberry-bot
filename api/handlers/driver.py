@@ -49,4 +49,5 @@ class DriverHandler(tornado.websocket.WebSocketHandler):
         DriverHandler.clients.remove(self)
         print("WebSocket closed from: " + self.request.remote_ip)
         if len(DriverHandler.clients) == 0:
-            self.application.driver.stop()
+            self.application.driver.left_motor.move(0)
+            self.application.driver.right_motor.move(0)
