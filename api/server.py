@@ -27,7 +27,7 @@ from utils.wifi import WifiManager
 # from geometry_msgs.msg import Twist
 
 API_SERVER_ROOT = os.environ.get('API_SERVER_ROOT')
-BOT_ROOT = os.environ.get('GREENBOTS_ROOT')
+BOT_ROOT = os.environ.get('RASPBERRYBOT_ROOT')
 
 EVENTS_FILE = os.path.join(BOT_ROOT, 'logs/events.log')
 VERSION_FILE = os.path.join(BOT_ROOT, 'src/VERSION')
@@ -134,9 +134,9 @@ class UpdateHandler(BaseHandler):
 
     def post(self):
         data = tornado.escape.json_decode(self.request.body)
-        tmp_destination = '/tmp/thegreenbots'
-        final_destination = '/opt/thegreenbots/src'
-        add_event('Updating The Green Bot local repository...')
+        tmp_destination = '/tmp/raspberrybot'
+        final_destination = '/opt/raspberrybot/src'
+        add_event('Updating The Raspberry Bot local repository...')
         result = cmd([
             'git', 'clone', '-b', data.get('gitbranch', 'master'),
             '--single-branch', '--depth', '1',
@@ -165,7 +165,7 @@ class UpdateHandler(BaseHandler):
     
     def restart_supervisord(self):
         add_event('Restarting supervisord now ...')
-        cmd(['sudo', '/etc/init.d/greenbots-api.sh', 'restart'])
+        cmd(['sudo', '/etc/init.d/raspberrybot-api.sh', 'restart'])
 
 
 class PingHandler(tornado.websocket.WebSocketHandler):

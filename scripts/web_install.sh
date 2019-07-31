@@ -24,7 +24,7 @@ events {
 }
 
 http {
-    root    /opt/thegreenbot/interfaces/web/;
+    root    /opt/raspberrybot/interfaces/web/;
     index   index.html;
 
     upstream frontends {
@@ -69,13 +69,13 @@ http {
 
     server {
         listen 80;
-        server_name thegreenbot.local;
+        server_name raspberrybot.local;
 
         # Allow file uploads
         client_max_body_size 50M;
 
         location ^~ /assets/ {
-            root /opt/thegreenbot/interfaces/web/;
+            root /opt/raspberrybot/interfaces/web/;
             if (\$query_string) {
                 expires max;
             }
@@ -109,13 +109,13 @@ http {
 EOL
 
 sudo mkdir -p /var/log/supervisor
-sudo mkdir -p /opt/thegreenbot/config
-sudo mkdir -p /opt/thegreenbot/logs
+sudo mkdir -p /opt/raspberrybot/config
+sudo mkdir -p /opt/raspberrybot/logs
 
-echo "{}" | sudo tee -a /opt/thegreenbot/config/config.json
-sudo touch /opt/thegreenbot/logs/events.log
-sudo chown -R www-data /opt/thegreenbot/config
-sudo chown -R www-data /opt/thegreenbot/logs
+echo "{}" | sudo tee -a /opt/raspberrybot/config/config.json
+sudo touch /opt/raspberrybot/logs/events.log
+sudo chown -R www-data /opt/raspberrybot/config
+sudo chown -R www-data /opt/raspberrybot/logs
 sudo usermod -a -G adm www-data
 
 sudo bash -c "cat > /etc/supervisord.conf" << EOL
@@ -145,7 +145,7 @@ programs = tornado_operate_web_cluster
 [program:tornado_web_cluster]
 numprocs = 4
 numprocs_start = 1
-command = python3 /opt/thegreenbot/interfaces/web/server.py --port=80%(process_num)02d
+command = python3 /opt/raspberrybot/interfaces/web/server.py --port=80%(process_num)02d
 process_name = %(program_name)s%(process_num)d
 redirect_stderr = true
 stderr_logfile = /var/log/supervisor/tornado-stderr.log
@@ -156,7 +156,7 @@ autorestart = true
 [program:tornado_operate_web_cluster]
 numprocs = 1
 numprocs_start = 1
-command = python3 /opt/thegreenbot/interfaces/web/operate.py --port=81%(process_num)02d
+command = python3 /opt/raspberrybot/interfaces/web/operate.py --port=81%(process_num)02d
 process_name = %(program_name)s%(process_num)d
 redirect_stderr = true
 stderr_logfile = /var/log/supervisor/tornado-operaate-stderr.log

@@ -1,4 +1,4 @@
-var serverURL = "http://thegreenbot.local";
+var serverURL = "http://raspberrybot.local";
 // var serverURL = "http://localhost:8000";
 
 const logsUrl = serverURL + '/api/logs';

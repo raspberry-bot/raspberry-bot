@@ -15,15 +15,15 @@ sudo apt install -y ros-melodic-desktop-full ros-melodic-joy ros-melodic-teleop-
 
 sudo apt --auto-remove
 
-CATKIN_ROOT=$GREENBOTS_ROOT/ros/catkin_ws
+CATKIN_ROOT=$RASPBERRYBOT_ROOT/ros/catkin_ws
 
 sudo mkdir -p $CATKIN_ROOT/src
 git clone https://github.com/ROBOTIS-GIT/turtlebot3.git $CATKIN_ROOT/src
 git clone https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git $CATKIN_ROOT/src
 git clone https://github.com/ROBOTIS-GIT/turtlebot3_msgs.git $CATKIN_ROOT/src
 
-sudo chown -R ubuntu:ubuntu $GREENBOTS_ROOT
-sudo chown -R www-data $GREENBOTS_ROOT/web-interface
+sudo chown -R ubuntu:ubuntu $RASPBERRYBOT_ROOT
+sudo chown -R www-data $RASPBERRYBOT_ROOT/web-interface
 
 cd $CATKIN_ROOT
 catkin_make

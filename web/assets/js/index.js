@@ -14,7 +14,7 @@ var target_time = 100 / target_fps;
 var wsCamera;
 var wsDrive;
 
-var serverURL = "http://thegreenbot.local";
+var serverURL = "http://raspberrybot.local";
 // var serverURL = "http://localhost:8000";
 const cameraURL = serverURL + "/api/operate/camera";
 const controlURL = serverURL + "/api/operate/control";
@@ -30,7 +30,7 @@ function setupCameraDriveWebSockets() {
     var wsProtocol = (location.protocol === "https:") ? "wss://" : "ws://";
     // Camera
 
-    wsCamera = new WebSocket(wsProtocol + "thegreenbot.local" + "/api/operate/camera");
+    wsCamera = new WebSocket(wsProtocol + "raspberrybot.local" + "/api/operate/camera");
     wsCamera.binaryType = 'arraybuffer';
 
     wsCamera.onopen = function() {
@@ -78,7 +78,7 @@ function setupCameraDriveWebSockets() {
 
     // Drive
 
-    wsDrive = new WebSocket(wsProtocol + "thegreenbot.local" + "/api/operate/drive");
+    wsDrive = new WebSocket(wsProtocol + "raspberrybot.local" + "/api/operate/drive");
     
 
     wsDrive.onopen = function() {
@@ -174,11 +174,17 @@ $(document).ready(function() {
         // Create JoyStick object into the DIV 'joyDiv'
         var joy = new JoyStick('joyDiv', {"width": 300, "height": 300});
         var coordinates = document.getElementById("coordinates");
-        setInterval(function(){ 
-            var msg = 'X: ' + joy.GetX() + ' Y: ' + joy.GetY();
+        var x = 0;
+        var y = 0;
+
+        function sendDriveData(event){
+            x = joy.GetX();
+            y = joy.GetY();
+            var msg = JSON.stringify({"x": joy.GetX(), "y": joy.GetY()})
+            sendControlData(msg);
             coordinates.innerText = msg;
-            sendControlData(JSON.stringify({"x": joy.GetX(), "y": joy.GetY()}))
-        }, 50);
+        };
+        document.getElementById("joystickArea").addEventListener("mousemove", sendDriveData);
     }
     joyInit();
 

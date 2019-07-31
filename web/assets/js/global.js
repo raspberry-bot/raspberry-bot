@@ -1,4 +1,4 @@
-var serverURL = "http://thegreenbot.local";
+var serverURL = "http://raspberrybot.local";
 // var serverURL = "http://localhost:8000";
 const systemUrl = serverURL + '/api/system';
 const wifiUrl = serverURL + '/api/wifi';
@@ -181,7 +181,7 @@ function includeHTML() {
 function setupWebSocket() {
   var wsProtocol = (location.protocol === "https:") ? "wss://" : "ws://";
 
-  var wsPing = new WebSocket(wsProtocol + "thegreenbot.local" + "/api/ping");
+  var wsPing = new WebSocket(wsProtocol + "raspberrybot.local" + "/api/ping");
   // ws.binaryType = 'arraybuffer';
 
   wsPing.onopen = function() {
