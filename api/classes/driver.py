@@ -1,8 +1,8 @@
 from . import constants
 from api.utils.clip import clip
-from .motor import Motor
 from .direction_resolver import DirectionResolver
 from .motor_speed_resolver import MotorSpeedResolver
+from .motor import Motor
 
 
 class Driver:

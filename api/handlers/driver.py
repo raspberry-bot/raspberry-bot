@@ -16,17 +16,34 @@ class DriverHandler(tornado.websocket.WebSocketHandler):
     def on_message(self, message):
         print('Receiveed msg from Driver Websocket: %s' % message)
         if message == 'forward':
-            state = self.application.driver.forward()
+            left_speed, right_speed = self.application.driver.command_to_diff(0, 1)
         elif message == 'reverse':
-            state = self.application.driver.reverse()
+            left_speed, right_speed = self.application.driver.command_to_diff(0, -1)
         elif message == 'left':
-            state = self.application.driver.left()
+            left_speed, right_speed = self.application.driver.command_to_diff(-1, 0)
         elif message == 'right':
-            state = self.application.driver.right()
+            left_speed, right_speed = self.application.driver.command_to_diff(1, 0)
         elif message == 'stop':
-            state = self.application.driver.stop()
+            left_speed, right_speed = self.application.driver.command_to_diff(0, 0)
+        self.application.driver.left_motor.move(left_speed)
+        self.application.driver.right_motor.move(right_speed)
 
-        self.write_message(json.dumps(state))
+        self.write_message(json.dumps({'left_speed': left_speed, 'right_speed': right_speed}}))
+
+    # def on_message(self, message):
+    #     print('Receiveed msg from Driver Websocket: %s' % message)
+    #     if message == 'forward':
+    #         state = self.application.driver.forward()
+    #     elif message == 'reverse':
+    #         state = self.application.driver.reverse()
+    #     elif message == 'left':
+    #         state = self.application.driver.left()
+    #     elif message == 'right':
+    #         state = self.application.driver.right()
+    #     elif message == 'stop':
+    #         state = self.application.driver.stop()
+
+    #     self.write_message(json.dumps(state))
 
     def on_close(self):
         DriverHandler.clients.remove(self)
