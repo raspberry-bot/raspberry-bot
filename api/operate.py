@@ -59,8 +59,8 @@ class Driver:
 
         # minJoystick, maxJoystick, self.min_speed, self.max_speed
         # Map the values onto the defined rang
-        left_out = map(raw_left)
-        right_out = map(raw_right)
+        left_out = self.map(raw_left)
+        right_out = self.map(raw_right)
         return (left_out, right_out)
 
     def map(self, v):
