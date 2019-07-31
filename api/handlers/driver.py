@@ -28,7 +28,7 @@ class DriverHandler(tornado.websocket.WebSocketHandler):
         self.application.driver.left_motor.move(left_speed)
         self.application.driver.right_motor.move(right_speed)
 
-        self.write_message(json.dumps({'left_speed': left_speed, 'right_speed': right_speed}}))
+        self.write_message(json.dumps({'left_speed': left_speed, 'right_speed': right_speed}))
 
     # def on_message(self, message):
     #     print('Receiveed msg from Driver Websocket: %s' % message)
