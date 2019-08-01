@@ -285,8 +285,7 @@ class WifiStatusHandler(BaseHandler):
 
 
 class WifiHandler(BaseHandler):
-    WIRELESS_CONFIG_TEMPLATE = '''
-country=CA # Your 2-digit country code
+    WIRELESS_CONFIG_TEMPLATE = '''country=CA # Your 2-digit country code
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 network={
