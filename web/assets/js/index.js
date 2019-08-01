@@ -174,7 +174,7 @@ $(document).ready(function() {
 
     function joyInit(){
         // Create JoyStick object into the DIV 'joyDiv'
-        var joy = new JoyStick('joyDiv', {"width": 300, "height": 300});
+        var joy = new JoyStick('joyDiv', {"width": 200, "height": 200});
         var coordinates = document.getElementById("coordinates");
         var x = 0;
         var y = 0;
@@ -182,13 +182,10 @@ $(document).ready(function() {
         function sendDriveData(){
             x = joy.GetX();
             y = joy.GetY();
-            // console.log('x: ' + x + ' y: ' + y);
             if (x != last_x_y.x || y != last_x_y.y){
                 var msg = JSON.stringify({"x": joy.GetX(), "y": joy.GetY()})
-                // console.log('Sending msg: ' + msg)
                 sendControlData(msg);
                 last_x_y.x, last_x_y.y = x, y;
-                coordinates.innerText = msg + ' REPEAT...';
             }
         };
 
