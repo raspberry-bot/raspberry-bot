@@ -6,7 +6,7 @@ sudo apt -y upgrade
 sudo apt -y install vim avahi-daemon avahi-dnsconfd avahi-utils nginx python3-pip wireless-tools pkg-config python-dev \
     libsdl-image1.2-dev libsdl-mixer1.2-dev libsdl-ttf2.0-dev libsdl1.2-dev \
     libsmpeg-dev python-numpy subversion libportmidi-dev ffmpeg \
-    libswscale-dev libavformat-dev libavcodec-dev netdata ruby mlocate
+    libswscale-dev libavformat-dev libavcodec-dev netdata ruby mlocate netplan
     
 sudo apt -y auto-remove
 
