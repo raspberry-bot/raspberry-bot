@@ -332,6 +332,7 @@ network={
         cmd(['sudo', 'ifconfig', 'wlan0', 'up'])
         cmd(['sudo', 'systemctl', 'daemon-reload'])
         cmd(['sudo', 'systemctl', 'restart', 'dhcpcd'])
+        cmd(['sudo', 'ifconfig', 'eth0', 'down'])
         time.sleep(10)
         cmd(['sudo', 'reboot'])
 
