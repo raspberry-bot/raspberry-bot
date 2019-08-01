@@ -4,4 +4,4 @@
 c.NotebookApp.ip = '0.0.0.0'
 
 # The port the notebook server will listen on.
-c.NotebookApp.port = 8888
+c.NotebookApp.port = 9001
