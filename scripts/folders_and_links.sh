@@ -34,3 +34,6 @@ sudo -E bash -c "ln -s $RASPBERRYBOT_ROOT/src/configs/jupyter/jupyter_notebook_c
 
 sudo -E bash -c "/etc/init.d/supervisord"
 sudo -E bash -c "ln -s $RASPBERRYBOT_ROOT/src/configs/init_scripts/rc3.d-supervisord /etc/init.d/supervisord"
+
+
+sudo -E bash -c "touch /run/netplan/wireless.yaml"
