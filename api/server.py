@@ -328,12 +328,12 @@ network={
         wireless_config = self.generate_wireless_wpa_config(data)
         with open('/etc/wpa_supplicant/wpa_supplicant.conf', 'w+') as wirelesss_config_f:
             wirelesss_config_f.write(wireless_config)
-        cmd(['wpa_cli',])
+        cmd(['wpa_cli', 'interface', 'wlan0', 'reconfigure'])
         cmd(['sudo', 'ifconfig', 'wlan0', 'up'])
         cmd(['sudo', 'systemctl', 'daemon-reload'])
         cmd(['sudo', 'systemctl', 'restart', 'dhcpcd'])
-        time.sleep(30)
-        # cmd(['sudo', 'reboot'])
+        time.sleep(10)
+        cmd(['sudo', 'reboot'])
 
 
 def main(args):
