@@ -46,3 +46,5 @@ sudo /etc/init.d/raspberrybot-api.sh force-reload
 sudo /etc/init.d/netdata force-reload
 
 sudo update-rc.d raspberrybot-api.sh defaults
+
+sudo reboot
