@@ -322,17 +322,17 @@ network={
         except Exception as ex:
             self.write(json.dumps(str(ex)))
 
-    def generate_wireless_yaml(self, data):
+    def generate_wireless_wpa_config(self, data):
         return WifiHandler.WIRELESS_CONFIG_TEMPLATE % data
 
     def configure_wpa(self, data):
-        wireless_yaml = self.generate_wireless_yaml(data)
+        wireless_config = self.generate_wireless_wpa_config(data)
         with open('/etc/wpa_supplicant/wpa_supplicant.conf', 'w+') as wirelesss_config_f:
-            wirelesss_config_f.write(wireless_yaml)
-            cmd(['wpa_cli',])
-            cmd(['sudo', 'ifconfig', 'wlan0'])
-            time.sleep(30)
-            # cmd(['sudo', 'reboot'])
+            wirelesss_config_f.write(wireless_config)
+        cmd(['wpa_cli',])
+        cmd(['sudo', 'ifconfig', 'wlan0'])
+        time.sleep(30)
+        # cmd(['sudo', 'reboot'])
 
 
 def main(args):
