@@ -30,3 +30,7 @@ sudo -E bash -c "ruby $RASPBERRYBOT_ROOT/src/configs/nginx/nginx.rb"
 
 sudo -E bash -c "/etc/init.d/supervisord"
 sudo -E bash -c "ln -s $RASPBERRYBOT_ROOT/src/configs/init_scripts/rc3.d-supervisord /etc/init.d/supervisord"
+
+
+mkdir /home/pi/.jupyter
+sudo -E bash -c "ln -s $RASPBERRYBOT_ROOT/src/configs/jupyter/jupyter_notebook_config.py /home/.pi/.jupyter/jupyter_notebook_config.py"
