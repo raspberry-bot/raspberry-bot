@@ -185,7 +185,7 @@ $(document).ready(function() {
             console.log('x: ' + x + ' y: ' + y);
             if (x != last_x_y.x || y != last_x_y.y){
                 var msg = JSON.stringify({"x": joy.GetX(), "y": joy.GetY()})
-                console.log('Sending msg: ' + msg)
+                // console.log('Sending msg: ' + msg)
                 sendControlData(msg);
                 last_x_y.x, last_x_y.y = x, y;
                 coordinates.innerText = msg + ' REPEAT...';

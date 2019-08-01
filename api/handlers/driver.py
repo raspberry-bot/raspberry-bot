@@ -14,7 +14,7 @@ class DriverHandler(tornado.websocket.WebSocketHandler):
         print("WebSocket opened from: " + self.request.remote_ip)
 
     def on_message(self, message):
-        print('Receiveed msg from Driver Websocket: %s' % message)
+        # print('Receiveed msg from Driver Websocket: %s' % message)
         x, y = 0, 0
         left_speed, right_speed = 0, 0
         try:
@@ -36,8 +36,8 @@ class DriverHandler(tornado.websocket.WebSocketHandler):
             elif message == 'stop':
                 left_speed, right_speed = self.application.driver.command_to_diff(0, 0)
         finally:
-            # self.application.driver.left_motor.move(left_speed)
-            # self.application.driver.right_motor.move(right_speed)
+            self.application.driver.left_motor.move(left_speed)
+            self.application.driver.right_motor.move(right_speed)
             self.write_message(json.dumps({'left_speed': left_speed, 'right_speed': right_speed}))
 
     # def on_message(self, message):
