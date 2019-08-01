@@ -6,7 +6,9 @@ sudo apt -y upgrade
 sudo apt -y install avahi-daemon avahi-dnsconfd avahi-utils nginx python3-pip wireless-tools pkg-config python-dev \
     libsdl-image1.2-dev libsdl-mixer1.2-dev libsdl-ttf2.0-dev libsdl1.2-dev \
     libsmpeg-dev python-numpy subversion libportmidi-dev ffmpeg \
-    libswscale-dev libavformat-dev libavcodec-dev netdata auto-remove
+    libswscale-dev libavformat-dev libavcodec-dev netdata
+    
+sudo apt -y auto-remove
 
 # Enable raspberrybot.local
 sudo -E bash -c "echo raspberrybot > /etc/hostname"
