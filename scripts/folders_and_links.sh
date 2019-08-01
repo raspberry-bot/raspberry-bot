@@ -14,7 +14,7 @@ sudo ln -s $RASPBERRYBOT_ROOT/src/web $RASPBERRYBOT_ROOT
 
 sudo cp $RASPBERRYBOT_ROOT/src/configs/bot-config.json $API_SERVER_ROOT/bot-config.json
 
-sudo cp $RASPBERRYBOT_ROOT/src/configs/firmware-config.txt /boot/firmware/config.txt
+# sudo cp $RASPBERRYBOT_ROOT/src/configs/firmware-config.txt /boot/firmware/config.txt
 sudo cp $RASPBERRYBOT_ROOT/src/configs/netdata.conf /etc/netdata/netdata.conf
 
 sudo -E bash -c "rm $SUPERVISOR_ROOT/conf/supervisord.conf"
@@ -25,8 +25,8 @@ sudo -E bash -c "ln -s $RASPBERRYBOT_ROOT/src/configs/init_scripts/raspberrybot-
 sudo rm /etc/nginx/nginx.conf
 sudo -E bash -c "ruby $RASPBERRYBOT_ROOT/src/configs/nginx/nginx.rb"
 
-sudo -E bash -c "/etc/init.d/videocard"
-sudo -E bash -c "ln -s $RASPBERRYBOT_ROOT/src/configs/init_scripts/rc3.d-videocard /etc/init.d/videocard"
+# sudo -E bash -c "/etc/init.d/videocard"
+# sudo -E bash -c "ln -s $RASPBERRYBOT_ROOT/src/configs/init_scripts/rc3.d-videocard /etc/init.d/videocard"
 
 sudo -E bash -c "/etc/init.d/supervisord"
 sudo -E bash -c "ln -s $RASPBERRYBOT_ROOT/src/configs/init_scripts/rc3.d-supervisord /etc/init.d/supervisord"
