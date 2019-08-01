@@ -182,7 +182,7 @@ $(document).ready(function() {
         function sendDriveData(){
             x = joy.GetX();
             y = joy.GetY();
-            console.log('x: ' + x + ' y: ' + y);
+            // console.log('x: ' + x + ' y: ' + y);
             if (x != last_x_y.x || y != last_x_y.y){
                 var msg = JSON.stringify({"x": joy.GetX(), "y": joy.GetY()})
                 // console.log('Sending msg: ' + msg)
