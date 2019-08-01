@@ -115,6 +115,8 @@ function sendControlData(controlKey) {
     wsDrive.send(controlKey)
 }
 
+var last_x_y = {'x': 0, 'y': 0}
+
 
 $(document).ready(function() {
     'use strict'
@@ -180,9 +182,11 @@ $(document).ready(function() {
         function sendDriveData(event){
             x = joy.GetX();
             y = joy.GetY();
-            var msg = JSON.stringify({"x": joy.GetX(), "y": joy.GetY()})
-            sendControlData(msg);
-            coordinates.innerText = msg;
+            if (x != last_x_y.x || y != last_x_y.y){
+                var msg = JSON.stringify({"x": joy.GetX(), "y": joy.GetY()})
+                sendControlData(msg);
+                coordinates.innerText = msg + ' REPEAT...';
+            }
         };
         document.getElementById("joystickArea").addEventListener("mousemove", sendDriveData);
     }
