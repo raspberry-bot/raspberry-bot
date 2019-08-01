@@ -3,18 +3,16 @@
 sudo apt update
 sudo apt -y upgrade
 
-sudo apt -y install nginx python3-pip wireless-tools pkg-config python-dev \
+sudo apt -y install avahi-daemon avahi-dnsconfd avahi-utils nginx python3-pip wireless-tools pkg-config python-dev \
     libsdl-image1.2-dev libsdl-mixer1.2-dev libsdl-ttf2.0-dev libsdl1.2-dev \
     libsmpeg-dev python-numpy subversion libportmidi-dev ffmpeg \
-    libswscale-dev libavformat-dev libavcodec-dev netdata
-
-sudo apt -y auto-remove
+    libswscale-dev libavformat-dev libavcodec-dev netdata auto-remove
 
 # Enable raspberrybot.local
 sudo -E bash -c "echo raspberrybot > /etc/hostname"
-sudo snap refresh core --edge
-sudo snap install avahi-client
-sudo snap install avahi
+# sudo snap refresh core --edge
+# sudo snap install avahi-client
+# sudo snap install avahi
 
 # repo is already on the base image
 # aliases is also on the base image
