@@ -330,7 +330,9 @@ network={
         with open('/etc/wpa_supplicant/wpa_supplicant.conf', 'w+') as wirelesss_config_f:
             wirelesss_config_f.write(wireless_config)
         cmd(['wpa_cli',])
-        cmd(['sudo', 'ifconfig', 'wlan0'])
+        cmd(['sudo', 'ifconfig', 'wlan0', 'up'])
+        cmd(['sudo', 'systemctl', 'daemon-reload'])
+        cmd(['sudo', 'systemctl', 'restart', 'dhcpcd'])
         time.sleep(30)
         # cmd(['sudo', 'reboot'])
 
