@@ -9,3 +9,4 @@ jupyter
 nose
 expects
 numpy
+netifaces

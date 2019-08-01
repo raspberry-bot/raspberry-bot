@@ -6,12 +6,14 @@ sudo apt -y upgrade
 sudo apt -y install vim avahi-daemon avahi-dnsconfd avahi-utils nginx python3-pip wireless-tools pkg-config python-dev \
     libsdl-image1.2-dev libsdl-mixer1.2-dev libsdl-ttf2.0-dev libsdl1.2-dev \
     libsmpeg-dev python-numpy subversion libportmidi-dev ffmpeg \
-    libswscale-dev libavformat-dev libavcodec-dev netdata
+    libswscale-dev libavformat-dev libavcodec-dev netdata ruby
     
 sudo apt -y auto-remove
 
 # Enable raspberrybot.local
 sudo -E bash -c "echo raspberrybot > /etc/hostname"
+sudo -E bash -c "sudo hostname raspberrybot"
+sudo -E bash -c "sed -i 's/raspberrypi/raspberrybot/g' /etc/hosts"
 # sudo snap refresh core --edge
 # sudo snap install avahi-client
 # sudo snap install avahi

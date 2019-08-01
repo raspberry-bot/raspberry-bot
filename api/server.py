@@ -5,7 +5,7 @@ import subprocess
 import time
 from datetime import datetime
 
-import netifaces
+# import netifaces
 from wifi import Cell, Scheme
 
 import tornado.httpserver
