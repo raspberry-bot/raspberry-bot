@@ -290,8 +290,8 @@ country=CA # Your 2-digit country code
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 network={
-    ssid="%s(selected-ssid)"
-    psk="%s(password)"
+    ssid="%(selected-ssid)s"
+    psk="%(password)s"
     key_mgmt=WPA-PSK
 }
 '''
