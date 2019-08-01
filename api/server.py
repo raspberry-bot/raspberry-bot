@@ -332,7 +332,7 @@ network={
             cmd(['wpa_cli',])
             cmd(['sudo', 'ifconfig', 'wlan0'])
             time.sleep(30)
-            cmd(['sudo', 'reboot'])
+            # cmd(['sudo', 'reboot'])
 
 
 def main(args):
