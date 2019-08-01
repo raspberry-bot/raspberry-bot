@@ -285,17 +285,15 @@ class WifiStatusHandler(BaseHandler):
 
 
 class WifiHandler(BaseHandler):
-    WIRELESS_YAML_TEMPLATE = '''
-network:
-  version: 2
-  renderer: networkd
-  wifis:
-    wlan0:
-      dhcp4: yes
-      dhcp6: yes
-      access-points:
-        "%(selected-ssid)s":
-          password: "%(password)s"
+    WIRELESS_CONFIG_TEMPLATE = '''
+country=CA # Your 2-digit country code
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+network={
+    ssid="%s(selected-ssid)"
+    psk="%s(password)"
+    key_mgmt=WPA-PSK
+}
 '''
 
     def post(self):
@@ -310,13 +308,8 @@ network:
         wlan0_was_not_currently_connected = WifiManager.get_currently_connected_ssid() == 'off/any'
         if wlan0_was_not_currently_connected:
             cmd(['sudo', 'ip', 'link', 'set', 'wlan0', 'up'])  # Make sure it's up
-        # try:
-        #     if WifiManager.connect(data['selected-ssid'], data['password']):
-        #         add_event('Connected to WiFi: %s' % data['selected-ssid'])
-        # except (Exception, subprocess.CalledProcessError):
-            # add_event('Failed to connect to WiFi using WifiManager: %s' % str(ex))
         add_event('Trying to connect to wifi using netplan')
-        self.configure_netplan(data)
+        self.configure_wpa(data)
         add_event('Connected to wifi using netplan: %s' % data['selected-ssid'])
 
     def get(self):
@@ -330,15 +323,14 @@ network:
             self.write(json.dumps(str(ex)))
 
     def generate_wireless_yaml(self, data):
-        return WifiHandler.WIRELESS_YAML_TEMPLATE % data
+        return WifiHandler.WIRELESS_CONFIG_TEMPLATE % data
 
-    def configure_netplan(self, data):
+    def configure_wpa(self, data):
         wireless_yaml = self.generate_wireless_yaml(data)
-        with open('/etc/plan/wireless.yaml', 'w+') as wirelesss_yaml_f:
-            wirelesss_yaml_f.write(wireless_yaml)
-            # cmd(['sudo', 'ip', 'link', 'set', 'wlan0', 'up'])
-            cmd(['sudo', 'netplan', 'generate'])
-            cmd(['sudo', 'netplan', 'apply'])
+        with open('/etc/wpa_supplicant/wpa_supplicant.conf', 'w+') as wirelesss_config_f:
+            wirelesss_config_f.write(wireless_yaml)
+            cmd(['wpa_cli',])
+            cmd(['sudo', 'ifconfig', 'wlan0'])
             time.sleep(30)
             cmd(['sudo', 'reboot'])
 

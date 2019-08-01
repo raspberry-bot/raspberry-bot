@@ -89,7 +89,7 @@ function SuccessFuncAfterNavBarLoaded(){
             document.getElementById("connectionResult").innerHTML = thrownError;
           }
       });
-      countdown(120);
+      countdown(60);
     });
 
   $('#systemInfoButton').click( function() {
