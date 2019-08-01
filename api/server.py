@@ -308,9 +308,9 @@ network={
         wlan0_was_not_currently_connected = WifiManager.get_currently_connected_ssid() == 'off/any'
         if wlan0_was_not_currently_connected:
             cmd(['sudo', 'ip', 'link', 'set', 'wlan0', 'up'])  # Make sure it's up
-        add_event('Trying to connect to wifi using netplan')
+        add_event('Trying to connect to wifi using wpa')
         self.configure_wpa(data)
-        add_event('Connected to wifi using netplan: %s' % data['selected-ssid'])
+        add_event('Connected to wifi using wpa: %s' % data['selected-ssid'])
 
     def get(self):
         try:
