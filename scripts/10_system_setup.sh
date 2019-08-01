@@ -36,7 +36,7 @@ $RASPBERRYBOT_ROOT/src/scripts/folders_and_links.sh
 # Friendly comments welcome :)
 sudo usermod -a -G adm www-data 
 
-sudo chown -R ubuntu:ubuntu $RASPBERRYBOT_ROOT
+sudo chown -R pi:pi $RASPBERRYBOT_ROOT
 # sudo chown -R www-data $RASPBERRYBOT_ROOT/web-interface
 
 sudo ifconfig wlan0 up
