@@ -87,7 +87,7 @@ function setupCameraDriveWebSockets() {
     
     wsDrive.onmessage = function(evt) {
         var message = evt.data;
-        document.getElementById('control').value = message;
+        // document.getElementById('control').value = message;
     };
 
     wsDrive.onerror = function (e) {
@@ -179,13 +179,12 @@ $(document).ready(function() {
     function joyInit(){
         // Create JoyStick object into the DIV 'joyDiv'
         var joy = new JoyStick('joyDiv', {"width": 200, "height": 200});
-        var coordinates = document.getElementById("coordinates");
-        max_speed = document.getElementById('speedRangeView').value;
-        min_speed = -1 * max_speed
         var x = 0;
         var y = 0;
 
         function sendDriveData(){
+            var max_speed = document.getElementById('speedRangeView').value;
+            var min_speed = -1 * max_speed;
             x = joy.GetX();
             y = joy.GetY();
             if (x != last_x_y.x || y != last_x_y.y){
