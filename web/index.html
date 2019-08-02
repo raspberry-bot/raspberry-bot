@@ -24,7 +24,9 @@
                         <div class="col-md-12 text-center">
                             <img id="liveImg" class="responsive"/><br />
                             <p>Frames per second: <span id="fps">0</span></p>
-                            <input id="control" value="" readonly style="width: 100%">
+                            Speed <input type="range" min="1" max="100" value="100" id="speedRangeInput" onchange="updateSpeedRange(this.value);">
+                            <input type="number" id="speedRangeView" value="" style="width: 3rem;" readonly>
+                            <!-- <input id="control" value="" readonly style="width: 100%"> -->
                             <div class="d-flex justify-content-center" id="joystickArea">
                                 <div id="joyDiv"></div>
                             </div>

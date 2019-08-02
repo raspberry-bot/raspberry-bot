@@ -41,7 +41,7 @@ class Driver:
         self.min_cmd = min_cmd
         self.max_cmd = max_cmd
 
-    def command_to_diff(self, x, y):
+    def command_to_diff(self, x, y, min_speed, max_speed):
         # If x and y are 0, then there is not much to calculate...
         if x == 0 and y == 0:
             return (0, 0)
@@ -75,18 +75,18 @@ class Driver:
             raw_right = 0 - raw_right
 
         # Map the values onto the defined ranges
-        left_out = self.map(raw_left)
-        right_out = self.map(raw_right)
+        left_out = self.map(raw_left, min_speed, max_speed)
+        right_out = self.map(raw_right, min_speed, max_speed)
         return (left_out, right_out)
 
-    def map(self, v):
+    def map(self, v, min_speed, max_speed):
         # Check that the value is at least in_min
         if v < self.min_cmd:
             v = self.min_cmd
         # Check that the value is at most in_max
         if v > self.max_cmd:
             v = self.max_cmd
-        return (v - self.min_cmd) * (self.max_speed - self.min_speed) // (self.max_cmd - self.min_cmd) + self.min_speed
+        return (v - self.min_cmd) * (max_speed - min_speed) // (self.max_cmd - self.min_cmd) + min_speed
 
 
 class Application(web.Application):

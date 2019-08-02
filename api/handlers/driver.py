@@ -16,25 +16,18 @@ class DriverHandler(tornado.websocket.WebSocketHandler):
     def on_message(self, message):
         # print('Receiveed msg from Driver Websocket: %s' % message)
         x, y = 0, 0
+        min_speed, max_speed = -100, 100
         left_speed, right_speed = 0, 0
         try:
             data = tornado.escape.json_decode(message)
             x = int(data['x'])
             y = int(data['y'])
+            min_speed = int(data['min_speed'])
+            max_speed = int(data['max_speed'])
             if x and y:
-                left_speed, right_speed = self.application.driver.command_to_diff(x, y)
+                left_speed, right_speed = self.application.driver.command_to_diff(x, y, min_speed, max_speed)
         except Exception as ex:
             print(ex)
-            if message == 'forward':
-                left_speed, right_speed = self.application.driver.command_to_diff(0, 1)
-            elif message == 'reverse':
-                left_speed, right_speed = self.application.driver.command_to_diff(0, -1)
-            elif message == 'left':
-                left_speed, right_speed = self.application.driver.command_to_diff(-1, 0)
-            elif message == 'right':
-                left_speed, right_speed = self.application.driver.command_to_diff(1, 0)
-            elif message == 'stop':
-                left_speed, right_speed = self.application.driver.command_to_diff(0, 0)
         finally:
             self.application.driver.left_motor.move(left_speed)
             self.application.driver.right_motor.move(right_speed)

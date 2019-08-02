@@ -115,6 +115,10 @@ function sendControlData(controlKey) {
     wsDrive.send(controlKey)
 }
 
+function updateSpeedRange(val) {
+    document.getElementById('speedRangeView').value = val; 
+}
+
 var last_x_y = {'x': 0, 'y': 0}
 
 
@@ -176,6 +180,8 @@ $(document).ready(function() {
         // Create JoyStick object into the DIV 'joyDiv'
         var joy = new JoyStick('joyDiv', {"width": 200, "height": 200});
         var coordinates = document.getElementById("coordinates");
+        max_speed = document.getElementById('speedRangeView').value;
+        min_speed = -1 * max_speed
         var x = 0;
         var y = 0;
 
@@ -183,7 +189,7 @@ $(document).ready(function() {
             x = joy.GetX();
             y = joy.GetY();
             if (x != last_x_y.x || y != last_x_y.y){
-                var msg = JSON.stringify({"x": joy.GetX(), "y": joy.GetY()})
+                var msg = JSON.stringify({"x": joy.GetX(), "y": joy.GetY(), "min_speed": min_speed, "max_speed": max_speed})
                 sendControlData(msg);
                 last_x_y.x, last_x_y.y = x, y;
             }
