@@ -22,7 +22,7 @@ class SensorService:
             'value': value
         }
         print((channel, message.get('timestamp'), len(message.get('value', []))))
-        self.redis.publish(channel, json.dumps(message))
+        await self.redis.publish(channel, json.dumps(message))
 
     async def run(self):
         while True:
