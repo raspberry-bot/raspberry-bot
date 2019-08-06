@@ -17,7 +17,7 @@ class SensorService:
             async with trio.open_nursery() as nursery:
                 for sensor in self.sensors:
                     nursery.start_soon(sensor.start)
-                    nursery.start_soon(sensor.read())
+                    nursery.start_soon(sensor.read)
                     print('out of await')
                     await self.publish(sensor.name, sensor.result)
 
