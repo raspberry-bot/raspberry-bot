@@ -18,7 +18,6 @@ class SensorService:
                 for sensor in self.sensors:
                     nursery.start_soon(sensor.start)
                     nursery.start_soon(sensor.read)
-                    print('out of await')
                     await self.publish(sensor.name, sensor.result)
 
 

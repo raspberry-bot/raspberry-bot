@@ -8,17 +8,22 @@ from PIL import Image
 class BaseSensor:
     def __init__(self):
         self.result = None
+        self.started = False
+        self.stopped = False
         self.name = self.__class__.__name__
 
     async def start(self):
-        # clean up previous sensor data if any
-        self.result = None
+        if not self.started:
+            self.result = None
+            self.started = True
 
     async def read(self):
-        self.result = 'a_value'
+        if self.started:
+            self.result = 'a_value'
 
     async def stop(self):
-        pass
+        if not self.stopped:
+            self.stopped = True
 
 
 class CameraSensor(BaseSensor):
@@ -31,16 +36,21 @@ class CameraSensor(BaseSensor):
         super(CameraSensor, self).__init__()
 
     async def stop(self):
-        self.camera.stop()
+        if not self.stopped:
+            self.camera.stop()
+            self.stopped = True
 
     async def start(self):
-        self.camera.start()
+        if not self.started:
+            self.camera.start()
+            self.started = True
 
     async def read(self):
-        img = self.camera.get_image()
-        imgstr = pygame.image.tostring(img, "RGB", False)
-        pimg = Image.frombytes("RGB", img.get_size(), imgstr)
-        with io.BytesIO() as bytesIO:
-            pimg.save(bytesIO, "JPEG", quality=self.quality, optimize=True)
-            self.result = bytesIO.getvalue()
-            return self.result
+        if self.started:
+            img = self.camera.get_image()
+            imgstr = pygame.image.tostring(img, "RGB", False)
+            pimg = Image.frombytes("RGB", img.get_size(), imgstr)
+            with io.BytesIO() as bytesIO:
+                pimg.save(bytesIO, "JPEG", quality=self.quality, optimize=True)
+                self.result = bytesIO.getvalue()
+                return self.result
