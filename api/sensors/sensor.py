@@ -30,13 +30,13 @@ class CameraSensor(BaseSensor):
         self.quality = quality
         super(CameraSensor, self).__init__()
 
-    def stop(self):
+    async def stop(self):
         self.camera.stop()
 
-    def start(self):
+    async def start(self):
         self.camera.start()
 
-    def read(self):
+    async def read(self):
         img = self.camera.get_image()
         imgstr = pygame.image.tostring(img, "RGB", False)
         pimg = Image.frombytes("RGB", img.get_size(), imgstr)

@@ -1,5 +1,5 @@
 import trio
-from sensor import BaseSensor, CameraSensor
+from api.sensors.sensor import BaseSensor, CameraSensor
 
 
 class SensorService:
