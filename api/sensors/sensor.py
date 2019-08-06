@@ -1,12 +1,7 @@
 import trio
 import io
-
-from picamera.array import PiRGBArray
-from picamera import PiCamera
-
-# import pygame.camera
-# import pygame.image
-
+import pygame.camera
+import pygame.image
 from PIL import Image
 
 
@@ -28,44 +23,24 @@ class BaseSensor:
 
 class CameraSensor(BaseSensor):
 
-    def __init__(self, index, width, height, quality):
-        self.camera = PiCamera()
-        self.raw_capture = PiRGBArray(self.camera)
+    def __init__(self, camera_path="/dev/video0", width=640, height=480, quality=100):
+        pygame.camera.init()
+        self.camera_path = camera_path
+        self.camera = pygame.camera.Camera(self.camera_path, (width, height))
+        self.quality = quality
         super(CameraSensor, self).__init__()
 
     def stop(self):
-        self._cam.stop()
+        self.camera.stop()
 
     def start(self):
-        self._cam.start()
+        self.camera.start()
 
     def read(self):
-        self.camera.capture(self.rawCapture, format="bgr")
-        self.result = self.rawCapture.array
-
-# class CameraSensor(BaseSensor):
-
-#     def __init__(self, index, width, height, quality):
-#         pygame.camera.init()
-#         camera_name = pygame.camera.list_cameras()[index]
-#         self._cam = pygame.camera.Camera(camera_name, (width, height))
-#         self.quality = quality
-#         super(CameraSensor, self).__init__()
-
-#     def stop(self):
-#         self._cam.stop()
-#         self.is_started = False
-#         self.stop_requested = False
-
-#     def start(self):
-#         self._cam.start()
-#         self.is_started = True
-
-#     def read(self):
-#         img = self._cam.get_image()
-#         imgstr = pygame.image.tostring(img, "RGB", False)
-#         pimg = Image.frombytes("RGB", img.get_size(), imgstr)
-#         with io.BytesIO() as bytesIO:
-#             pimg.save(bytesIO, "JPEG", quality=self.quality, optimize=True)
-#             self.result = bytesIO.getvalue()
-#             return self.result
+        img = self.camera.get_image()
+        imgstr = pygame.image.tostring(img, "RGB", False)
+        pimg = Image.frombytes("RGB", img.get_size(), imgstr)
+        with io.BytesIO() as bytesIO:
+            pimg.save(bytesIO, "JPEG", quality=self.quality, optimize=True)
+            self.result = bytesIO.getvalue()
+            return self.result
