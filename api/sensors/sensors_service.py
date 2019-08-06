@@ -17,12 +17,12 @@ class SensorService:
         return await self.redis.subscribe(channel, callable)
 
     async def publish(self, channel, value, timestamp_ms):
-        message = json.dumps({
+        message = {
             'timestamp': timestamp_ms,
             'value': value
-        })
+        }
         print(channel, message.get('timestamp'), len(message.get('value')))
-        self.redis.publish(channel, message)
+        self.redis.publish(channel, json.dumps(message))
 
     async def run(self):
         while True:
