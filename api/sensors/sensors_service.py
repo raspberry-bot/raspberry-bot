@@ -17,7 +17,7 @@ class SensorService:
         return await self.redis.subscribe(channel, callable)
 
     async def publish(self, channel, value, timestamp_ms):
-        message = json.dump({
+        message = json.dumps({
             'timestamp': timestamp_ms,
             'value': value
         })
