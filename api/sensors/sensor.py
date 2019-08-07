@@ -3,6 +3,7 @@ import io
 import pygame.camera
 import pygame.image
 from PIL import Image
+import base64
 
 
 class BaseSensor:
@@ -52,5 +53,5 @@ class CameraSensor(BaseSensor):
             pimg = Image.frombytes("RGB", img.get_size(), imgstr)
             with io.BytesIO() as bytesIO:
                 pimg.save(bytesIO, "JPEG", quality=self.quality, optimize=True)
-                self.result = bytesIO.getvalue()
+                self.result = base64.b64encode(bytesIO.getvalue())
                 return self.result
