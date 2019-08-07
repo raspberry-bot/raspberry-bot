@@ -7,3 +7,4 @@ def logit(message):
 
 ss = SensorService()
 trio.run(ss.subscribe, *('Camera*', logit))
+ss.pubsub.listen()
