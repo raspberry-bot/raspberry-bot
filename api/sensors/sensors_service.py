@@ -14,8 +14,8 @@ class SensorService:
     def register(self, sensor):
         self.sensors.append(sensor)
 
-    def get(self, channel):
-        return self.redis.lpop(cahnnel)
+    async def get(self, channel):
+        return await self.redis.lpop(channel)
 
     async def publish(self, channel, value, timestamp_ms):
         message = {

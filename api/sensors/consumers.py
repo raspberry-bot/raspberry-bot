@@ -4,4 +4,4 @@ from sensors_service import SensorService
 
 ss = SensorService()
 while True:
-    print(ss.get('Camera*'))
+    trio.run(ss.get, 'Camera*')
