@@ -13,10 +13,11 @@ class SensorService:
     def register(self, sensor):
         self.sensors.append(sensor)
 
-    def stream(self, channel):
+    def subscribe(self, channel):
         pubsub = self.redis.pubsub()
-        pubsub.subscribe(channel)
-        for msg in pubsub.listen():
+        pubsub.subscribe([channel])
+        while True:
+            msg = pubsub.get_message()
             if msg:
                 yield msg
 
