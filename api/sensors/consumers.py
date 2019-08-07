@@ -7,5 +7,5 @@ def logit(message):
 
 ss = SensorService()
 trio.run(ss.subscribe, *('Camera*', logit))
-while True:
-    ss.pubsub.listen()
+for item in ss.pubsub.listen():
+    print(item)
