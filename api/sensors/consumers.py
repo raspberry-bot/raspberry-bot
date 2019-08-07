@@ -6,4 +6,4 @@ def logit(message):
     print(message)
 
 ss = SensorService()
-trio.run(ss.subscribe, ('Camera*', logit))
+trio.run(ss.subscribe, *('Camera*', logit))
