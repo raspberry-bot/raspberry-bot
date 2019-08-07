@@ -6,6 +6,7 @@ from sensors_service import SensorService
 
 ss = SensorService()
 for msg in ss.subscribe('CameraSensor'):
+    import pdb;pdb.set_trace()
     value = json.loads(msg.get('value'))
     raw_img = base64.decode(value)
     print(value.get('ts'))
