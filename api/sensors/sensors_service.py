@@ -14,10 +14,14 @@ class SensorService:
     def register(self, sensor):
         self.sensors.append(sensor)
 
-    def subscribe(self, channel):
+    async def subscribe(self, channel):
         self.pubsub.subscribe(channel)
-        for message in self.pubsub.listen():
-            yield message
+        while True:
+            m = self.pubsub.get_message()
+            if m:
+                yield m
+            else:
+                await trio.sleep(0.1)
 
     async def publish(self, channel, value, timestamp_ms):
         message = {
