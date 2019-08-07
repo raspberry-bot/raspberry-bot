@@ -23,7 +23,7 @@ class SensorService:
 
     async def publish(self, channel, value, timestamp_ms):
         message = {
-            'timestamp': timestamp_ms,
+            'ts': timestamp_ms,
             'value': value
         }
         print(('sending data to ', channel, timestamp_ms))
