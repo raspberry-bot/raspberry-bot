@@ -3,6 +3,8 @@ import tornado.websocket
 
 class CameraHandler(tornado.websocket.WebSocketHandler):
     clients = set()
+    def initialize(self):
+        self.camera_channel = self.application.sensors_service.subscribe('CameraSensor')
 
     def check_origin(self, origin):
         # Allow access from every origin
@@ -11,11 +13,21 @@ class CameraHandler(tornado.websocket.WebSocketHandler):
     def open(self):
         CameraHandler.clients.add(self)
         print("WebSocket opened from: " + self.request.remote_ip)
-        self.application.camera.request_start()
 
     def on_message(self, message):
-        jpeg_bytes = self.application.camera.get_jpeg_image_bytes()
-        self.write_message(jpeg_bytes, binary=True)
+        msg = self.camera_channel.get_message()
+        if msg.get('type') in ['message']:
+            value = json.loads(msg.get('data'))
+            raw_img = base64.b64decode(value.get('value'))
+            self.write_message(raw_img, binary=True)
+
+    def load_a_new_frame(self)
+        msg = self.camera_channel.get_message()
+        if msg.get('type') in ['message']:
+            value = json.loads(msg.get('data'))
+            raw_img = base64.b64decode(value.get('value'))
+            for client in CameraHandler.clients:
+                client.write_message(raw_img, binary=True)
 
     def on_close(self):
         CameraHandler.clients.remove(self)
