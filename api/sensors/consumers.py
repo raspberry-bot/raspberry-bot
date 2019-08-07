@@ -4,4 +4,4 @@ from sensors_service import SensorService
 
 ss = SensorService()
 while True:
-    print(await ss.get('Camera*'))
+    print(ss.get('Camera*'))
