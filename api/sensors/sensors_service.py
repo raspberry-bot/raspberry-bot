@@ -9,14 +9,14 @@ class SensorService:
     def __init__(self):
         self.sensors = []
         self.redis = redis.Redis(host='localhost', port=6379, db=0)
-        self.pubsub = self.redis.pubsub()
 
     def register(self, sensor):
         self.sensors.append(sensor)
 
-    def subscribe(self, channel):
-        self.pubsub.subscribe(channel)
-        for msg in self.pubsub.listen():
+    def stream(self, channel):
+        pubsub = self.redis.pubsub()
+        pubsub.subscribe(channel)
+        for msg in pubsub.listen():
             if msg:
                 yield msg
 
