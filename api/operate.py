@@ -31,8 +31,6 @@ def main(args):
         driver=Driver()
     )
     app.listen(args.port)
-    CHECK_INTERVAL = 10  # ms
-    tornado.ioloop.PeriodicCallback(CameraHandler.load_a_new_frame, CHECK_INTERVAL).start()
     tornado.ioloop.IOLoop.current().start()
 
 
