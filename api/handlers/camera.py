@@ -22,8 +22,8 @@ class CameraHandler(tornado.websocket.WebSocketHandler):
 
     def send_a_new_frame(self):
         raw_img = self._get_a_new_frame()
-            for client in CameraHandler.clients:
-                client.write_message(raw_img, binary=True)
+        for client in CameraHandler.clients:
+            client.write_message(raw_img, binary=True)
 
     def _get_a_new_frame(self):
         msg = self.camera_channel.get_message()
