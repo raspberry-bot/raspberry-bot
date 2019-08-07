@@ -16,7 +16,8 @@ class SensorService:
 
     def subscribe(self, channel):
         self.pubsub.subscribe(channel)
-        return self.pubsub.listen()
+        for message in self.pubsub.listen():
+            yield message
 
     async def publish(self, channel, value, timestamp_ms):
         message = {
