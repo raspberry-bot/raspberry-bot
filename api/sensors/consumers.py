@@ -8,6 +8,6 @@ ss = SensorService()
 for msg in ss.subscribe('CameraSensor'):
     if msg.get('type') == 'message':
         value = json.loads(msg.get('data'))
-        raw_img = base64.decode(value)
+        raw_img = base64.b64decode(value)
         print(value.get('ts'))
         print(raw_img)
