@@ -4,4 +4,4 @@ from sensors_service import SensorService
 
 ss = SensorService()
 for item in ss.stream('CameraSensor'):
-    print(item)
+    print(('consumer -->', item))
