@@ -29,7 +29,7 @@ class SensorService:
         }
         # print((channel, message.get('timestamp'), message.get('value', [])))
         print(('sending data to ', channel, timestamp_ms))
-        self.redis.rpush(channel, json.dumps(message))
+        self.redis.publish(channel, json.dumps(message))
 
     async def run(self):
         while True:
