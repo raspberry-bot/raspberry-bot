@@ -54,4 +54,5 @@ class CameraSensor(BaseSensor):
             with io.BytesIO() as bytesIO:
                 pimg.save(bytesIO, "JPEG", quality=self.quality, optimize=True)
                 self.result = base64.b64encode(bytesIO.getvalue())
+                print(self.result)
                 return self.result
