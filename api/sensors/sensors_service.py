@@ -15,7 +15,7 @@ class SensorService:
         self.sensors.append(sensor)
 
     async def subscribe(self, channel, callable):
-        return self.pubsub.subscribe(**{channel: callable}})
+        return self.pubsub.subscribe(**{channel: callable})
 
     async def publish(self, channel, value, timestamp_ms):
         message = {
