@@ -9,13 +9,13 @@ class SensorService:
     def __init__(self):
         self.sensors = []
         self.redis = redis.Redis(host='localhost', port=6379, db=0)
-        self.pubsub = self.redis.pubsub()
+        # self.pubsub = self.redis.pubsub()
 
     def register(self, sensor):
         self.sensors.append(sensor)
 
-    async def subscribe(self, channel, callable):
-        return self.pubsub.subscribe(**{channel: callable})
+    async def get(self, channel):
+        return await self.redis.lpop(cahnnel)
 
     async def publish(self, channel, value, timestamp_ms):
         message = {
@@ -23,7 +23,7 @@ class SensorService:
             'value': value
         }
         # print((channel, message.get('timestamp'), message.get('value', [])))
-        self.redis.publish(channel, json.dumps(message))
+        self.redis.rpush(channel, json.dumps(message))
 
     async def run(self):
         while True:

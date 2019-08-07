@@ -2,10 +2,6 @@ import trio
 import redis
 from sensors_service import SensorService
 
-def logit(message):
-    print(message)
-
 ss = SensorService()
-trio.run(ss.subscribe, *('Camera*', logit))
-for item in ss.pubsub.listen():
-    print(item)
+while True:
+    print(ss.get('Camera*'))
