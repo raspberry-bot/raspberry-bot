@@ -14,4 +14,4 @@ for msg in ss.subscribe('CameraSensor').listen():
         print(value.get('ts'))
         print(raw_img)
     else:
-        print m
+        print(msg)
