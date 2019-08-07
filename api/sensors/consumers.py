@@ -3,5 +3,5 @@ import redis
 from sensors_service import SensorService
 
 ss = SensorService()
-while True:
-    print(ss.get('CameraSensor'))
+for item in ss.subscribe('CameraSensor'):
+    print(item)
