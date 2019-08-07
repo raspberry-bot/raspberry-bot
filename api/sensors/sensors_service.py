@@ -9,7 +9,7 @@ class SensorService:
     def __init__(self):
         self.sensors = []
         self.redis = redis.Redis(host='localhost', port=6379, db=0)
-        # self.pubsub = self.redis.pubsub()
+        self.pubsub = self.redis.pubsub()
 
     def register(self, sensor):
         self.sensors.append(sensor)
