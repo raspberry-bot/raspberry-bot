@@ -16,10 +16,7 @@ class SensorService:
     def subscribe(self, channel):
         pubsub = self.redis.pubsub()
         pubsub.subscribe([channel])
-        while True:
-            msg = pubsub.get_message()
-            if msg:
-                yield msg
+        return pubsub
 
     async def publish(self, channel, value, timestamp_ms):
         message = {
