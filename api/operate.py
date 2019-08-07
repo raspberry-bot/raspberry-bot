@@ -28,7 +28,7 @@ class Application(web.Application):
 def main(args):
     app = Application(
         sensors_service=SensorService(),
-        driver=Driver(LEFT_MOTOR_PINS, RIGHT_MOTOR_PINS)
+        driver=Driver()
     )
     app.listen(args.port)
     CHECK_INTERVAL = 10  # ms
