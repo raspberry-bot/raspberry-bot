@@ -1,10 +1,12 @@
 import tornado.websocket
+import tornado.ioloop
 
 
 class CameraHandler(tornado.websocket.WebSocketHandler):
     clients = set()
     def initialize(self):
         self.camera_channel = self.application.sensors_service.subscribe('CameraSensor')
+        self.callback = PeriodicCallback(self.send_a_new_frame, 10)
 
     def check_origin(self, origin):
         # Allow access from every origin
@@ -12,30 +14,27 @@ class CameraHandler(tornado.websocket.WebSocketHandler):
 
     def open(self):
         CameraHandler.clients.add(self)
+        self.callback.start()
         print("WebSocket opened from: " + self.request.remote_ip)
 
     def on_message(self, message):
-        msg = self.camera_channel.get_message()
-        if msg.get('type') in ['message']:
-            value = json.loads(msg.get('data'))
-            raw_img = base64.b64decode(value.get('value'))
-            self.write_message(raw_img, binary=True)
+        self.write_message(self._get_a_new_frame(), binary=True)
 
-    def load_a_new_frame(self):
-        msg = self.camera_channel.get_message()
-        if msg.get('type') in ['message']:
-            value = json.loads(msg.get('data'))
-            raw_img = base64.b64decode(value.get('value'))
+    def send_a_new_frame(self):
+        raw_img = self._get_a_new_frame()
             for client in CameraHandler.clients:
                 client.write_message(raw_img, binary=True)
 
+    def _get_a_new_frame(self):
+        msg = self.camera_channel.get_message()
+        if msg.get('type') in ['message']:
+            value = json.loads(msg.get('data'))
+            raw_img = base64.b64decode(value.get('value'))
+            return raw_img
+
     def on_close(self):
         CameraHandler.clients.remove(self)
+        self.callback.stop()
         print("WebSocket closed from: " + self.request.remote_ip)
-
-        stopdelay = self.application.camera.stopdelay
-        camera_stop_function = self.application.camera.stop
-
         if len(CameraHandler.clients) == 0:
-            if self.application.camera.request_stop():
-                tornado.ioloop.IOLoop.current().call_later(stopdelay, camera_stop_function)
+            pass
