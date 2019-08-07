@@ -19,6 +19,7 @@ class SensorService:
         while True:
             msg = pubsub.get_message()
             if msg:
+                print(msg)
                 yield msg
 
     async def publish(self, channel, value, timestamp_ms):
@@ -27,7 +28,7 @@ class SensorService:
             'value': value
         }
         # print((channel, message.get('timestamp'), message.get('value', [])))
-        print(('sending data to redis at ', timestamp_ms))
+        print(('sending data to ', channel, timestamp_ms))
         self.redis.rpush(channel, json.dumps(message))
 
     async def run(self):
