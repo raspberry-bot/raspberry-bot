@@ -27,6 +27,7 @@ class SensorService:
             'value': value
         }
         # print((channel, message.get('timestamp'), message.get('value', [])))
+        print(('sending data to redis at ', timestamp_ms))
         self.redis.rpush(channel, json.dumps(message))
 
     async def run(self):
