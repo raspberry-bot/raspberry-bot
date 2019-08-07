@@ -21,7 +21,7 @@ class CameraHandler(tornado.websocket.WebSocketHandler):
             raw_img = base64.b64decode(value.get('value'))
             self.write_message(raw_img, binary=True)
 
-    def load_a_new_frame(self)
+    def load_a_new_frame(self):
         msg = self.camera_channel.get_message()
         if msg.get('type') in ['message']:
             value = json.loads(msg.get('data'))
