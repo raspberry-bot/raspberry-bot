@@ -32,8 +32,8 @@ class CameraHandler(tornado.websocket.WebSocketHandler):
         if msg and msg.get('type') in ['message']:
             value = json.loads(msg.get('data'))
             # raw_img = base64.b64decode(value.get('value'))
-            raw_img = base64.b64decode(value.get('value').encode('ascii'))
-            return raw_img
+            # raw_img = base64.b64decode(value.get('value').encode('ascii'))
+            return value.get('value')
 
     def on_close(self):
         CameraHandler.clients.remove(self)
