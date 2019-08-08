@@ -6,15 +6,15 @@ from .motor import Motor
 import math
 
 LEFT_MOTOR_PINS = {
-    'forward': 20,
-    'reverse': 21,
-    'control': 12
+    'forward': 3,
+    'reverse': 4,
+    'control': 2
 }
 
 RIGHT_MOTOR_PINS = {
-    'forward': 19,
-    'reverse': 26,
-    'control': 13
+    'forward': 16,
+    'reverse': 20,
+    'control': 21
 }
 
 class Driver:
