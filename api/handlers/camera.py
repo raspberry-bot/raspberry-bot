@@ -1,6 +1,7 @@
 import tornado.websocket
 import tornado.ioloop
 import json
+import base64
 
 
 class CameraHandler(tornado.websocket.WebSocketHandler):
