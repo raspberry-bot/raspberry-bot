@@ -19,8 +19,8 @@ class CameraHandler(tornado.websocket.WebSocketHandler):
         self.callback.start()
         print("WebSocket opened from: " + self.request.remote_ip)
 
-    # def on_message(self, message):
-    #     self.write_message(self._get_a_new_frame(), binary=True)
+    def on_message(self, message):
+        self.send_a_new_frame()
 
     def send_a_new_frame(self):
         raw_img = self._get_a_new_frame()
