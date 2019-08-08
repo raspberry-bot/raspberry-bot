@@ -8,7 +8,7 @@ class CameraHandler(tornado.websocket.WebSocketHandler):
     clients = set()
     def initialize(self):
         self.camera_channel = self.application.sensors_service.subscribe('CameraSensor')
-        self.callback = tornado.ioloop.PeriodicCallback(self.send_a_new_frame, 10)
+        self.callback = tornado.ioloop.PeriodicCallback(self.send_a_new_frame, 1)
 
     def check_origin(self, origin):
         # Allow access from every origin
