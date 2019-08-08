@@ -56,7 +56,7 @@ function setupCameraDriveWebSockets() {
         request_time = (request_time * request_time_smoothing) + (current_request_time * (1.0 - request_time_smoothing));
         var timeout = Math.max(0, target_time - request_time);
     
-        setTimeout(requestImage, timeout);
+        // setTimeout(requestImage, timeout);
     };
 
     wsCamera.onerror = function (e) {

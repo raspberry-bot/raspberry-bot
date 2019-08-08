@@ -20,22 +20,21 @@ class CameraHandler(tornado.websocket.WebSocketHandler):
         print("WebSocket opened from: " + self.request.remote_ip)
 
     def on_message(self, message):
-        self.send_a_new_frame()
+        # self.send_a_new_frame()
+        pass
 
     def send_a_new_frame(self):
         raw_img = self._get_a_new_frame()
-        if raw_img:
-            self.write_message(raw_img, binary=True)
-        # for client in CameraHandler.clients:
-        #     client.write_message(raw_img, binary=True)
+        for client in CameraHandler.clients:
+            client.write_message(raw_img, binary=True)
 
     def _get_a_new_frame(self):
         msg = self.camera_channel.get_message()
         if msg and msg.get('type') in ['message']:
             value = json.loads(msg.get('data'))
-            # raw_img = base64.b64decode(value.get('value'))
-            raw_img = base64.b64decode(value.get('value').encode('ascii'))
-            return raw_img
+            if value.get('value'):
+                raw_img = base64.b64decode(value.get('value').encode('ascii'))
+                return raw_img
 
     def on_close(self):
         CameraHandler.clients.remove(self)
