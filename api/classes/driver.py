@@ -12,8 +12,8 @@ LEFT_MOTOR_PINS = {
 }
 
 RIGHT_MOTOR_PINS = {
-    'forward': 16,
-    'reverse': 20,
+    'forward': 20,
+    'reverse': 16,
     'control': 21
 }
 
