@@ -126,12 +126,12 @@ function sendControlData(controlKey) {
     wsDrive.send(controlKey)
 }
 
-function updateSpeedRange(val) {
-    document.getElementById('speedRangeView').value = val;
-}
+// function updateSpeedRange(val) {
+//     document.getElementById('speedRangeView').value = val;
+// }
 
 var last_x_y = { 'x': 0, 'y': 0 }
-
+var nipple;
 
 $(document).ready(function () {
     'use strict'
@@ -188,29 +188,52 @@ $(document).ready(function () {
     console.log('Mobile device == ' + isMobile)
 
     function joyInit() {
-        // Create JoyStick object into the DIV 'joyDiv'
-        var joy = new JoyStick('joyDiv', { "width": 200, "height": 200 });
-        var x = 0;
-        var y = 0;
-
-        function sendDriveData() {
-            var max_speed = document.getElementById('speedRangeView').value;
-            var min_speed = -1 * max_speed;
-            x = joy.GetX();
-            y = joy.GetY();
+        nipple = nipplejs.create({
+            zone: document.getElementById('canvasContainer'),
+            mode: 'semi',
+            catchDistance: 150,
+            color: 'red'
+        });
+        nipple.on('move', function (evt, data) {
+            var x = data.position.x - nipple[0].position.x;
+            var y = nipple[0].position.y - data.position.y;
             if (x != last_x_y.x || y != last_x_y.y) {
-                var msg = JSON.stringify({ "x": joy.GetX(), "y": joy.GetY(), "min_speed": min_speed, "max_speed": max_speed })
+                var msg = JSON.stringify({ "x": x, "y": y, "min_speed": -50, "max_speed": 50 })
+                console.log(msg);
                 sendControlData(msg);
                 last_x_y.x, last_x_y.y = x, y;
             }
-        };
+        })
+    };
 
-        function eventTrigger(event) { sendDriveData(); };
-        document.getElementById("joystickArea").addEventListener("mousemove", eventTrigger);
-        document.getElementById("joystickArea").addEventListener("mouseup", eventTrigger);
-        setInterval(sendDriveData, 50);
-    }
     joyInit();
+
+    // function joyInit() {
+    //     // Create JoyStick object into the DIV 'joyDiv'
+    //     var joy = new JoyStick('joyDiv', { "width": 250, "height": 250 });
+    //     var x = 0;
+    //     var y = 0;
+
+    //     function sendDriveData() {
+    //         var max_speed = document.getElementById('speedRangeView').value;
+    //         var min_speed = -1 * max_speed;
+    //         x = joy.GetX();
+    //         y = joy.GetY();
+    //         if (x != last_x_y.x || y != last_x_y.y) {
+    //             var msg = JSON.stringify({ "x": joy.GetX(), "y": joy.GetY(), "min_speed": min_speed, "max_speed": max_speed })
+    //             console.log(msg);
+    //             sendControlData(msg);
+    //             last_x_y.x, last_x_y.y = x, y;
+    //         }
+    //     };
+
+    //     function eventTrigger(event) { sendDriveData(); };
+    //     var joystickArea = document.getElementById("canvasOverlay");
+    //     joystickArea.addEventListener("mousemove", eventTrigger);
+    //     joystickArea.addEventListener("mouseup", eventTrigger);
+    //     setInterval(sendDriveData, 50);
+    // }
+    // joyInit();
 
     // if (isMobile){
     //     // launchTouchPad();

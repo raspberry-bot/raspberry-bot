@@ -13,15 +13,19 @@ html, body {
     border: 1px solid #9C9898;
 }
 
-#canvasContainer{
+#joystickArea {
+    width: 100%;
+}
+
+#canvasContainer {
   position:relative;
 }
 #canvasOverlay{
   position:absolute;
   text-shadow: 0 0 5px yellow;
   /* top:0; */
-  bottom:0;
-  right:0;
+  /* bottom: 0; */
+  /* right: -1; */
 }
 canvas {
   width: 100%;

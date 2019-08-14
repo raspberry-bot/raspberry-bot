@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
     <link href="assets/css/global.css" rel="stylesheet">
     <link href="assets/css/index.css" rel="stylesheet">
 </head>
@@ -19,37 +20,36 @@
     <div include-html="navbar.html"></div>
     <!-- <div class="container-fluid">
         <div class="row"> -->
-            <main role="main" class="col-md-12 ml-sm-auto col-lg-12 px-4">
-                <!-- <div class="container-fluid"> -->
-                    <!-- <div class="row">
+    <main role="main" class="col-md-12 ml-sm-auto col-lg-12 px-4">
+        <!-- <div class="container-fluid"> -->
+        <!-- <div class="row">
                         <div class="col-md-12 text-center"> -->
-                    <!-- <img id="liveImg" class="responsive"/><br /> -->
-                    <div id="canvasContainer">
-                        <div id="canvasOverlay">
-                            <p>Frames per second: <span id="fps">0</span></p>
-                            Speed <input type="range" min="1" max="100" value="100" id="speedRangeInput"
-                                onchange="updateSpeedRange(this.value);">
-                            <input type="number" id="speedRangeView" value="" style="width: 3rem;" readonly>
-                            <div class="d-flex justify-content-center" id="joystickArea">
-                                <div id="joyDiv"></div>
-                            </div>
-                        </div>
-                        <canvas id="liveImg"></canvas>
-                    </div>
+        <!-- <img id="liveImg" class="responsive"/><br /> -->
+        <div id="canvasContainer">
+            <div id="canvasOverlay">
+                <p>Frames per second: <span id="fps">0</span></p>
+                <!-- Speed <input type="range" min="1" max="100" value="100" id="speedRangeInput" onchange="updateSpeedRange(this.value);"> -->
+                <!-- <input type="number" id="speedRangeView" value="" style="width: 3rem;" readonly> -->
+                <!-- <div class="d-flex justify-content-center" id="joystickArea"> -->
+                <!-- <div id="joyDiv"></div> -->
+                <!-- </div> -->
+            </div>
+            <canvas id="liveImg"></canvas>
+        </div>
 
-                    <!-- <p>Frames per second: <span id="fps">0</span></p>
+        <!-- <p>Frames per second: <span id="fps">0</span></p>
                             Speed <input type="range" min="1" max="100" value="100" id="speedRangeInput" onchange="updateSpeedRange(this.value);"> -->
-                    <!-- <input type="number" id="speedRangeView" value="" style="width: 3rem;" readonly> -->
-                    <!-- <input id="control" value="" readonly style="width: 100%"> -->
-                    <!-- <div class="d-flex justify-content-center" id="joystickArea">
+        <!-- <input type="number" id="speedRangeView" value="" style="width: 3rem;" readonly> -->
+        <!-- <input id="control" value="" readonly style="width: 100%"> -->
+        <!-- <div class="d-flex justify-content-center" id="joystickArea">
                                 <div id="joyDiv"></div>
                             </div>
                             <button onclick="sendControlData('stop')">Stop (Space Bar)</button> -->
-                    <!-- </div>
+        <!-- </div>
                     </div> -->
-                <!-- </div> -->
-            </main>
         <!-- </div> -->
+    </main>
+    <!-- </div> -->
     <!-- </div> -->
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
@@ -63,6 +63,7 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
+    <script type="text/javascript" src="assets/js/node_modules/nipplejs/dist/nipplejs.js"></script>
     <script type="text/javascript" src="assets/js/global.js"></script>
     <script type="text/javascript" src="assets/js/performance.js"></script>
     <script type="text/javascript" src="assets/js/joy.js"></script>
