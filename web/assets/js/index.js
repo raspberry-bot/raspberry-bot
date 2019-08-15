@@ -1,16 +1,5 @@
 var canvasContainer = document.getElementById("canvasContainer");
 var canvasImg = document.getElementById("liveImg");
-var fpsText = document.getElementById("fps");
-
-var target_fps = 40;
-
-var request_start_time = performance.now();
-var start_time = performance.now();
-var time = 0;
-var request_time = 0;
-var time_smoothing = 0.3; // larger=more smoothing
-var request_time_smoothing = 0.2; // larger=more smoothing
-var target_time = 100 / target_fps;
 
 var wsCamera;
 var wsDrive;
@@ -39,14 +28,12 @@ function setupCameraDriveWebSockets() {
 
     wsCamera.onopen = function () {
         console.log("connection was established for Camera");
-        start_time = performance.now();
         requestImage();
     };
 
     wsCamera.onmessage = function (evt) {
         var arrayBuffer = evt.data;
         var blob = new Blob([new Uint8Array(arrayBuffer)], { type: "image/jpeg" });
-
         var ctx = canvasImg.getContext("2d");
         var img = new Image();
         img.src = window.URL.createObjectURL(blob);
@@ -57,21 +44,6 @@ function setupCameraDriveWebSockets() {
             // canvas.onmousemove = updateLine;
         };
         img.onload = loadImg;
-
-        var end_time = performance.now();
-        var current_time = end_time - start_time;
-        // smooth with moving average
-        time = (time * time_smoothing) + (current_time * (1.0 - time_smoothing));
-        start_time = end_time;
-        var fps = Math.round(1000 / time);
-        fpsText.textContent = fps;
-
-        var current_request_time = performance.now() - request_start_time;
-        // smooth with moving average
-        request_time = (request_time * request_time_smoothing) + (current_request_time * (1.0 - request_time_smoothing));
-        var timeout = Math.max(0, target_time - request_time);
-
-        // setTimeout(requestImage, timeout);
     };
 
     wsCamera.onerror = function (e) {
@@ -223,7 +195,7 @@ $(document).ready(function () {
     // }
     function resizeCanvas() {
         canvasContainer.width = window.innerWidth;
-        canvasContainer.height = window.innerHeight - ((10 / 100) * window.innerHeight);
+        canvasContainer.height = window.innerHeight - ((20 / 100) * window.innerHeight);
         canvasImg.width = canvasContainer.width;
         canvasImg.height = canvasContainer.height;
         requestImage();

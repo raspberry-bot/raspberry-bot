@@ -23,7 +23,7 @@ class SensorService:
             'ts': timestamp_ms,
             'value': value
         }
-        print(('sending data to ', channel, timestamp_ms))
+        # print(('sending data to ', channel, timestamp_ms))
         self.redis.publish(channel, json.dumps(message))
 
     async def run(self):
