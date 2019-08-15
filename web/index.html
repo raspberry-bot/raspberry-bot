@@ -18,39 +18,18 @@
 
 <body>
     <div include-html="navbar.html"></div>
-    <!-- <div class="container-fluid">
-        <div class="row"> -->
-    <main role="main" class="col-md-12 ml-sm-auto col-lg-12 px-4">
-        <!-- <div class="container-fluid"> -->
-        <!-- <div class="row">
-                        <div class="col-md-12 text-center"> -->
-        <!-- <img id="liveImg" class="responsive"/><br /> -->
+    <main role="main" id="main">
         <div id="canvasContainer">
-            <div id="canvasOverlay">
+            <div id="canvasOverlayTexts">
                 <p>Frames per second: <span id="fps">0</span></p>
-                <!-- Speed <input type="range" min="1" max="100" value="100" id="speedRangeInput" onchange="updateSpeedRange(this.value);"> -->
-                <!-- <input type="number" id="speedRangeView" value="" style="width: 3rem;" readonly> -->
-                <!-- <div class="d-flex justify-content-center" id="joystickArea"> -->
-                <!-- <div id="joyDiv"></div> -->
-                <!-- </div> -->
             </div>
             <canvas id="liveImg"></canvas>
         </div>
-
-        <!-- <p>Frames per second: <span id="fps">0</span></p>
-                            Speed <input type="range" min="1" max="100" value="100" id="speedRangeInput" onchange="updateSpeedRange(this.value);"> -->
-        <!-- <input type="number" id="speedRangeView" value="" style="width: 3rem;" readonly> -->
-        <!-- <input id="control" value="" readonly style="width: 100%"> -->
-        <!-- <div class="d-flex justify-content-center" id="joystickArea">
-                                <div id="joyDiv"></div>
-                            </div>
-                            <button onclick="sendControlData('stop')">Stop (Space Bar)</button> -->
-        <!-- </div>
-                    </div> -->
-        <!-- </div> -->
+        <div id="canvasButtons">
+            <button onclick="stopMotors();" id="stopButton">STOP (Press Space Bar)</button>
+            <button id="fullscreenButton"><span data-feather="maximize"></span></button>
+        </div>
     </main>
-    <!-- </div> -->
-    <!-- </div> -->
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -66,7 +45,6 @@
     <script type="text/javascript" src="assets/js/node_modules/nipplejs.js"></script>
     <script type="text/javascript" src="assets/js/global.js"></script>
     <script type="text/javascript" src="assets/js/performance.js"></script>
-    <!-- <script type="text/javascript" src="assets/js/joy.js"></script> -->
     <script type="text/javascript" src="assets/js/index.js"></script>
 </body>
 

@@ -1,4 +1,5 @@
-var canvas = document.getElementById("liveImg");
+var canvasContainer = document.getElementById("canvasContainer");
+var canvasImg = document.getElementById("liveImg");
 var fpsText = document.getElementById("fps");
 
 var target_fps = 40;
@@ -19,12 +20,15 @@ var serverURL = "http://raspberrybot.local";
 const cameraURL = serverURL + "/api/operate/camera";
 const controlURL = serverURL + "/api/operate/control";
 
-function requestImage() {
-    request_start_time = performance.now();
-    wsCamera.send(1);
-}
 
 var tryingToConnect = false;
+
+function requestImage() {
+    if (wsCamera.readyState === WebSocket.OPEN) {
+        request_start_time = performance.now();
+        wsCamera.send(1);
+    }
+}
 
 function setupCameraDriveWebSockets() {
     var wsProtocol = (location.protocol === "https:") ? "wss://" : "ws://";
@@ -43,12 +47,12 @@ function setupCameraDriveWebSockets() {
         var arrayBuffer = evt.data;
         var blob = new Blob([new Uint8Array(arrayBuffer)], { type: "image/jpeg" });
 
-        var ctx = canvas.getContext("2d");
+        var ctx = canvasImg.getContext("2d");
         var img = new Image();
         img.src = window.URL.createObjectURL(blob);
         function loadImg() {
             /// initial draw of image
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, canvasImg.width, canvasImg.height);
             /// listen to mouse move (or use jQuery on('mousemove') instead)
             // canvas.onmousemove = updateLine;
         };
@@ -126,9 +130,48 @@ function sendControlData(controlKey) {
     wsDrive.send(controlKey)
 }
 
-// function updateSpeedRange(val) {
-//     document.getElementById('speedRangeView').value = val;
-// }
+var fullscreenElement = document.getElementById("main");
+function toggleFullscreen() {
+    if (!document.fullscreenElement && !document.mozFullScreenElement &&
+        !document.webkitFullscreenElement && !document.msFullscreenElement) {
+        if (fullscreenElement.requestFullscreen) {
+            fullscreenElement.requestFullscreen();
+        } else if (fullscreenElement.msRequestFullscreen) {
+            fullscreenElement.msRequestFullscreen();
+        } else if (fullscreenElement.mozRequestFullScreen) {
+            fullscreenElement.mozRequestFullScreen();
+        } else if (fullscreenElement.webkitRequestFullscreen) {
+            fullscreenElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+        }
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        }
+    }
+}
+
+function stopMotors() {
+    var msg = JSON.stringify({ "x": 0, "y": 0, "min_speed": -100, "max_speed": 100 });
+    sendControlData(msg);
+}
+
+function controlSignal(e) {
+    var msg = null;
+    e = e || window.event;
+    if (e.keyCode == '32') {
+        // space bar
+        msg = JSON.stringify({ "x": 0, "y": 0, "min_speed": -100, "max_speed": 100 });
+    }
+    if (msg != null) {
+        sendControlData(msg);
+    }
+}
 
 var last_x_y = { 'x': 0, 'y': 0 }
 var nipple;
@@ -145,39 +188,6 @@ $(document).ready(function () {
     }
 
     document.onkeydown = controlSignal;
-
-    function controlSignal(e) {
-        var controlKey = null;
-        e = e || window.event;
-        if (e.keyCode == '38') {
-            // up arrow
-            console.log('forward arrow')
-            controlKey = 'forward';
-        }
-        else if (e.keyCode == '40') {
-            // down arrow
-            console.log('reverse arrow')
-            controlKey = 'reverse';
-        }
-        else if (e.keyCode == '37') {
-            // left arrow
-            console.log('left arrow')
-            controlKey = 'left';
-        }
-        else if (e.keyCode == '39') {
-            // right arrow
-            console.log('right arrow')
-            controlKey = 'right';
-        }
-        else if (e.keyCode == '32') {
-            // space bar
-            console.log('stop - space bar')
-            controlKey = 'stop';
-        }
-        if (controlKey != null) {
-            sendControlData(controlKey);
-        }
-    }
 
     var isMobile = true; //initiate as false
     // device detection
@@ -198,8 +208,7 @@ $(document).ready(function () {
             var x = data.position.x - nipple[0].position.x;
             var y = nipple[0].position.y - data.position.y;
             if (x != last_x_y.x || y != last_x_y.y) {
-                var msg = JSON.stringify({ "x": x, "y": y, "min_speed": -50, "max_speed": 50 })
-                console.log(msg);
+                var msg = JSON.stringify({ "x": x, "y": y, "min_speed": -100, "max_speed": 100 })
                 sendControlData(msg);
                 last_x_y.x, last_x_y.y = x, y;
             }
@@ -208,41 +217,21 @@ $(document).ready(function () {
 
     joyInit();
 
-    // function joyInit() {
-    //     // Create JoyStick object into the DIV 'joyDiv'
-    //     var joy = new JoyStick('joyDiv', { "width": 250, "height": 250 });
-    //     var x = 0;
-    //     var y = 0;
-
-    //     function sendDriveData() {
-    //         var max_speed = document.getElementById('speedRangeView').value;
-    //         var min_speed = -1 * max_speed;
-    //         x = joy.GetX();
-    //         y = joy.GetY();
-    //         if (x != last_x_y.x || y != last_x_y.y) {
-    //             var msg = JSON.stringify({ "x": joy.GetX(), "y": joy.GetY(), "min_speed": min_speed, "max_speed": max_speed })
-    //             console.log(msg);
-    //             sendControlData(msg);
-    //             last_x_y.x, last_x_y.y = x, y;
-    //         }
-    //     };
-
-    //     function eventTrigger(event) { sendDriveData(); };
-    //     var joystickArea = document.getElementById("canvasOverlay");
-    //     joystickArea.addEventListener("mousemove", eventTrigger);
-    //     joystickArea.addEventListener("mouseup", eventTrigger);
-    //     setInterval(sendDriveData, 50);
-    // }
-    // joyInit();
-
     // if (isMobile){
     //     // launchTouchPad();
     //     launchOrientationMap();
     // }
     function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        canvasContainer.width = window.innerWidth;
+        canvasContainer.height = window.innerHeight - ((10 / 100) * window.innerHeight);
+        canvasImg.width = canvasContainer.width;
+        canvasImg.height = canvasContainer.height;
+        requestImage();
     }
     window.addEventListener('resize', resizeCanvas, false);
     resizeCanvas();    /// call the first time page is loaded
+
+    document.getElementById('fullscreenButton').addEventListener('click', function () {
+        toggleFullscreen();
+    });
 });
