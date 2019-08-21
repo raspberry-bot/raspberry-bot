@@ -3,19 +3,66 @@ var canvasImg = document.getElementById("liveImg");
 
 var wsCamera;
 var wsDrive;
+var last_x_y = { 'x': 0, 'y': 0 }
+var nipple;
+var tryingToConnect = false;
 
 var serverURL = "http://raspberrybot.local";
 // var serverURL = "http://localhost:8000";
 const cameraURL = serverURL + "/api/operate/camera";
-const controlURL = serverURL + "/api/operate/control";
 
-
-var tryingToConnect = false;
 
 function requestImage() {
     if (wsCamera.readyState === WebSocket.OPEN) {
         request_start_time = performance.now();
         wsCamera.send(1);
+    }
+}
+
+function stopMotors() {
+    var msg = JSON.stringify({ "x": 0, "y": 0, "min_speed": -100, "max_speed": 100 });
+    sendControlData(msg);
+}
+
+function controlSignal(e) {
+    var msg = null;
+    e = e || window.event;
+    if (e.keyCode == '32') {
+        // space bar
+        msg = JSON.stringify({ "x": 0, "y": 0, "min_speed": -100, "max_speed": 100 });
+    }
+    if (msg != null) {
+        sendControlData(msg);
+    }
+}
+
+function sendControlData(controlKey) {
+    wsDrive.send(controlKey)
+}
+
+var fullscreenElement = document.getElementById("main");
+function toggleFullscreen() {
+    if (!document.fullscreenElement && !document.mozFullScreenElement &&
+        !document.webkitFullscreenElement && !document.msFullscreenElement) {
+        if (fullscreenElement.requestFullscreen) {
+            fullscreenElement.requestFullscreen();
+        } else if (fullscreenElement.msRequestFullscreen) {
+            fullscreenElement.msRequestFullscreen();
+        } else if (fullscreenElement.mozRequestFullScreen) {
+            fullscreenElement.mozRequestFullScreen();
+        } else if (fullscreenElement.webkitRequestFullscreen) {
+            fullscreenElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+        }
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        }
     }
 }
 
@@ -79,7 +126,8 @@ function setupCameraDriveWebSockets() {
 
     wsDrive.onerror = function (e) {
         console.log(e);
-        wsDrive.send('stop');
+        stopMotors();
+        // wsDrive.send('stop');
     };
 
     wsDrive.onclose = function (e) {
@@ -95,58 +143,7 @@ function setupCameraDriveWebSockets() {
     }
     return [wsCamera, wsDrive];
 }
-var wsDrive;
-var wsCamera;
 
-function sendControlData(controlKey) {
-    wsDrive.send(controlKey)
-}
-
-var fullscreenElement = document.getElementById("main");
-function toggleFullscreen() {
-    if (!document.fullscreenElement && !document.mozFullScreenElement &&
-        !document.webkitFullscreenElement && !document.msFullscreenElement) {
-        if (fullscreenElement.requestFullscreen) {
-            fullscreenElement.requestFullscreen();
-        } else if (fullscreenElement.msRequestFullscreen) {
-            fullscreenElement.msRequestFullscreen();
-        } else if (fullscreenElement.mozRequestFullScreen) {
-            fullscreenElement.mozRequestFullScreen();
-        } else if (fullscreenElement.webkitRequestFullscreen) {
-            fullscreenElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-        }
-    } else {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        }
-    }
-}
-
-function stopMotors() {
-    var msg = JSON.stringify({ "x": 0, "y": 0, "min_speed": -100, "max_speed": 100 });
-    sendControlData(msg);
-}
-
-function controlSignal(e) {
-    var msg = null;
-    e = e || window.event;
-    if (e.keyCode == '32') {
-        // space bar
-        msg = JSON.stringify({ "x": 0, "y": 0, "min_speed": -100, "max_speed": 100 });
-    }
-    if (msg != null) {
-        sendControlData(msg);
-    }
-}
-
-var last_x_y = { 'x': 0, 'y': 0 }
-var nipple;
 
 $(document).ready(function () {
     'use strict'
@@ -184,6 +181,10 @@ $(document).ready(function () {
                 sendControlData(msg);
                 last_x_y.x, last_x_y.y = x, y;
             }
+        }).on('end', function (evt, data) {
+            var msg = JSON.stringify({ "x": 0, "y": 0, "min_speed": -100, "max_speed": 100 })
+            sendControlData(msg);
+            last_x_y.x, last_x_y.y = 0, 0;
         })
     };
 
