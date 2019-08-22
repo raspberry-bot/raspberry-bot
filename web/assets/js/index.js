@@ -42,28 +42,29 @@ function sendControlData(controlKey) {
 
 var fullscreenElement = document.getElementById("main");
 function toggleFullscreen() {
-    if (!document.fullscreenElement && !document.mozFullScreenElement &&
-        !document.webkitFullscreenElement && !document.msFullscreenElement) {
-        if (fullscreenElement.requestFullscreen) {
-            fullscreenElement.requestFullscreen();
-        } else if (fullscreenElement.msRequestFullscreen) {
-            fullscreenElement.msRequestFullscreen();
-        } else if (fullscreenElement.mozRequestFullScreen) {
-            fullscreenElement.mozRequestFullScreen();
-        } else if (fullscreenElement.webkitRequestFullscreen) {
-            fullscreenElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-        }
-    } else {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        }
-    }
+    alert('Test')
+    // if (!document.fullscreenElement && !document.mozFullScreenElement &&
+    //     !document.webkitFullscreenElement && !document.msFullscreenElement) {
+    //     if (fullscreenElement.requestFullscreen) {
+    //         fullscreenElement.requestFullscreen();
+    //     } else if (fullscreenElement.msRequestFullscreen) {
+    //         fullscreenElement.msRequestFullscreen();
+    //     } else if (fullscreenElement.mozRequestFullScreen) {
+    //         fullscreenElement.mozRequestFullScreen();
+    //     } else if (fullscreenElement.webkitRequestFullscreen) {
+    //         fullscreenElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+    //     }
+    // } else {
+    //     if (document.exitFullscreen) {
+    //         document.exitFullscreen();
+    //     } else if (document.msExitFullscreen) {
+    //         document.msExitFullscreen();
+    //     } else if (document.mozCancelFullScreen) {
+    //         document.mozCancelFullScreen();
+    //     } else if (document.webkitExitFullscreen) {
+    //         document.webkitExitFullscreen();
+    //     }
+    // }
 }
 
 function setupCameraDriveWebSockets() {
