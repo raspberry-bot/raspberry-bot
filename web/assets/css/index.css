@@ -8,7 +8,7 @@ html, body {
 #canvasContainer {
     /* overflow: hidden; */
     position: absolute;
-    height: 100%;
+    height: 80%;
 }
 #canvasOverlayTexts{
   position: absolute;
@@ -16,7 +16,6 @@ html, body {
 }
 #canvasButtons {
   cursor: pointer;
-  z-index: 99;
   display: flex;
   justify-content: right;
   position: absolute;
@@ -36,5 +35,5 @@ html, body {
 #liveImg {
   /* top: 100%; */
   width: 100%;
-  height: 90%;
+  height: 80%;
 }
