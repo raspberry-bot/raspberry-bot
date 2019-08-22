@@ -15,6 +15,7 @@ html, body {
   text-shadow: 0 0 5px yellow;
 }
 #canvasButtons {
+  cursor: pointer;
   z-index: 99;
   display: flex;
   justify-content: right;
