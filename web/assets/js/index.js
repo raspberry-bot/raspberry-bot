@@ -204,9 +204,10 @@ $(document).ready(function () {
     window.addEventListener('resize', resizeCanvas, false);
     resizeCanvas();    /// call the first time page is loaded
 
-    $('#fullscreenButton').on('click touchstart', function () {
-        toggleFullscreen();
-    });
+
+    // $('#fullscreenButton').on('click touchstart', function () {
+    //     toggleFullscreen();
+    // });
     $('#stopMotorsButton').on('click touchstart', function () {
         stopMotors();
     });
