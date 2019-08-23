@@ -1,5 +1,5 @@
 import trio
-from api.sensors.sensor import BaseSensor, CameraSensor
+from api.sensors.sensor import BaseSensor, CameraSensor, CameraSensorBackend
 import redis
 import time
 import json
