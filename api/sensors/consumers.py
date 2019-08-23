@@ -6,6 +6,7 @@ import base64
 ss = SensorService()
 drive_f = open('/opt/raspberry-bot/src/data/drive_commands.log', 'w+')
 for msg in ss.subscribe(['CameraSensorData', 'Drive']).listen():
+    print(msg)
     if msg['type'] == 'subscribe':
         if msg['data'] == 1:
             print('subscribed to: %s' % (msg['channel']))
