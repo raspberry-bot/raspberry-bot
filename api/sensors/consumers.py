@@ -4,7 +4,7 @@ import json
 import base64
 
 ss = SensorService()
-drive_f = open('../../data/drive_commands.log', 'a+')
+drive_f = open('../../data/drive_commands.log', 'w+')
 for msg in ss.subscribe(['CameraSensorData', 'Drive']).listen():
     if msg['type'] == 'subscribe':
         if msg['data'] == 1:
