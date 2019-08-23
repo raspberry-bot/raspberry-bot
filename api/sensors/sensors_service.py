@@ -20,7 +20,7 @@ class SensorService:
 
     async def publish(self, channel, value):
         message = {
-            'ts': int(time.time() * 1000),
+            'ts': str(int(time.time() * 1000)),
             'value': value,
             'channel': channel
         }
