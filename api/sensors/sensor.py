@@ -11,6 +11,7 @@ class BaseSensor:
         self.result = None
         self.started = False
         self.stopped = False
+        self.redis = None
         self.name = self.__class__.__name__
 
     async def start(self):
@@ -55,8 +56,5 @@ class CameraSensor(BaseSensor):
                 pimg.save(bytesIO, "JPEG", quality=self.quality, optimize=True)
                 # self.result = base64.b64encode(bytesIO.getvalue().encode())
                 self.result = base64.b64encode(bytesIO.getvalue()).decode()
-                return self.result
-
-
-class CameraSensorBackend(CameraSensor):
-    pass
+                self.publish(self.name, self.result)
+                self.publish(self.name + 'Data', self.result)

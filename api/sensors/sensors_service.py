@@ -1,5 +1,5 @@
 import trio
-from api.sensors.sensor import BaseSensor, CameraSensor, CameraSensorBackend
+from api.sensors.sensor import BaseSensor, CameraSensor
 import redis
 import time
 import json
@@ -31,14 +31,15 @@ class SensorService:
         while True:
             async with trio.open_nursery() as nursery:
                 for sensor in self.sensors:
+                    sensor.publish = self.publish
                     nursery.start_soon(sensor.start)
                     nursery.start_soon(sensor.read)
-                    await self.publish(sensor.name, sensor.result)
+                    # await self.publish(sensor.name, sensor.result)
 
 
 if __name__ == '__main__':
     ss = SensorService()
     ss.register(BaseSensor())
     ss.register(CameraSensor(width=640, height=480, quality=80))
-    ss.register(CameraSensorBackend(width=640, height=480, quality=80))
+    # ss.register(CameraSensorBackend(width=640, height=480, quality=80))
     trio.run(ss.run)
