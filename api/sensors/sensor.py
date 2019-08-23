@@ -56,3 +56,7 @@ class CameraSensor(BaseSensor):
                 # self.result = base64.b64encode(bytesIO.getvalue().encode())
                 self.result = base64.b64encode(bytesIO.getvalue()).decode()
                 return self.result
+
+
+class CameraSensorBackend(CameraSensor):
+    pass

@@ -15,13 +15,14 @@ class SensorService:
 
     def subscribe(self, channel):
         pubsub = self.redis.pubsub()
-        pubsub.subscribe([channel])
+        pubsub.subscribe(channel)
         return pubsub
 
-    async def publish(self, channel, value, timestamp_ms):
+    async def publish(self, channel, value):
         message = {
-            'ts': timestamp_ms,
-            'value': value
+            'ts': int(time.time() * 1000),
+            'value': value,
+            'channel': channel
         }
         # print(('sending data to ', channel, timestamp_ms))
         self.redis.publish(channel, json.dumps(message))
@@ -29,15 +30,15 @@ class SensorService:
     async def run(self):
         while True:
             async with trio.open_nursery() as nursery:
-                timestamp_ms = int(time.time() * 1000)
                 for sensor in self.sensors:
                     nursery.start_soon(sensor.start)
                     nursery.start_soon(sensor.read)
-                    await self.publish(sensor.name, sensor.result, timestamp_ms)
+                    await self.publish(sensor.name, sensor.result)
 
 
 if __name__ == '__main__':
     ss = SensorService()
     ss.register(BaseSensor())
     ss.register(CameraSensor(width=640, height=480, quality=80))
+    ss.register(CameraSensorBackend(width=640, height=480, quality=80))
     trio.run(ss.run)
