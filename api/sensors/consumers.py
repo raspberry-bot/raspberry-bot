@@ -14,7 +14,7 @@ for msg in ss.subscribe(['CameraSensorData', 'Drive']).listen():
         if value.get('channel') in ['CameraSensorData']:
             raw_img = base64.b64decode(value.get('value'))
             image_file_name = '/opt/raspberry-bot/src/data/images/' + str(value.get('ts')) + '.jpg'
-            with open(image_file_name, 'w+') as img_f:
+            with open(image_file_name, 'wb+') as img_f:
                 img_f.write(raw_img)
         elif value.get('channel') in ['Drive']:
             drive_f.write(str(value) + '\n')
