@@ -56,5 +56,5 @@ class CameraSensor(BaseSensor):
                 pimg.save(bytesIO, "JPEG", quality=self.quality, optimize=True)
                 # self.result = base64.b64encode(bytesIO.getvalue().encode())
                 self.result = base64.b64encode(bytesIO.getvalue()).decode()
-                await self.publish(self.name, self.result)
-                await self.publish(self.name + 'Data', self.result)
+                self.publish(self.name, self.result)
+                self.publish(self.name + 'Data', self.result)

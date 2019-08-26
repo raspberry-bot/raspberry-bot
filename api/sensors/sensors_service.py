@@ -18,7 +18,7 @@ class SensorService:
         pubsub.subscribe(channel)
         return pubsub
 
-    async def publish(self, channel, value):
+    def publish(self, channel, value):
         message = {
             'ts': str(int(time.time() * 1000)),
             'value': value,

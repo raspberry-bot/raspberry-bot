@@ -24,7 +24,7 @@ class DriverHandler(tornado.websocket.WebSocketHandler):
             min_speed = int(data['min_speed'])
             max_speed = int(data['max_speed'])
             if x and y:
-                print(('Drive', {'x': x, 'y': y}))
+                # print(('Drive', {'x': x, 'y': y}))
                 self.application.sensors_service.publish('Drive', {'x': x, 'y': y})
                 left_speed, right_speed = self.application.driver.command_to_diff(x, y, min_speed, max_speed)
         except Exception as ex:
