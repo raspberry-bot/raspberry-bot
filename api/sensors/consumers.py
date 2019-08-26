@@ -12,13 +12,11 @@ for msg in ss.subscribe(['CameraSensorData', 'Drive']).listen():
     elif msg['type'] == 'message':
         value = json.loads(msg.get('data').decode("utf-8"))
         if value.get('channel') in ['CameraSensorData']:
-            pass
-            # raw_img = base64.b64decode(value.get('value'))
-            # image_file_name = '/opt/raspberry-bot/src/data/images/' + str(value.get('ts')) + '.jpg'
-            # with open(image_file_name, 'wb+') as img_f:
-            #     img_f.write(raw_img)
+            raw_img = base64.b64decode(value.get('value'))
+            image_file_name = '/opt/raspberry-bot/src/data/images/' + str(value.get('ts')) + '.jpg'
+            with open(image_file_name, 'wb+') as img_f:
+                img_f.write(raw_img)
         elif value.get('channel') in ['Drive']:
-            print(value)
             drive_f.write(str(value) + '\n')
     else:
         print(msg)
