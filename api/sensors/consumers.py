@@ -18,6 +18,7 @@ for msg in ss.subscribe(['CameraSensorData', 'Drive']).listen():
             # with open(image_file_name, 'wb+') as img_f:
             #     img_f.write(raw_img)
         elif value.get('channel') in ['Drive']:
+            print(value)
             drive_f.write(str(value) + '\n')
     else:
         print(msg)
