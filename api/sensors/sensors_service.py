@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
     ss = SensorService()
     for sensor in sensors:
-        ss.register(sensor())
+        ss.register(sensor)
 
     if len(sensors) > 1:
         trio.run(ss.run)
