@@ -116,8 +116,8 @@ $(document).ready(function () {
     joyInit();
 
     function resizeCanvas() {
-        canvasContainer.width = window.innerWidth;
-        canvasContainer.height = window.innerHeight - ((20 / 100) * window.innerHeight);
+        canvasContainer.width = window.outerWidth;
+        canvasContainer.height = window.outerHeight; // - ((20 / 100) * window.innerHeight);
         canvasImg.width = canvasContainer.width;
         canvasImg.height = canvasContainer.height;
     }
