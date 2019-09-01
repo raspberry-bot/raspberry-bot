@@ -1,5 +1,5 @@
 var canvasContainer = document.getElementById("canvasContainer");
-// var canvasImg = document.getElementById("liveImg");
+var canvasImg = document.getElementById("liveImg");
 
 var wsCamera;
 var wsDrive;
