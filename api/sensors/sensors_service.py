@@ -36,7 +36,14 @@ class SensorService:
 
 
 if __name__ == '__main__':
+    sensors = [
+        BaseSensor(),
+        # CameraSensor(width=640, height=480, quality=80)
+    ]
+
     ss = SensorService()
-    ss.register(BaseSensor())
-    # ss.register(CameraSensor(width=640, height=480, quality=80))
-    trio.run(ss.run)
+    for sensor in sensors:
+        ss.register(sensor())
+        
+    if len(sensors) > 1"
+        trio.run(ss.run)
