@@ -19,7 +19,7 @@ class Application(web.Application):
         self.sensors_service = sensors_service
         self.driver = driver
         handlers = [
-            (r"/api/operate/camera", CameraHandler),
+            # (r"/api/operate/camera", CameraHandler),
             (r"/api/operate/drive", DriverHandler),
         ]
         web.Application.__init__(self, handlers, debug=True)

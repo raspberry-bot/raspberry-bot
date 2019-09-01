@@ -38,5 +38,5 @@ class SensorService:
 if __name__ == '__main__':
     ss = SensorService()
     ss.register(BaseSensor())
-    ss.register(CameraSensor(width=640, height=480, quality=80))
+    # ss.register(CameraSensor(width=640, height=480, quality=80))
     trio.run(ss.run)

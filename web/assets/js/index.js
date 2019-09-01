@@ -1,5 +1,5 @@
 var canvasContainer = document.getElementById("canvasContainer");
-var canvasImg = document.getElementById("liveImg");
+// var canvasImg = document.getElementById("liveImg");
 
 var wsCamera;
 var wsDrive;
@@ -56,45 +56,45 @@ function setupCameraDriveWebSockets() {
     var wsProtocol = (location.protocol === "https:") ? "wss://" : "ws://";
     // Camera
 
-    wsCamera = new WebSocket(wsProtocol + "raspberrybot.local" + "/api/operate/camera");
-    wsCamera.binaryType = 'arraybuffer';
+    // wsCamera = new WebSocket(wsProtocol + "raspberrybot.local" + "/api/operate/camera");
+    // wsCamera.binaryType = 'arraybuffer';
 
-    wsCamera.onopen = function () {
-        console.log("connection was established for Camera");
-        requestImage();
-    };
+    // wsCamera.onopen = function () {
+    //     console.log("connection was established for Camera");
+    //     requestImage();
+    // };
 
-    wsCamera.onmessage = function (evt) {
-        var arrayBuffer = evt.data;
-        var blob = new Blob([new Uint8Array(arrayBuffer)], { type: "image/jpeg" });
-        var ctx = canvasImg.getContext("2d");
-        var img = new Image();
-        img.src = window.URL.createObjectURL(blob);
-        function loadImg() {
-            /// initial draw of image
-            ctx.drawImage(img, 0, 0, canvasImg.width, canvasImg.height);
-            /// listen to mouse move (or use jQuery on('mousemove') instead)
-            // canvas.onmousemove = updateLine;
-        };
-        img.onload = loadImg;
-    };
+    // wsCamera.onmessage = function (evt) {
+    //     var arrayBuffer = evt.data;
+    //     var blob = new Blob([new Uint8Array(arrayBuffer)], { type: "image/jpeg" });
+    //     var ctx = canvasImg.getContext("2d");
+    //     var img = new Image();
+    //     img.src = window.URL.createObjectURL(blob);
+    //     function loadImg() {
+    //         /// initial draw of image
+    //         ctx.drawImage(img, 0, 0, canvasImg.width, canvasImg.height);
+    //         /// listen to mouse move (or use jQuery on('mousemove') instead)
+    //         // canvas.onmousemove = updateLine;
+    //     };
+    //     img.onload = loadImg;
+    // };
 
-    wsCamera.onerror = function (e) {
-        console.log(e);
-        wsCamera.send(1);
-    };
+    // wsCamera.onerror = function (e) {
+    //     console.log(e);
+    //     wsCamera.send(1);
+    // };
 
-    wsCamera.onclose = function (e) {
-        console.log(e);
-        if (tryingToConnect != true) {
-            setTimeout(setupCameraDriveWebSockets, 1000);
-            tryingToConnect = true;
-        } else {
-            if (wsCamera != null && wsCamera.readyState === WebSocket.CLOSED || wsCamera.readyState === WebSocket.CLOSING) {
-                tryingToConnect = false;
-            }
-        }
-    }
+    // wsCamera.onclose = function (e) {
+    //     console.log(e);
+    //     if (tryingToConnect != true) {
+    //         setTimeout(setupCameraDriveWebSockets, 1000);
+    //         tryingToConnect = true;
+    //     } else {
+    //         if (wsCamera != null && wsCamera.readyState === WebSocket.CLOSED || wsCamera.readyState === WebSocket.CLOSING) {
+    //             tryingToConnect = false;
+    //         }
+    //     }
+    // }
 
     // Drive
 
