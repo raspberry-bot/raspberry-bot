@@ -18,9 +18,9 @@ class Motor:
         self.reverse_pin = pins['reverse']
         self.control_pin = pins['control']
 
-        GPIO.setup(self.forward_pin, GPIO.OUT, pull_up_down=GPIO.PUD_UP)
-        GPIO.setup(self.reverse_pin, GPIO.OUT, pull_up_down=GPIO.PUD_UP)
-        GPIO.setup(self.control_pin, GPIO.OUT, pull_up_down=GPIO.PUD_UP)
+        GPIO.setup(self.forward_pin, GPIO.OUT)
+        GPIO.setup(self.reverse_pin, GPIO.OUT)
+        GPIO.setup(self.control_pin, GPIO.OUT)
 
         self._speed_control = GPIO.PWM(self.control_pin, frequency)
         self._speed_control.start(0)
