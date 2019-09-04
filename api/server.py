@@ -46,6 +46,7 @@ class Application(web.Application):
             (r"/api/system", SystemHandler),
             (r"/api/wifi-status", WifiStatusHandler),
             (r"/api/wifi", WifiHandler),
+            (r"/api/wifi-access-point", WifiAccessPointHandler),
             (r"/api/logs", LogHandler),
             # (r"/api/intelligence", IntelligenceHandler),
             (r"/api/update", UpdateHandler),
@@ -337,6 +338,13 @@ network={
         cmd(['sudo', 'reboot'])
 
 
+class WifiAccessPointHandler(BaseHandler):
+    def post(self):
+        add_event('Set up RaspberryBot Wifi as Access Point')
+
+
+
+
 def main(args):
     define("port", default=args.port, help="Run on the given port", type=int)
     http_api = tornado.httpserver.HTTPServer(Application({}))
@@ -346,8 +354,6 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Web Interface api')
-
-    parser.add_argument('--port', type=int,
-                        help="port to run on. Must be supplied.")
+    parser.add_argument('--port', type=int, help="port to run on. Must be supplied.")
     args = parser.parse_args()
     main(args)

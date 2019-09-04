@@ -18,7 +18,7 @@
                 <a class="nav-link" href="monitoring.html"><span data-feather="monitor"></span> Activity Monitor</a>
             </li>
             <li class="nav-item">
-                    <a class="nav-link" href="system.html"><span data-feather="activity"></span> System</a>
+                <a class="nav-link" href="system.html"><span data-feather="activity"></span> System</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="developDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -36,20 +36,21 @@
             <li class="nav-item">
                 <div class="dropdown">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="wifidropdown">
-                    <span data-feather="wifi"></span>
+                        <span data-feather="wifi"></span>
                     </button>
                     <div class="dropdown-menu" style="left: auto; right: 0;">
                         <div id="wifiSpinner"></div>
                         <div id="wifiConnectionList"></div>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" id="wifiConnectInfoButton" data-toggle="modal" data-target="#wifiConnectionInfoModal"><span data-feather="info"></span> Connection Info</a>
+                        <a class="dropdown-item" id="setupAccessPoint" data-toggle="modal" data-target="#wifiAccessPointModal" style="color:red; background-color:white;">Set as Access Point</a>
+                        <a class="dropdown-item" id="wifiConnectInfoButton" data-toggle="modal" data-target="#wifiConnectionInfoModal">Connection Info</a>
                     </div>
                 </div>
             </li>
             <li class="nav-item">
                 <div class="dropdown">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                    <span data-feather="cpu"></span>
+                        <span data-feather="cpu"></span>
                     </button>
                     <div class="dropdown-menu" style="left: auto; right: 0;">
                         <a class="dropdown-item" id="systemInfoButton" data-toggle="modal" data-target="#sysInfoModal"><span data-feather="info"></span> System Info</a>
@@ -62,6 +63,30 @@
     </div>
 </nav>
 
+<div class="modal" id="wifiAccessPointModal">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Raspberry Bot - Setup as Access Point</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body text-center">
+                <form id="wifiAccessPointForm">
+                    <div class="alert alert-primary" role="alert" id="accessPointResponse">
+                        <p id="accessPointResult">Note: The RaspberryBot will reboot please then connect your laptop to<br> SSID: "RaspberryBot Wifi" <br> Pass: "raspberry"</p>
+                    </div>
+                    <button type="submit" class="btn btn-success" id="setupAccessPointButton">Setup RaspberryBot As Access Point Now!</button>
+                </form>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal" id="wifiConnectModal">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">

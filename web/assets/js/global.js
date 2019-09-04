@@ -1,7 +1,11 @@
 var serverURL = "http://raspberrybot.local";
 // var serverURL = "http://localhost:8000";
+var wsPing;
+
+
 const systemUrl = serverURL + '/api/system';
 const wifiUrl = serverURL + '/api/wifi';
+const wifiAccessPointSetupUrl = serverURL + '/api/wifi-access-point';
 const wifiStatusUrl = serverURL + '/api/wifi-status';
 
 function getFormDataInJson(form) {
@@ -18,6 +22,29 @@ function countdown(remaining) {
 }
 
 var wifiSpinner = "<div class=\"d-flex justify-content-center\" id=\"ssid-search-status\"><div class=\"spinner-border text-success\" role=\"status\"><span class=\"sr-only\">Loading...</span></div></div>"
+
+var markMenuItemAsActive = function () {
+  // get current URL path and assign 'active' class
+  // Get current page URL
+  var url = window.location.href;
+  // remove # from URL
+  url = url.substring(0, (url.indexOf("#") == -1) ? url.length : url.indexOf("#"));
+  // remove parameters from URL
+  url = url.substring(0, (url.indexOf("?") == -1) ? url.length : url.indexOf("?"));
+
+  // select file name
+  url = url.substr(url.lastIndexOf("/") + 1);
+  // Loop all menu items
+  $('.navbar-nav li').each(function () {
+    // select href
+    var href = $(this).find('a').attr('href');
+    // Check filename
+    if (url == href) {
+      // Add active class
+      $(this).addClass('active');
+    }
+  });
+}
 
 function SuccessFuncAfterNavBarLoaded() {
 
@@ -50,6 +77,7 @@ function SuccessFuncAfterNavBarLoaded() {
       if (spinner != null) {
         spinner.innerHTML = "";
       };
+
       feather.replace();
     });
   };
@@ -81,7 +109,7 @@ function SuccessFuncAfterNavBarLoaded() {
       dataType: 'json',
       data: JSON.stringify(jsonData),
       success: function (response) {
-        $("#connectionResult").innerHTML = response;
+        // $("#connectionResult").innerHTML = response;
         document.getElementById("connectionResult").innerHTML = "Successfully Connected To: " + jsonData["selected-ssid"]
       },
       error: function (xhr, ajaxOptions, thrownError) {
@@ -90,6 +118,27 @@ function SuccessFuncAfterNavBarLoaded() {
       }
     });
     countdown(60);
+  });
+
+  $("#wifiAccessPointForm").submit(function (e) {
+    e.preventDefault();
+  });
+
+  $('#setupAccessPointButton').click(function () {
+    $.ajax({
+      url: wifiAccessPointSetupUrl,
+      type: 'post',
+      dataType: 'json',
+      // data: JSON.stringify(jsonData),
+      success: function (response) {
+        // $("#connectionResult").innerHTML = response;
+        // document.getElementById("accessPointResult").innerHTML = "Successfully Connected To: " + jsonData["selected-ssid"]
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+        // console.log(thrownError);
+        document.getElementById("connectionResult").innerHTML = thrownError;
+      }
+    });
   });
 
   $('#systemInfoButton').click(function () {
@@ -124,27 +173,9 @@ function SuccessFuncAfterNavBarLoaded() {
       }
     });
   });
-  // get current URL path and assign 'active' class
-  // Get current page URL
-  var url = window.location.href;
-  // remove # from URL
-  url = url.substring(0, (url.indexOf("#") == -1) ? url.length : url.indexOf("#"));
-  // remove parameters from URL
-  url = url.substring(0, (url.indexOf("?") == -1) ? url.length : url.indexOf("?"));
 
-  // select file name
-  url = url.substr(url.lastIndexOf("/") + 1);
-  // Loop all menu items
-  $('.navbar-nav li').each(function () {
-    // select href
-    var href = $(this).find('a').attr('href');
-    // Check filename
-    if (url == href) {
-      // Add active class
-      $(this).addClass('active');
-    }
-  });
-}
+  markMenuItemAsActive();
+};
 
 function includeHTML() {
   var z, i, elmnt, file, xhttp;
@@ -176,7 +207,7 @@ function includeHTML() {
       return;
     }
   }
-};
+}
 
 function setupWebSocket() {
   var wsProtocol = (location.protocol === "https:") ? "wss://" : "ws://";
@@ -216,11 +247,12 @@ function setupWebSocket() {
   };
   return wsPing;
 }
-var wsPing;
+
 $(document).ready(function () {
   'use strict'
   includeHTML();
 
+  markMenuItemAsActive();
   $('nav').hide();
   $('body').append('<div style="" class="loading text-center" id="loadingScreen">This page will referesh once the robot becomes online again...</div>');
 

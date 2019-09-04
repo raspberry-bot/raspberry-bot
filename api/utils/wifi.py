@@ -93,3 +93,46 @@ class WifiManager:
             cell.delete()
             return True
         return False
+
+
+
+class WifiAccessPointManager:
+    def setup():
+        os.system('mkdir /etc/raspberry-bot')
+        os.system('rm -f ./tmp/*')
+        os.system('cp /opt/raspberry-bot/src/api/libs/wifi/static_files/dnsmasq.conf /etc/')
+        os.system('cp /opt/raspberry-bot/src/api/libs/wifi/static_files/hostapd.conf.wpa /etc/hostapd/hostapd.conf')
+        os.system('cp /opt/raspberry-bot/src/api/libs/wifi/static_files/dhcpcd.conf /etc/')
+        os.system('mkdir /etc/cron.raspberrybot-wifi')
+        os.system('cp /opt/raspberry-bot/src/api/libs/wifi/static_files/aphost_bootstrapper /etc/cron.raspberrybot-wifi')
+        os.system('chmod +x /etc/cron.raspberrybot-wifi/aphost_bootstrapper')
+        os.system('echo "# RaspberryBot Wifi Access Point Manager Startup" >> /etc/crontab')
+        os.system('echo "@reboot root run-parts /etc/cron.raspberrybot-wifi/" >> /etc/crontab')
+        os.system('mv /opt/raspberry-bot/src/api/libs/wifi/static_files/raspberrybot-wifi.conf /etc/raspberry-bot')
+        os.system('touch /etc/raspberry-bot/host_mode')
+
+    
+    def backup():
+        os.system('mv /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf.original')
+        os.system('mv /etc/dnsmasq.conf /etc/dnsmasq.conf.original')
+        os.system('mv /etc/dhcpcd.conf /etc/dhcpcd.conf.original')
+
+    def restore():
+        os.system('mv /etc/wpa_supplicant/wpa_supplicant.conf.original /etc/wpa_supplicant/wpa_supplicant.conf')
+        os.system('mv /etc/dnsmasq.conf.original /etc/dnsmasq.conf')
+        os.system('mv /etc/dhcpcd.conf.original /etc/dhcpcd.conf')
+    
+    def disable():
+        os.system('cp /opt/raspberry-bot/src/api/libs/wifi/static_files/wpa_supplicant.conf.default /etc/wpa_supplicant/wpa_supplicant.conf')
+        os.system('chmod 600 /etc/wpa_supplicant/wpa_supplicant.conf')
+        os.system('mv /etc/wpa_supplicant/wpa_supplicant.conf.original /etc/wpa_supplicant/wpa_supplicant.conf 2>/dev/null')
+        os.system('rm -rf /etc/cron.raspberrybot-wifi')
+        os.system('rm /etc/dnsmasq.conf')
+        os.system('mv /etc/dnsmasq.conf.original /etc/dnsmasq.conf 2>/dev/null')
+        os.system('rm /etc/hostapd/hostapd.conf')
+        os.system('rm /etc/dhcpcd.conf')
+        os.system('mv /etc/dhcpcd.conf.original /etc/dhcpcd.conf 2>/dev/null')
+        os.system('sed -i \'s/# RaspberryBot Wifi Access Point Manager Startup//\' /etc/crontab')
+        os.system('sed -i \'s/@reboot root run-parts \/etc\/cron.raspberrybot-wifi\///\' /etc/crontab')
+
+

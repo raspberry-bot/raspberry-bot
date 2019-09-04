@@ -118,8 +118,10 @@ $(document).ready(function () {
     function resizeCanvas() {
         canvasContainer.width = window.innerWidth;
         canvasContainer.height = window.innerHeight - ((10 / 100) * window.innerHeight);
-        canvasImg.width = canvasContainer.width;
-        canvasImg.height = canvasContainer.height;
+        if (canvasImg != null) {
+            canvasImg.width = canvasContainer.width;
+            canvasImg.height = canvasContainer.height;
+        }
     }
     window.addEventListener('resize', resizeCanvas, false);
     resizeCanvas();
