@@ -2,6 +2,7 @@ import wifi
 import subprocess
 import RPi.GPIO as GPIO
 import time
+import os
 
 class WifiManager:
     @staticmethod
