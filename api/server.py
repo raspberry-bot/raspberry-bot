@@ -13,7 +13,7 @@ import tornado.websocket
 from tornado import web
 from tornado.options import define, options
 
-from api.wifi.wifi import WifiManager, WifiAccessPointManager
+from api.wireless.wireless import WifiManager, WifiAccessPointManager
 
 
 API_SERVER_ROOT = os.environ.get('API_SERVER_ROOT')
