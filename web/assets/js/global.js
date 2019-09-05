@@ -14,11 +14,18 @@ function getFormDataInJson(form) {
   return object;
 }
 
-function countdown(remaining) {
+function countdownConnectionResult(remaining) {
   if (remaining <= 0)
     location.reload(true);
   document.getElementById("connectionResult").innerHTML = "This page will be refreshed after " + remaining + " seconds...";
-  setTimeout(function () { countdown(remaining - 1); }, 1000);
+  setTimeout(function () { countdownConnectionResult(remaining - 1); }, 1000);
+}
+
+function countdownAccessPointResult(remaining) {
+  if (remaining <= 0)
+    location.reload(true);
+  document.getElementById("accessPointResultRefresh").innerHTML = "This page will be refreshed after " + remaining + " seconds...";
+  setTimeout(function () { countdownAccessPointResult(remaining - 1); }, 1000);
 }
 
 var wifiSpinner = "<div class=\"d-flex justify-content-center\" id=\"ssid-search-status\"><div class=\"spinner-border text-success\" role=\"status\"><span class=\"sr-only\">Loading...</span></div></div>"
@@ -117,7 +124,7 @@ function SuccessFuncAfterNavBarLoaded() {
         document.getElementById("connectionResult").innerHTML = thrownError;
       }
     });
-    countdown(60);
+    countdownConnectionResult(40);
   });
 
   $("#wifiAccessPointForm").submit(function (e) {
@@ -134,6 +141,7 @@ function SuccessFuncAfterNavBarLoaded() {
         document.getElementById("accessPointResult").innerHTML = thrownError;
       }
     });
+    countdownAccessPointResult(40);
   });
 
   $('#systemInfoButton').click(function () {

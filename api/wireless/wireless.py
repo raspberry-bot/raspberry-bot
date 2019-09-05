@@ -106,10 +106,11 @@ class WifiAccessPointManager:
     @staticmethod
     def setup():
         os.system('mkdir /etc/raspberry-bot')
-        os.system('cp /opt/raspberry-bot/src/config/wifi/dnsmasq.conf /etc/')
-        os.system('cp /opt/raspberry-bot/src/config/wifi/hostapd.conf.wpa /etc/hostapd/hostapd.conf')
-        os.system('cp /opt/raspberry-bot/src/config/wifi/dhcpcd.conf /etc/')
+        os.system('cp /opt/raspberry-bot/src/configs/wifi/dnsmasq.conf /etc/')
+        os.system('cp /opt/raspberry-bot/src/configs/wifi/hostapd.conf.wpa /etc/hostapd/hostapd.conf')
+        os.system('cp /opt/raspberry-bot/src/configs/wifi/dhcpcd.conf /etc/')
         os.system('touch /etc/raspberry-bot/host_mode')
+        os.system('reboot')
 
     @staticmethod
     def backup():
@@ -125,7 +126,7 @@ class WifiAccessPointManager:
     
     @staticmethod
     def disable():
-        os.system('cp /opt/raspberry-bot/src/config/wifi/wpa_supplicant.conf.default /etc/wpa_supplicant/wpa_supplicant.conf')
+        os.system('cp /opt/raspberry-bot/src/configs/wifi/wpa_supplicant.conf.default /etc/wpa_supplicant/wpa_supplicant.conf')
         os.system('chmod 600 /etc/wpa_supplicant/wpa_supplicant.conf')
         os.system('rm /etc/dnsmasq.conf')
         os.system('rm /etc/hostapd/hostapd.conf')
