@@ -24,7 +24,7 @@ class Motor:
         self._speed_control.start(0)
 
     def _set_speed(self, speed):
-        speed = clip(abs(speed))
+        speed = abs(speed)
         self._speed_control.ChangeDutyCycle(speed)
         return speed
 
