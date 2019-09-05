@@ -14,7 +14,6 @@ from tornado import web
 from tornado.options import define, options
 
 from api.wifi.wifi import WifiManager, WifiAccessPointManager
-import RPi.GPIO as GPIO
 
 
 API_SERVER_ROOT = os.environ.get('API_SERVER_ROOT')

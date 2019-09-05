@@ -1,8 +1,4 @@
-from . import constants
-from api.utils.clip import clip
-from .direction_resolver import DirectionResolver
-from .motor_speed_resolver import MotorSpeedResolver
-from .motor import Motor
+from api.classes.motor import Motor
 import math
 
 LEFT_MOTOR_PINS = {
