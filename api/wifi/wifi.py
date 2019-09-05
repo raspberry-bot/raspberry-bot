@@ -13,6 +13,10 @@ class WifiManager:
                 ssid_dict[ssid] = 'connected'
             else:
                 ssid_dict[ssid] = 'disconnect'
+        
+        if WifiAccessPointManager.is_access_point():
+            ssid_dict['RaspberryBot Access Point'] = 'connected'
+
         return ssid_dict
 
     @staticmethod
@@ -97,42 +101,55 @@ class WifiManager:
 
 
 class WifiAccessPointManager:
+    @staticmethod
     def setup():
         os.system('mkdir /etc/raspberry-bot')
-        os.system('rm -f ./tmp/*')
-        os.system('cp /opt/raspberry-bot/src/api/libs/wifi/static_files/dnsmasq.conf /etc/')
-        os.system('cp /opt/raspberry-bot/src/api/libs/wifi/static_files/hostapd.conf.wpa /etc/hostapd/hostapd.conf')
-        os.system('cp /opt/raspberry-bot/src/api/libs/wifi/static_files/dhcpcd.conf /etc/')
-        os.system('mkdir /etc/cron.raspberrybot-wifi')
-        os.system('cp /opt/raspberry-bot/src/api/libs/wifi/static_files/aphost_bootstrapper /etc/cron.raspberrybot-wifi')
-        os.system('chmod +x /etc/cron.raspberrybot-wifi/aphost_bootstrapper')
-        os.system('echo "# RaspberryBot Wifi Access Point Manager Startup" >> /etc/crontab')
-        os.system('echo "@reboot root run-parts /etc/cron.raspberrybot-wifi/" >> /etc/crontab')
-        os.system('mv /opt/raspberry-bot/src/api/libs/wifi/static_files/raspberrybot-wifi.conf /etc/raspberry-bot')
+        os.system('cp /opt/raspberry-bot/src/config/wifi/dnsmasq.conf /etc/')
+        os.system('cp /opt/raspberry-bot/src/config/wifi/hostapd.conf.wpa /etc/hostapd/hostapd.conf')
+        os.system('cp /opt/raspberry-bot/src/config/wifi/dhcpcd.conf /etc/')
         os.system('touch /etc/raspberry-bot/host_mode')
 
-    
+    @staticmethod
     def backup():
         os.system('mv /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf.original')
         os.system('mv /etc/dnsmasq.conf /etc/dnsmasq.conf.original')
         os.system('mv /etc/dhcpcd.conf /etc/dhcpcd.conf.original')
 
+    @staticmethod
     def restore():
-        os.system('mv /etc/wpa_supplicant/wpa_supplicant.conf.original /etc/wpa_supplicant/wpa_supplicant.conf')
-        os.system('mv /etc/dnsmasq.conf.original /etc/dnsmasq.conf')
-        os.system('mv /etc/dhcpcd.conf.original /etc/dhcpcd.conf')
-    
-    def disable():
-        os.system('cp /opt/raspberry-bot/src/api/libs/wifi/static_files/wpa_supplicant.conf.default /etc/wpa_supplicant/wpa_supplicant.conf')
-        os.system('chmod 600 /etc/wpa_supplicant/wpa_supplicant.conf')
         os.system('mv /etc/wpa_supplicant/wpa_supplicant.conf.original /etc/wpa_supplicant/wpa_supplicant.conf 2>/dev/null')
-        os.system('rm -rf /etc/cron.raspberrybot-wifi')
-        os.system('rm /etc/dnsmasq.conf')
         os.system('mv /etc/dnsmasq.conf.original /etc/dnsmasq.conf 2>/dev/null')
+        os.system('mv /etc/dhcpcd.conf.original /etc/dhcpcd.conf 2>/dev/null')
+    
+    @staticmethod
+    def disable():
+        os.system('cp /opt/raspberry-bot/src/config/wifi/wpa_supplicant.conf.default /etc/wpa_supplicant/wpa_supplicant.conf')
+        os.system('chmod 600 /etc/wpa_supplicant/wpa_supplicant.conf')
+        os.system('rm /etc/dnsmasq.conf')
         os.system('rm /etc/hostapd/hostapd.conf')
         os.system('rm /etc/dhcpcd.conf')
-        os.system('mv /etc/dhcpcd.conf.original /etc/dhcpcd.conf 2>/dev/null')
-        os.system('sed -i \'s/# RaspberryBot Wifi Access Point Manager Startup//\' /etc/crontab')
-        os.system('sed -i \'s/@reboot root run-parts \/etc\/cron.raspberrybot-wifi\///\' /etc/crontab')
+        os.system('rm /etc/raspberry-bot/host_mode')
+    
+    @staticmethod
+    def is_access_point():
+        return os.path.isfile('/etc/raspberry-bot/host_mode')
 
+    @staticmethod
+    def watch_access_point_signal():
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        counter = 0
+        # This is the main logic loop waiting for a button to be pressed on GPIO 18 for 10 seconds.
+        # If that happens the device will reset to its AP Host mode allowing for reconfiguration on a new network.
+        while True:
+            while GPIO.input(18) == 1:
+                time.sleep(1)
+                counter = counter + 1
+                if counter == 9:
+                    print('Setting up the host as access point')
+                    WifiAccessPointManager.setup()
 
+                if GPIO.input(18) == 0:
+                    counter = 0
+                    break
+            time.sleep(1)

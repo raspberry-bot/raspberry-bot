@@ -1,30 +1,21 @@
 import argparse
 import json
-import os.path
+import os
 import subprocess
 import time
-from datetime import datetime
-
-# import netifaces
-from wifi import Cell, Scheme
+import psutil
+import requests
+from datetime import datetime, timedelta
 
 import tornado.httpserver
 import tornado.ioloop
 import tornado.websocket
 from tornado import web
 from tornado.options import define, options
-from datetime import timedelta
 
-import psutil
+from api.wifi.wifi import WifiManager, WifiAccessPointManager
+import RPi.GPIO as GPIO
 
-import requests
-
-from utils.wifi import WifiManager
-
-# import cv2
-# import base64
-# import rospy
-# from geometry_msgs.msg import Twist
 
 API_SERVER_ROOT = os.environ.get('API_SERVER_ROOT')
 BOT_ROOT = os.environ.get('RASPBERRYBOT_ROOT')
@@ -39,8 +30,6 @@ REPO_LATEST_VERSION_URL = 'https://raw.githubusercontent.com/aeldaly/The-Green-B
 
 class Application(web.Application):
     def __init__(self, model):
-        # self.camera = cv2.VideoCapture(0)
-        # self.control_publisher = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
         self.model = model
         handlers = [
             (r"/api/system", SystemHandler),
@@ -64,8 +53,7 @@ class BaseHandler(web.RequestHandler):
 
 def add_event(new_line):
     with open(EVENTS_FILE, 'a+') as events_file:
-        events_file.write(datetime.now().strftime(
-            "%Y-%m-%d %H:%M:%S.%f") + ' - ' + str(new_line) + '\n')
+        events_file.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f") + ' - ' + str(new_line) + '\n')
 
 
 def update_config_file(new_dict):
@@ -298,6 +286,11 @@ network={
 
     def post(self):
         data = tornado.escape.json_decode(self.request.body)
+        if WifiAccessPointManager.is_access_point():
+            add_event('Disabling Access Point Mode.')
+            WifiAccessPointManager.disable()
+            WifiAccessPointManager.restore()
+
         add_event('Connecting to WiFi: %s' % data['selected-ssid'])
         update_config_file({
             'wifi': {
@@ -340,9 +333,8 @@ network={
 
 class WifiAccessPointHandler(BaseHandler):
     def post(self):
+        WifiAccessPointManager.setup()
         add_event('Set up RaspberryBot Wifi as Access Point')
-
-
 
 
 def main(args):

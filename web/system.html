@@ -14,12 +14,13 @@
   <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
   <link href="assets/css/global.css" rel="stylesheet">
 </head>
-<body>
-    <div include-html="navbar.html"></div>
 
-    <div class="container-fluid">
-      <div class="row">
-        <!-- <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+<body>
+  <div include-html="navbar.html"></div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <!-- <nav class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky">
             <ul class="nav flex-column">
               <li class="nav-item">
@@ -44,13 +45,13 @@
           </div>
         </nav> -->
 
-        <main role="main" class="col-md-12 ml-sm-auto col-lg-12 px-4">
-          <!-- <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"> -->
-            <!-- <h1 class="h2" id="dashboard">Dashboard</h1> -->
-            <!-- <div class="btn-toolbar mb-2 mb-md-0">
+      <main role="main" class="col-md-12 ml-sm-auto col-lg-12 px-4">
+        <!-- <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"> -->
+        <!-- <h1 class="h2" id="dashboard">Dashboard</h1> -->
+        <!-- <div class="btn-toolbar mb-2 mb-md-0">
             </div> -->
-          <!-- </div> -->
-<!-- 
+        <!-- </div> -->
+        <!-- 
           <h2 id="wifi">Wifi</h2>
           <div class="container-fluid">
             <div class="row">
@@ -75,7 +76,7 @@
             </div>
           </div> -->
 
-          <!-- <hr>
+        <!-- <hr>
           <h2 id="intelligence">Intelligence</h2>
           <br><br>
           <div class="container-fluid">
@@ -131,75 +132,74 @@
               </div>
             </form>
           </div> -->
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-5">
-                <h4>Update Repository Settings</h4>
-                <form id="updateForm">
-                  <div class="form-group">
-                    <label for="gitrepo">Git Repo:</label>
-                    <input class="form-control" type="text" id="gitrepo" name="gitrepo"
-                      value="https://github.com/aeldaly/The-Green-Bots.git"></input>
-                  </div>
-                  <div class="form-group">
-                    <label for="gitbranch">Branch: (Note: You can specify a Branch name or leave it to default as Master.)</label>
-                    <input class="form-control" type="text" id="gitbranch" name="gitbranch" value="master"></input>
-                  </div>
-                  <button type="submit" class="btn btn-success" id="updateButton">Update</button>
-                </form>
-              </div>
-              <div class="col-md-5" id="updateStatus">
-                <h4>Update Status</h4>
-                <div class="alert alert-success" role="alert" id="updateInfoAlert">
-                    <p id="updateInfo"></p>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-5">
+              <h4>Update Repository Settings</h4>
+              <form id="updateForm">
+                <div class="form-group">
+                  <label for="gitrepo">Git Repo:</label>
+                  <input class="form-control" type="text" id="gitrepo" name="gitrepo" value="https://github.com/aeldaly/The-Green-Bots.git"></input>
                 </div>
-                <pre id="gitresult"></pre>
+                <div class="form-group">
+                  <label for="gitbranch">Branch: (Note: You can specify a Branch name or leave it to default as Master.)</label>
+                  <input class="form-control" type="text" id="gitbranch" name="gitbranch" value="master"></input>
+                </div>
+                <button type="submit" class="btn btn-success" id="updateButton">Update</button>
+              </form>
+            </div>
+            <div class="col-md-5" id="updateStatus">
+              <h4>Update Status</h4>
+              <div class="alert alert-success" role="alert" id="updateInfoAlert">
+                <p id="updateInfo"></p>
               </div>
-            </div>
-            </div>
-          <hr>
-
-          <div class='row'>
-              <h3 class='mx-auto'>Logs
-                  <button type="button" class="btn btn-default btn-sm" id="refreshLogs">
-                      <span data-feather="refresh-cw">Refresh</span>
-                  </button>
-              </h3> 
-            </div>
-          <nav>
-              <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-logs-events" role="tab" aria-controls="nav-logs-events" aria-selected="true">Bot Events</a>
-                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-logs-syslog" role="tab" aria-controls="nav-logs-syslog" aria-selected="false">Syslog</a>
-                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-logs-supervisord" role="tab" aria-controls="nav-logs-supervisord" aria-selected="false">Supervisord (backend)</a>
-                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-logs-nginx" role="tab" aria-controls="nav-logs-nginx" aria-selected="false">Nginx</a>
-                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-logs-tornado" role="tab" aria-controls="nav-logs-tornado" aria-selected="false">Tornado</a>
-                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-logs-jupyter" role="tab" aria-controls="nav-logs-jupyter" aria-selected="false">Jupyter</a>
-              </div>
-          </nav>
-
-          <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-logs-events" role="tabpanel" aria-labelledby="nav-logs-events-tab">
-              <pre id="eventsTabContent" class="pre-scrollable">Log file is loading...</pre>
-            </div>
-            <div class="tab-pane fade" id="nav-logs-syslog" role="tabpanel" aria-labelledby="nav-logs-syslog-tab">
-              <pre id="syslogTabContent" class="pre-scrollable">Log file is loading...</pre>
-            </div>
-            <div class="tab-pane fade" id="nav-logs-supervisord" role="tabpanel" aria-labelledby="nav-logs-supervisord-tab">
-              <pre id="supervisordTabContent" class="pre-scrollable">Log file is loading...</pre>
-            </div>
-            <div class="tab-pane fade" id="nav-logs-nginx" role="tabpanel" aria-labelledby="nav-logs-nginx-tab">
-              <pre id="nginxTabContent" class="pre-scrollable">Log file is loading...</pre>
-            </div>
-            <div class="tab-pane fade" id="nav-logs-tornado" role="tabpanel" aria-labelledby="nav-logs-tornado-tab">
-              <pre id="tornadoTabContent" class="pre-scrollable">Log file is loading...</pre>
-            </div>
-            <div class="tab-pane fade" id="nav-logs-jupyter" role="tabpanel" aria-labelledby="nav-logs-jupyter-tab">
-              <pre id="jupyterTabContent" class="pre-scrollable">Log file is loading...</pre>
+              <pre id="gitresult"></pre>
             </div>
           </div>
+        </div>
+        <hr>
 
-          <!-- <h2 id="logs">Logs</h2> -->
-          <!-- <div class="container-fluid">
+        <div class='row'>
+          <h3 class='mx-auto'>Logs
+            <button type="button" class="btn btn-default btn-sm" id="refreshLogs">
+              <span data-feather="refresh-cw">Refresh</span>
+            </button>
+          </h3>
+        </div>
+        <nav>
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-logs-events" role="tab" aria-controls="nav-logs-events" aria-selected="true">Bot Events</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-logs-syslog" role="tab" aria-controls="nav-logs-syslog" aria-selected="false">Syslog</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-logs-supervisord" role="tab" aria-controls="nav-logs-supervisord" aria-selected="false">Supervisord (backend)</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-logs-nginx" role="tab" aria-controls="nav-logs-nginx" aria-selected="false">Nginx</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-logs-tornado" role="tab" aria-controls="nav-logs-tornado" aria-selected="false">Tornado</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-logs-jupyter" role="tab" aria-controls="nav-logs-jupyter" aria-selected="false">Jupyter</a>
+          </div>
+        </nav>
+
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="nav-logs-events" role="tabpanel" aria-labelledby="nav-logs-events-tab">
+            <pre id="eventsTabContent" class="pre-scrollable">Log file is loading...</pre>
+          </div>
+          <div class="tab-pane fade" id="nav-logs-syslog" role="tabpanel" aria-labelledby="nav-logs-syslog-tab">
+            <pre id="syslogTabContent" class="pre-scrollable">Log file is loading...</pre>
+          </div>
+          <div class="tab-pane fade" id="nav-logs-supervisord" role="tabpanel" aria-labelledby="nav-logs-supervisord-tab">
+            <pre id="supervisordTabContent" class="pre-scrollable">Log file is loading...</pre>
+          </div>
+          <div class="tab-pane fade" id="nav-logs-nginx" role="tabpanel" aria-labelledby="nav-logs-nginx-tab">
+            <pre id="nginxTabContent" class="pre-scrollable">Log file is loading...</pre>
+          </div>
+          <div class="tab-pane fade" id="nav-logs-tornado" role="tabpanel" aria-labelledby="nav-logs-tornado-tab">
+            <pre id="tornadoTabContent" class="pre-scrollable">Log file is loading...</pre>
+          </div>
+          <div class="tab-pane fade" id="nav-logs-jupyter" role="tabpanel" aria-labelledby="nav-logs-jupyter-tab">
+            <pre id="jupyterTabContent" class="pre-scrollable">Log file is loading...</pre>
+          </div>
+        </div>
+
+        <!-- <h2 id="logs">Logs</h2> -->
+        <!-- <div class="container-fluid">
             <div class="row">
               <div class="col-md-12">
                 <h3>Events</h3>
@@ -213,17 +213,18 @@
               </div>
             </div>
           </div> -->
-        </main>
-      </div>
+      </main>
+    </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js" integrity="sha256-LddDRH6iUPqbp3x9ClMVGkVEvZTrIemrY613shJ/Jgw=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
+  <script type="text/javascript" src="assets/js/node_modules/user-agent.js"></script>
   <script type="text/javascript" src="assets/js/system.js"></script>
   <script type="text/javascript" src="assets/js/global.js"></script>
-  
+
 </body>
 
 </html>

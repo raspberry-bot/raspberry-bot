@@ -128,15 +128,10 @@ function SuccessFuncAfterNavBarLoaded() {
     $.ajax({
       url: wifiAccessPointSetupUrl,
       type: 'post',
-      dataType: 'json',
-      // data: JSON.stringify(jsonData),
-      success: function (response) {
-        // $("#connectionResult").innerHTML = response;
-        // document.getElementById("accessPointResult").innerHTML = "Successfully Connected To: " + jsonData["selected-ssid"]
-      },
+      data: JSON.stringify({}),
       error: function (xhr, ajaxOptions, thrownError) {
-        // console.log(thrownError);
-        document.getElementById("connectionResult").innerHTML = thrownError;
+        console.log(thrownError);
+        document.getElementById("accessPointResult").innerHTML = thrownError;
       }
     });
   });
