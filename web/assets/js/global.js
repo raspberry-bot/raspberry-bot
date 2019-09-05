@@ -141,7 +141,7 @@ function SuccessFuncAfterNavBarLoaded() {
         document.getElementById("accessPointResult").innerHTML = thrownError;
       }
     });
-    countdownAccessPointResult(40);
+    // countdownAccessPointResult(40);
   });
 
   $('#systemInfoButton').click(function () {
