@@ -14,7 +14,7 @@
     "python.testing.unittestEnabled": false,
     "python.testing.nosetestPath": "./.venv/bin/nosetests",
     "python.testing.nosetestArgs": [
-        "-s"
+        "tests"
     ],
     "python.linting.flake8Enabled": true
 }

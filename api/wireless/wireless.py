@@ -11,10 +11,11 @@ class WifiManager:
         current_ssid = WifiManager.get_currently_connected_ssid()
         ssid_dict = {}
         for ssid in SSIDs:
-            if ssid == current_ssid:
-                ssid_dict[ssid] = 'connected'
-            else:
-                ssid_dict[ssid] = 'disconnect'
+            if ssid:
+                if ssid == current_ssid:
+                    ssid_dict[ssid] = 'connected'
+                else:
+                    ssid_dict[ssid] = 'disconnect'
         
         if WifiAccessPointManager.is_access_point() and 'connected' not in ssid_dict.values():
             ssid_dict['RaspberryBot'] = 'connected'
@@ -134,7 +135,7 @@ class WifiAccessPointManager:
     @staticmethod
     def is_access_point():
         iwconfig_out = subprocess.check_output(['iwconfig']).decode('utf-8')
-        if "Access Point" in iwconfig_out:
+        if "Mode:Master" in iwconfig_out:
             return True
         return False
 
