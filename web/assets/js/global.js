@@ -138,7 +138,6 @@ function SuccessFuncAfterNavBarLoaded() {
       data: JSON.stringify({}),
       error: function (xhr, ajaxOptions, thrownError) {
         console.log(thrownError);
-        document.getElementById("accessPointResult").innerHTML = thrownError;
       }
     });
     // countdownAccessPointResult(40);

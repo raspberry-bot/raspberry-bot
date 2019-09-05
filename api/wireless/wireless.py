@@ -105,11 +105,9 @@ class WifiManager:
 class WifiAccessPointManager:
     @staticmethod
     def setup():
-        os.system('mkdir /etc/raspberry-bot')
-        os.system('cp /opt/raspberry-bot/src/configs/wifi/dnsmasq.conf /etc/')
-        os.system('cp /opt/raspberry-bot/src/configs/wifi/hostapd.conf.wpa /etc/hostapd/hostapd.conf')
-        os.system('cp /opt/raspberry-bot/src/configs/wifi/dhcpcd.conf /etc/')
-        os.system('touch /etc/raspberry-bot/host_mode')
+        WifiAccessPointManager.backup()
+        os.system('mv /etc/dnsmasq.conf.original /etc/dnsmasq.conf')
+        os.system('mv /etc/dhcpcd.conf.original /etc/dhcpcd.conf')
         os.system('reboot')
 
     @staticmethod
@@ -131,11 +129,14 @@ class WifiAccessPointManager:
         os.system('rm /etc/dnsmasq.conf')
         os.system('rm /etc/hostapd/hostapd.conf')
         os.system('rm /etc/dhcpcd.conf')
-        os.system('rm /etc/raspberry-bot/host_mode')
+        WifiAccessPointManager.restore()
     
     @staticmethod
     def is_access_point():
-        return os.path.isfile('/etc/raspberry-bot/host_mode')
+        iwconfig_out = subprocess.check_output(['iwconfig']).decode('utf-8')
+        if "Access Point" in iwconfig_out:
+            return True
+        return False
 
     @staticmethod
     def watch_access_point_signal():
