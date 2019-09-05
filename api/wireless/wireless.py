@@ -16,7 +16,7 @@ class WifiManager:
             else:
                 ssid_dict[ssid] = 'disconnect'
         
-        if WifiAccessPointManager.is_access_point():
+        if WifiAccessPointManager.is_access_point() and 'connected' not in ssid_dict.values():
             ssid_dict['RaspberryBot'] = 'connected'
 
         return ssid_dict
