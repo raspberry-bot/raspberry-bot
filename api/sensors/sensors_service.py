@@ -37,7 +37,7 @@ class SensorService:
 
 if __name__ == '__main__':
     sensors = [
-        BaseSensor(),
+        # BaseSensor(),
         # CameraSensor(width=640, height=480, quality=80)
     ]
 
