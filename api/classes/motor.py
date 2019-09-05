@@ -1,6 +1,4 @@
 import os
-from api.utils.clip import clip
-
 import importlib.util
 try:
     importlib.util.find_spec('RPi.GPIO')
