@@ -114,7 +114,7 @@ http {
             proxy_read_timeout 86400;
         }
 
-        location /static {
+        location ^~ /static/ {
             root /usr/local/lib/python3.7/dist-packages/notebook/static/;
         }
     }
