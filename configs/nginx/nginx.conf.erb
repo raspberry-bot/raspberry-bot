@@ -113,5 +113,9 @@ http {
             proxy_set_header Connection "upgrade";
             proxy_read_timeout 86400;
         }
+
+        location /static {
+            alis /usr/local/lib/python3.7/dist-packages/notebook/static/;
+        }
     }
 }
