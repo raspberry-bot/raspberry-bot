@@ -45,7 +45,7 @@
 #  Use '*' to allow any origin to access your server.
 #
 #  Takes precedence over allow_origin_pat.
-#c.NotebookApp.allow_origin = ''
+c.NotebookApp.allow_origin = '*'
 
 ## Use a regular expression for the Access-Control-Allow-Origin header
 #
@@ -153,7 +153,7 @@ c.NotebookApp.allow_root = True
 #  completely without authentication. These services can disable all
 #  authentication and security checks, with the full knowledge of what that
 #  implies.
-#c.NotebookApp.disable_check_xsrf = False
+c.NotebookApp.disable_check_xsrf = False
 
 ## Whether to enable MathJax for typesetting math/TeX
 #
@@ -226,7 +226,7 @@ c.NotebookApp.ip = '*'
 #
 #  Local IP addresses (such as 127.0.0.1 and ::1) are automatically accepted as
 #  local as well.
-#c.NotebookApp.local_hostnames = ['localhost']
+c.NotebookApp.local_hostnames = ['raspberrybot.local']
 
 ## The login handler class to use.
 #c.NotebookApp.login_handler_class = 'notebook.auth.login.LoginHandler'
