@@ -115,7 +115,7 @@ http {
         }
 
         location /static/ {
-            alias /usr/local/lib/python3.7/dist-packages/notebook/static/;
+            alias http://127.0.0.1:9001/static;
             autoindex off;
         }
     }
