@@ -174,7 +174,7 @@ c.NotebookApp.allow_root = True
 #
 #  This allows adding javascript/css to be available from the notebook server
 #  machine, or overriding individual files in the IPython
-#c.NotebookApp.extra_static_paths = []
+c.NotebookApp.extra_static_paths = ['/usr/local/lib/python3.7/dist-packages/notebook/static/']
 
 ## Extra paths to search for serving jinja templates.
 #
@@ -341,7 +341,7 @@ c.NotebookApp.terminals_enabled = True
 
 ## Supply overrides for the tornado.web.Application that the Jupyter notebook
 #  uses.
-c.NotebookApp.tornado_settings = { 'headers': { 'Content-Security-Policy': "frame-ancestors 'self' http://raspberrybot.local" }, 'static_url_prefix': '/usr/local/lib/python3.7/dist-packages/notebook/'}
+c.NotebookApp.tornado_settings = { 'headers': { 'Content-Security-Policy': "frame-ancestors 'self' http://raspberrybot.local" }}
 
 ## Whether to trust or not X-Scheme/X-Forwarded-Proto and X-Real-Ip/X-Forwarded-
 #  For headerssent by the upstream reverse proxy. Necessary if the proxy handles
