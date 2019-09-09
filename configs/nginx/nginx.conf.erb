@@ -114,9 +114,8 @@ http {
             proxy_read_timeout 86400;
         }
 
-        location /static/ {
-            alias http://127.0.0.1:9001/static;
-            autoindex off;
+        location /static {
+            root /usr/local/lib/python3.7/dist-packages/notebook/static/;
         }
     }
 }
