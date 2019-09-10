@@ -96,7 +96,7 @@
         }
         render();
 
-        var ws = new WebSocket('ws://' + window.location.host + '/sensors/gyroscope');
+        var ws = new WebSocket('ws://' + window.location.host + '/api/sensors/gyroscope');
         ws.addEventListener('open', function () {
             console.log('WebSocket opened!');
         });
