@@ -112,11 +112,11 @@ class GyroscopeSensor(BaseSensor):
             self.publish(self.name + 'Data', payload)
     
     def _read_byte(self, reg):
-        return self.bus.read_byte_data(address, reg)
+        return self.bus.read_byte_data(self.address, reg)
  
     def _read_word(self, reg):
-        h = self.bus.read_byte_data(address, reg)
-        l = self.bus.read_byte_data(address, reg+1)
+        h = self.bus.read_byte_data(self.address, reg)
+        l = self.bus.read_byte_data(self.address, reg+1)
         value = (h << 8) + l
         return value
     
