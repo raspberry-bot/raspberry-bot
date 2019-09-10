@@ -1,5 +1,5 @@
 import trio
-from api.sensors.sensor import BaseSensor, CameraSensor
+from api.sensors.sensor import BaseSensor, CameraSensor, GyroscopeSensor
 import redis
 import time
 import json
@@ -37,7 +37,8 @@ class SensorService:
 
 if __name__ == '__main__':
     sensors = [
-        # BaseSensor(),
+        BaseSensor(),
+        GyroscopeSensor()
         # CameraSensor(width=640, height=480, quality=80)
     ]
 
