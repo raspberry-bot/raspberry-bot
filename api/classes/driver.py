@@ -2,14 +2,14 @@ from api.classes.motor import Motor
 import math
 
 LEFT_MOTOR_PINS = {
-    'forward': 3,
-    'reverse': 4,
-    'control': 2
+    'forward': 13,
+    'reverse': 19,
+    'control': 26
 }
 
 RIGHT_MOTOR_PINS = {
-    'forward': 20,
-    'reverse': 16,
+    'forward': 16,
+    'reverse': 20,
     'control': 21
 }
 
