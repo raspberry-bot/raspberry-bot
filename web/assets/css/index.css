@@ -19,14 +19,23 @@ html, body {
   right: 30px;
   height: 30px;
   background-color: #f5f5f5;
-  z-index: 5;
+  z-index: 6;
 }
 #liveImg {
   position: absolute;
   z-index: 3;
 }
 
-#gyroscope {
+#gyroscopeVisual {
   position: absolute;
   z-index: 4;
+}
+
+#gyroscopeData {
+  position: absolute;
+  z-index: 5;
+}
+
+#gyroscopeDataText {
+  color: white;
 }

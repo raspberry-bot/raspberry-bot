@@ -30,7 +30,7 @@ class GyroscopeSensorHandler(tornado.websocket.WebSocketHandler):
         msg = self.gyroscope_channel.get_message()
         if msg and msg.get('type') in ['message']:
             value = json.loads(msg.get('data'))
-            if value.get('value'):
+            if value.get('value') is not None:
                 return value.get('value')
 
     def on_close(self):
