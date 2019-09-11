@@ -15,17 +15,13 @@ gyroscope_f = open('/opt/raspberry-bot/src/data/gyroscope.log', 'w+')
 
 
 def sensors():
-    for msg in ss.subscribe(['CameraSensorData', 'DriveData', 'GyroscopeSensorData']).listen():
+    for msg in ss.subscribe(['DriveData', 'GyroscopeSensorData']).listen():
         if msg['type'] == 'subscribe':
             if msg['data'] == 1:
                 print('subscribed to: %s' % (msg['channel']))
         elif msg['type'] == 'message':
             value = json.loads(msg.get('data').decode("utf-8"))
-            if 'CameraSensorData' in value.get('channel'):
-                raw_img = base64.b64decode(value.get('value'))
-                img_file_path = '/opt/raspberry-bot/src/data/images/' + str(value.get('ts')) + '.jpg'
-                store_image(img_file_path)
-            elif 'DriveData' in value.get('channel'):
+            if 'DriveData' in value.get('channel'):
                 drive_f.write(str(value) + '\n')
             elif 'GyroscopeSensorData' in value.get('channel'):
                 gyroscope_f.write(str(value) + '\n')
