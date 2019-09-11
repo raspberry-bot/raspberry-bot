@@ -39,8 +39,8 @@ def store_image():
         img_bytes = b""
         while True:
             img_bytes += stream.read(1024)
-            a = img_bytes.find('\xff\xd8')
-            b = img_bytes.find('\xff\xd9')
+            a = img_bytes.find(b"\xff\xd8")
+            b = img_bytes.find(b"\xff\xd9")
             if a != -1 and b != -1:
                 jpg = img_bytes[a:b+2]
                 img_bytes = img_bytes[b+2:]
