@@ -1,7 +1,7 @@
 import json
 import base64
 import cv2
-import urllib 
+import urllib.request
 import numpy as np
 import time
 import argparse
@@ -34,19 +34,19 @@ def sensors():
 
 
 def store_image():
-    stream = urllib.urlopen('http://raspberrybot.local:5000/?action=stream')
-    img_file_path = '/opt/raspberry-bot/src/data/images/' + str(int(time.time() * 1000)) + '.jpg'
-    bytes = ''
-    while True:
-        bytes += stream.read(1024)
-        a = bytes.find('\xff\xd8')
-        b = bytes.find('\xff\xd9')
-        if a != -1 and b != -1:
-            jpg = bytes[a:b+2]
-            bytes = bytes[b+2:]
-            image = cv2.imdecode(np.fromstring(jpg, dtype=np.uint8), cv2.CV_LOAD_IMAGE_COLOR)
-            cv2.imwrite(img_file_path, image)
-            return True
+    with urllib.request.urlopen('http://raspberrybot.local:5000/?action=stream') as stream:
+        img_file_path = '/opt/raspberry-bot/src/data/images/' + str(int(time.time() * 1000)) + '.jpg'
+        bytes = ''
+        while True:
+            bytes += stream.read(1024)
+            a = bytes.find('\xff\xd8')
+            b = bytes.find('\xff\xd9')
+            if a != -1 and b != -1:
+                jpg = bytes[a:b+2]
+                bytes = bytes[b+2:]
+                image = cv2.imdecode(np.fromstring(jpg, dtype=np.uint8), cv2.CV_LOAD_IMAGE_COLOR)
+                cv2.imwrite(img_file_path, image)
+                return True
 
 
 def main(args):
