@@ -44,7 +44,7 @@ def store_image():
             if a != -1 and b != -1:
                 jpg = img_bytes[a:b+2]
                 img_bytes = img_bytes[b+2:]
-                image = cv2.imdecode(np.fromstring(jpg, dtype=np.uint8), cv2.CV_LOAD_IMAGE_COLOR)
+                image = cv2.imdecode(np.fromstring(jpg, dtype=np.uint8), cv2.IMREAD_COLOR)
                 cv2.imwrite(img_file_path, image)
                 return True
 
