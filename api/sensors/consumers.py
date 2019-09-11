@@ -23,8 +23,10 @@ def sensors():
             value = json.loads(msg.get('data').decode("utf-8"))
             if 'DriveData' in value.get('channel'):
                 drive_f.write(str(value) + '\n')
+                drive_f.flush()
             elif 'GyroscopeSensorData' in value.get('channel'):
                 gyroscope_f.write(str(value) + '\n')
+                gyroscope_f.flush()
         else:
             print(msg)
 
