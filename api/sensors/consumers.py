@@ -4,8 +4,11 @@ import json
 import base64
 
 ss = SensorService()
+
 drive_f = open('/opt/raspberry-bot/src/data/drive_commands.log', 'w+')
-for msg in ss.subscribe(['CameraSensorData', 'Drive']).listen():
+gyroscope_f = open('/opt/raspberry-bot/src/data/gyroscope.log', 'w+')
+
+for msg in ss.subscribe(['CameraSensorData', 'Drive', 'GyroscopeSensorData']).listen():
     if msg['type'] == 'subscribe':
         if msg['data'] == 1:
             print('subscribed to: %s' % (msg['channel']))
@@ -16,7 +19,9 @@ for msg in ss.subscribe(['CameraSensorData', 'Drive']).listen():
             image_file_name = '/opt/raspberry-bot/src/data/images/' + str(value.get('ts')) + '.jpg'
             with open(image_file_name, 'wb+') as img_f:
                 img_f.write(raw_img)
-        elif value.get('channel') in ['Drive']:
+        elif 'Drive' in value.get('channel'):
             drive_f.write(str(value) + '\n')
+        elif 'Gyroscope' in value.get('channel'):
+            gyroscope_f.write(str(value) + '\n')
     else:
         print(msg)
