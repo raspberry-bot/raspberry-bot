@@ -36,14 +36,14 @@ def sensors():
 def store_image():
     with urllib.request.urlopen('http://raspberrybot.local:5000/?action=stream') as stream:
         img_file_path = '/opt/raspberry-bot/src/data/images/' + str(int(time.time() * 1000)) + '.jpg'
-        bytes = ''
+        img_bytes = b""
         while True:
-            bytes += stream.read(1024)
-            a = bytes.find('\xff\xd8')
-            b = bytes.find('\xff\xd9')
+            img_bytes += stream.read(1024)
+            a = img_bytes.find('\xff\xd8')
+            b = img_bytes.find('\xff\xd9')
             if a != -1 and b != -1:
-                jpg = bytes[a:b+2]
-                bytes = bytes[b+2:]
+                jpg = img_bytes[a:b+2]
+                img_bytes = img_bytes[b+2:]
                 image = cv2.imdecode(np.fromstring(jpg, dtype=np.uint8), cv2.CV_LOAD_IMAGE_COLOR)
                 cv2.imwrite(img_file_path, image)
                 return True
