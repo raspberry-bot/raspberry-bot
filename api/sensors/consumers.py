@@ -1,27 +1,65 @@
-from sensors_service import SensorService
-
 import json
 import base64
+import cv2
+import urllib 
+import numpy as np
+import time
+
+from sensors_service import SensorService
 
 ss = SensorService()
 
-drive_f = open('/opt/raspberry-bot/src/data/drive_commands.log', 'w+')
+drive_f = open('/opt/raspberry-bot/src/data/drive.log', 'w+')
 gyroscope_f = open('/opt/raspberry-bot/src/data/gyroscope.log', 'w+')
 
-for msg in ss.subscribe(['CameraSensorData', 'Drive', 'GyroscopeSensorData']).listen():
-    if msg['type'] == 'subscribe':
-        if msg['data'] == 1:
-            print('subscribed to: %s' % (msg['channel']))
-    elif msg['type'] == 'message':
-        value = json.loads(msg.get('data').decode("utf-8"))
-        if value.get('channel') in ['CameraSensorData']:
-            raw_img = base64.b64decode(value.get('value'))
-            image_file_name = '/opt/raspberry-bot/src/data/images/' + str(value.get('ts')) + '.jpg'
-            with open(image_file_name, 'wb+') as img_f:
-                img_f.write(raw_img)
-        elif 'Drive' in value.get('channel'):
-            drive_f.write(str(value) + '\n')
-        elif 'Gyroscope' in value.get('channel'):
-            gyroscope_f.write(str(value) + '\n')
-    else:
-        print(msg)
+
+def sensors():
+    for msg in ss.subscribe(['CameraSensorData', 'DriveData', 'GyroscopeSensorData']).listen():
+        if msg['type'] == 'subscribe':
+            if msg['data'] == 1:
+                print('subscribed to: %s' % (msg['channel']))
+        elif msg['type'] == 'message':
+            value = json.loads(msg.get('data').decode("utf-8"))
+            if 'CameraSensorData' in value.get('channel'):
+                raw_img = base64.b64decode(value.get('value'))
+                img_file_path = '/opt/raspberry-bot/src/data/images/' + str(value.get('ts')) + '.jpg'
+                store_image(img_file_path)
+            elif 'DriveData' in value.get('channel'):
+                drive_f.write(str(value) + '\n')
+            elif 'GyroscopeSensorData' in value.get('channel'):
+                gyroscope_f.write(str(value) + '\n')
+        else:
+            print(msg)
+
+
+def store_image():
+    stream = urllib.urlopen('http://raspberrybot.local:5000/?action=stream')
+    img_file_path = '/opt/raspberry-bot/src/data/images/' + str(int(time.time() * 1000)) + '.jpg'
+    bytes = ''
+    while True:
+        bytes += stream.read(1024)
+        a = bytes.find('\xff\xd8')
+        b = bytes.find('\xff\xd9')
+        if a != -1 and b != -1:
+            jpg = bytes[a:b+2]
+            bytes = bytes[b+2:]
+            image = cv2.imdecode(np.fromstring(jpg, dtype=np.uint8), cv2.CV_LOAD_IMAGE_COLOR)
+            cv2.imwrite(img_file_path, image)
+            return True
+
+
+def main(args):
+    if args.camera:
+        while True:
+            store_image()
+    elif args.sensors:
+        while True:
+            sensors()
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Consumer')
+    parser.add_argument('--camera', action='store_true')
+    parser.add_argument('--sensors', action='store_true')
+    args = parser.parse_args()
+    main(args)

@@ -4,11 +4,7 @@ import argparse
 
 import tornado.ioloop
 from tornado import web
-
-from api.handlers.camera import CameraHandler
 from api.handlers.driver import DriverHandler
-
-from api.classes.camera import Camera
 from api.classes.driver import Driver
 
 from api.sensors.sensors_service import SensorService
@@ -19,7 +15,6 @@ class Application(web.Application):
         self.sensors_service = sensors_service
         self.driver = driver
         handlers = [
-            # (r"/api/operate/camera", CameraHandler),
             (r"/api/operate/drive", DriverHandler),
         ]
         web.Application.__init__(self, handlers, debug=True)
