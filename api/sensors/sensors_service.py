@@ -30,7 +30,7 @@ class SensorService:
         while True:
             async with trio.open_nursery() as nursery:
                 for sensor in self.sensors:
-                    print('reading from sensor: %s at %s' % (sensor.name, str(int(time.time()))))
+                    # print('reading from sensor: %s at %s' % (sensor.name, str(int(time.time()))))
                     sensor.publish = self.publish
                     nursery.start_soon(sensor.start)
                     nursery.start_soon(sensor.read)
