@@ -42,3 +42,9 @@ html, body {
 #gyroscopeDataText {
   color: white;
 }
+
+#distanceData {
+  position: absolute;
+  color: white;
+  z-index: 5;
+}

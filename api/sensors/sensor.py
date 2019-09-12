@@ -170,3 +170,79 @@ class GyroscopeSensor(BaseSensor):
                 }
             }
         }
+
+
+class DistanceMeterSensor(BaseSensor):
+
+    def __init__(self, trigger_pin=23, echo_pin=24):
+        self.trigger_pin = trigger_pin
+        self.echo_pin = echo_pin
+
+        self.trigger_time = 0
+
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(self.echo_pin, GPIO.IN)
+        GPIO.setup(self.trigger_pin, GPIO.OUT)
+        super(DistanceMeterSensor, self).__init__()
+
+    async def stop(self):
+        if not self.stopped:
+            self.stopped = True
+
+    async def start(self):
+        if not self.started:
+            self.started = True
+
+    async def read(self):
+        if self.started:
+            now = self._time_us()
+
+            # "The SRF05 can be triggered as fast as every 50mS, or 20 times each second.
+            # You should wait 50ms before the next trigger, even if the SRF05 detects a close object and the echo pulse is shorter.
+            # This is to ensure the ultrasonic "beep" has faded away and will not cause a false echo on the next ranging."
+            pause = 50000 - (now - self.trigger_time)
+            if pause > 0:
+                self._sleep_us(pause)
+
+            self._trigger()
+
+            self.trigger_time = self._time_us()
+
+            # "The SRF05 will send out an 8 cycle burst of ultrasound at 40khz and raise its echo line high (or trigger line in mode 2)"
+            # Wait no longer than 30ms
+            if GPIO.wait_for_edge(self.echo_pin, GPIO.RISING, timeout=30) is None:
+                return None
+
+            start = self._time_us()
+
+            # Measure pulse duration, again do not wait more than 30ms
+            # "If nothing is detected then the SRF05 will lower its echo line anyway after about 30mS."
+            if GPIO.wait_for_edge(self.echo_pin, GPIO.FALLING, timeout=30) is None:
+                return None
+
+            end = self._time_us()
+
+            width = end - start
+
+            # ...and by that logic we should not have real measurement with pulse longer than 30ms anyway
+            if width > 30000:
+                return None
+
+            # "If the width of the pulse is measured in uS, then dividing by 58 will give you the distance in cm,
+            # or dividing by 148 will give the distance in inches. uS/58=cm or uS/148=inches."
+            distance = int(width / 58)
+            self.publish(self.name, distance)
+            self.publish(self.name + 'Data', distance)
+    
+    def _trigger(self):
+        # "You only need to supply a short 10uS pulse to the trigger input to start the ranging."
+        GPIO.output(self.trigger_pin, 1)
+        self._sleep_us(10)
+        GPIO.output(self.trigger_pin, 0)
+
+    # Return time in microseconds
+    def _time_us(self):
+        return int(time.time() * 1000000)
+
+    def _sleep_us(self, us):
+        time.sleep(us / 1000000.0)

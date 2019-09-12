@@ -142,14 +142,36 @@ function initGyroscope() {
     }
     render();
 
-    var gyroscopeWs = new WebSocket(wsProtocol + serverName + '/api/sensors/gyroscope');
-    gyroscopeWs.addEventListener('open', function () {
-        console.log('gyroscopeWs WebSocket opened!');
+    var distanceWs = new WebSocket(wsProtocol + serverName + '/api/sensors/gyroscope');
+    distanceWs.addEventListener('open', function () {
+        console.log('distanceWs WebSocket opened!');
     });
-    gyroscopeWs.addEventListener('close', function () {
-        console.log('gyroscopeWs WebSocket closed.');
+    distanceWs.addEventListener('close', function () {
+        console.log('distanceWs WebSocket closed.');
     });
-    gyroscopeWs.addEventListener('message', function (event) {
+    distanceWs.addEventListener('message', function (event) {
+        var json = event.data.trim();
+        var data = JSON.parse(json);
+        if (data != null) {
+            rot.x = data.rotation.x / 180 * Math.PI;
+            rot.y = -1 * data.rotation.y / 180 * Math.PI;
+
+            gyroscopeData.innerHTML = '<pre id="gyroscopeDataText">' + JSON.stringify(data, undefined, '\t') + '</pre>';
+
+        }
+    });
+}
+
+function initDistanceMeter() {
+    var distanceData = document.getElementById("distanceData");
+    var distanceWs = new WebSocket(wsProtocol + serverName + '/api/sensors/distance');
+    distanceWs.addEventListener('open', function () {
+        console.log('distanceWs WebSocket opened!');
+    });
+    distanceWs.addEventListener('close', function () {
+        console.log('distanceWs WebSocket closed.');
+    });
+    distanceWs.addEventListener('message', function (event) {
         var json = event.data.trim();
         var data = JSON.parse(json);
         if (data != null) {

@@ -15,10 +15,11 @@ DATA_PATH = '/opt/raspberry-bot/src/data/'
 
 drive_f = open(os.path.join(DATA_PATH, 'drive.log'), 'w+')
 gyroscope_f = open(os.path.join(DATA_PATH, 'gyroscope.log'), 'w+')
+distance_f = open(os.path.join(DATA_PATH, 'distance.log'), 'w+')
 
 
 def sensors():
-    for msg in ss.subscribe(['DriveData', 'GyroscopeSensorData']).listen():
+    for msg in ss.subscribe(['DriveData', 'GyroscopeSensorData', 'DistanceMeterSensorData']).listen():
         if msg['type'] == 'subscribe':
             if msg['data'] == 1:
                 print('subscribed to: %s' % (msg['channel']))
@@ -30,6 +31,9 @@ def sensors():
             elif 'GyroscopeSensorData' in value.get('channel'):
                 gyroscope_f.write(str(value) + '\n')
                 gyroscope_f.flush()
+            elif 'DistanceMeterSensorData' in value.get('channel'):
+                distance_f.write(str(value) + '\n')
+                distance_f.flush()
         else:
             print(msg)
 
