@@ -11,11 +11,7 @@ function getFormDataInJson(form) {
   form.forEach((item) => { object[item.name] = item.value });
   return JSON.stringify(object);
 }
-function getToggleFormDataInJson(form) {
-  var object = {};
-  form.forEach((item) => { object[item.name] = item.value });
-  return JSON.stringify(object);
-}
+
 
 function populateLogs() {
   $.getJSON(logsUrl + '?t=' + new Date().getTime(), function (data) {
@@ -39,12 +35,10 @@ $(document).ready(function () {
     //    <label><input class="form-control" id="service_x" name="voice-command" type="checkbox" data-toggle="toggle" data-on="Enabled" data-off="Disabled" data-onstyle="success" data-offstyle="danger">Service_X</label>
     //  </div>
     // </div>
-
-    console.log(data);
+    document.querySelector("#supervisordStatusContent").innerHTML = JSON.stringify(data, null, 4);
     $.each(data,
       function (key, service) {
         var serviceslist = document.getElementById('serviceslist');
-        console.log(service);
         var formGroup = document.createElement('div');
         formGroup.setAttribute('class', 'form-group');
 
@@ -62,8 +56,7 @@ $(document).ready(function () {
         newService.setAttribute('data-onstyle', 'success')
         newService.setAttribute('data-offstyle', 'danger')
         newService.setAttribute('class', 'form-control')
-        newService.setAttribute('name', service.name)
-        newService.setAttribute('value', service.name);
+        newService.setAttribute('name', service.name);
 
 
         label.appendChild(newService);
@@ -89,11 +82,22 @@ $(document).ready(function () {
 
   $('#servicesSaveButton').click(function () {
     console.log('servicesSaveButton is clicked...')
+    function getServicesFormData() {
+      var form = document.getElementById("servicesForm");
+      var formData = {};
+      for (var i = 0; i < form.elements.length; i++) {
+        var item = form.elements[i];
+        if (item.name != '') {
+          formData[item.name] = item.checked;
+        }
+      }
+      return formData;
+    }
     $.ajax({
       url: servicesUrl,
       type: 'post',
       dataType: 'json',
-      data: getToggleFormDataInJson($('form#servicesForm').serializeArray()),
+      data: JSON.stringify(getServicesFormData()),
       success: function (data) {
         console.log('Saving Services Modules Configuration...')
       }

@@ -234,11 +234,14 @@ class ServicesHandler(BaseHandler):
 
     def post(self):
         data = tornado.escape.json_decode(self.request.body)
-        print(data)
-        self.write(json.dumps(data))
+        server = ServerProxy('http://127.0.0.1:9001/RPC2')
         supervisord_conf = {'supervisord': {}}
-        for k,v in data.items():
-            supervisord_conf['supervisord'][k] = v
+        for name,enabled in data.items():
+            supervisord_conf['supervisord'][name] = enabled
+            if enabled is False:
+                server.supervisor.stopProcess(name)
+            elif enabled:
+                server.supervisor.startProcess(name)
         add_event(supervisord_conf)
         update_config_file(supervisord_conf)
 
