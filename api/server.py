@@ -237,8 +237,8 @@ class ServicesHandler(BaseHandler):
         server = ServerProxy('http://127.0.0.1:9001/RPC2')
         processes = server.supervisor.getAllProcessInfo()
         supervisord_conf = {'supervisord': {}}
-        for name,enabled in data.items():
-            proc = [p for p in processes if p.name == name][0]
+        for name, enabled in data.items():
+            proc = [p for p in processes if p.get('name') == name][0]
             supervisord_conf['supervisord'][name] = enabled
             if enabled is False:
                 server.supervisor.stopProcess(name)
