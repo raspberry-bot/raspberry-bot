@@ -11,19 +11,15 @@ GPIO.setwarnings(False)
 GPIO_TRIGGER = 23
 GPIO_ECHO    = 24
 
-
-
 # Set pins as output and input
 GPIO.setup(GPIO_TRIGGER,GPIO.OUT)  # Trigger
 GPIO.setup(GPIO_ECHO,GPIO.IN)      # Echo
-
-
 
 def read():
     # Set trigger to False (Low)
     GPIO.output(GPIO_TRIGGER, False)
 
-    print "Ultrasonic Measurement"
+    print("Ultrasonic Measurement")
 
     # Allow module to settle
     time.sleep(0.5)
@@ -35,10 +31,10 @@ def read():
     start = time.time()
 
     while GPIO.input(GPIO_ECHO)==0:
-    start = time.time()
+        start = time.time()
 
     while GPIO.input(GPIO_ECHO)==1:
-    stop = time.time()
+        stop = time.time()
 
     # Calculate pulse length
     elapsed = stop-start
@@ -50,11 +46,11 @@ def read():
     # That was the distance there and back so halve the value
     distance = distancet / 2
 
-    print "Distance :", distance
+    print("Distance :", distance)
 
-    print "Elaspsed time :", elapsed
+    print("Elaspsed time :", elapsed)
 
-    print "Total distance :", distancet
+    print("Total distance :", distancet)
 
 
 # Reset GPIO settings
