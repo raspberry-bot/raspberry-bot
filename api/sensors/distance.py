@@ -12,8 +12,8 @@ GPIO_TRIGGER = 23
 GPIO_ECHO    = 24
 
 # Set pins as output and input
-GPIO.setup(GPIO_TRIGGER,GPIO.OUT)  # Trigger
-GPIO.setup(GPIO_ECHO,GPIO.IN)      # Echo
+GPIO.setup(GPIO_TRIGGER, GPIO.OUT)  # Trigger
+GPIO.setup(GPIO_ECHO, GPIO.IN)      # Echo
 
 def read():
     # Set trigger to False (Low)
@@ -47,15 +47,11 @@ def read():
     distance = distancet / 2
 
     print("Distance :", distance)
-
     print("Elaspsed time :", elapsed)
-
     print("Total distance :", distancet)
 
-
-# Reset GPIO settings
-GPIO.cleanup()
+    # Reset GPIO settings
+    GPIO.cleanup()
 
 while True:
     read()
-GPIO.cleanup()
