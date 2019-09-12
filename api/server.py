@@ -234,6 +234,8 @@ class ServicesHandler(BaseHandler):
 
     def post(self):
         data = tornado.escape.json_decode(self.request.body)
+        print(data)
+        self.write(json.dumps(data))
         supervisord_conf = {'supervisord': {}}
         for k,v in data.get('supervisord').items():
             supervisord_conf['supervisord'][k] = v

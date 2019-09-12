@@ -34,26 +34,53 @@ $(document).ready(function () {
   $('#refreshLogs').click(populateLogs);
   // Populate Services Toggle Form
   $.getJSON(servicesUrl, function (data) {
-    // <div class="form-group"><div class="checkbox"><label><input class="form-control" id="service_x" name="voice-command" type="checkbox" data-toggle="toggle" data-on="Enabled" data-off="Disabled" data-onstyle="success" data-offstyle="danger">Service_X</label></div></div>
-    var serviceslist = $('serviceslist');
+    // <div class="form-group">
+    //  <div class="checkbox">
+    //    <label><input class="form-control" id="service_x" name="voice-command" type="checkbox" data-toggle="toggle" data-on="Enabled" data-off="Disabled" data-onstyle="success" data-offstyle="danger">Service_X</label>
+    //  </div>
+    // </div>
+
     console.log(data);
-    for (var service in data) {
-      var newFormGroupOpen = '<div class="form-group"><div class="checkbox"><label>';
-      var newFormGroupClose = '</label></div></div>';
-      var newService = $('<input class="form-control" type="checkbox" data-toggle="toggle" data-on="Enabled" data-off="Disabled" data-onstyle="success" data-offstyle="danger">')
-        .attr('id', service.name)
-        .attr('name', service.name)
-        .attr('value', service.name);
+    $.each(data,
+      function (key, service) {
+        var serviceslist = document.getElementById('serviceslist');
+        console.log(service);
+        var formGroup = document.createElement('div');
+        formGroup.setAttribute('class', 'form-group');
 
-      var formGroup = newFormGroupOpen + newService + newFormGroupClose;
+        var checkbox = document.createElement('div');
+        checkbox.setAttribute('class', 'checkbox');
 
-      if (service.statename == 'RUNNING') {
-        formGroup.bootstrapToggle('on');
-      } else {
-        formGroup.bootstrapToggle('off');
+        var label = document.createElement('label');
+
+        var newService = document.createElement('input');
+        newService.setAttribute('id', service.name);
+        newService.setAttribute('type', 'checkbox')
+        newService.setAttribute('data-toggle', 'toggle')
+        newService.setAttribute('data-on', 'Enabled')
+        newService.setAttribute('data-off', 'Disabled')
+        newService.setAttribute('data-onstyle', 'success')
+        newService.setAttribute('data-offstyle', 'danger')
+        newService.setAttribute('class', 'form-control')
+        newService.setAttribute('name', service.name)
+        newService.setAttribute('value', service.name);
+
+
+        label.appendChild(newService);
+        label.innerHTML += service.name;
+
+        checkbox.appendChild(label);
+        formGroup.appendChild(checkbox);
+        serviceslist.appendChild(formGroup);
+
+        if (service.statename == 'RUNNING') {
+          $('#' + service.name).bootstrapToggle('on');
+        } else {
+          $('#' + service.name).bootstrapToggle('off');
+        }
+
       }
-      serviceslist.appendChild(formGroup);
-    }
+    );
   });
 
   $("#servicesForm").submit(function (e) {
