@@ -133,7 +133,7 @@ http {
             proxy_pass http://raspberrybot.local:9001/static/;
         }
 
-        location ^~ /data/ {
+        location ~ /data/ {
             root /opt/raspberry-bot/src/data/;
             autoindex on;
         }
