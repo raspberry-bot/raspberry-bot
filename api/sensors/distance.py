@@ -40,6 +40,7 @@ class SRF05:
         # "The SRF05 will send out an 8 cycle burst of ultrasound at 40khz and raise its echo line high (or trigger line in mode 2)"
         # Wait no longer than 30ms
         if GPIO.wait_for_edge(self.echo_pin, GPIO.RISING, timeout=30) is None:
+            print('1- out - if GPIO.wait_for_edge(self.echo_pin, GPIO.RISING, timeout=30) is None', time.time())
             return None
 
         start = self.time_us()
@@ -47,6 +48,7 @@ class SRF05:
         # Measure pulse duration, again do not wait more than 30ms
         # "If nothing is detected then the SRF05 will lower its echo line anyway after about 30mS."
         if GPIO.wait_for_edge(self.echo_pin, GPIO.FALLING, timeout=30) is None:
+            print('2- out - if GPIO.wait_for_edge(self.echo_pin, GPIO.FALLING, timeout=30) is None:', time.time())
             return None
 
         end = self.time_us()
@@ -55,6 +57,7 @@ class SRF05:
 
         # ...and by that logic we should not have real measurement with pulse longer than 30ms anyway
         if width > 30000:
+            print('3- out - if width > 30000:', time.time())
             return None
 
         # "If the width of the pulse is measured in uS, then dividing by 58 will give you the distance in cm,
@@ -63,9 +66,11 @@ class SRF05:
 
     def trigger(self):
         # "You only need to supply a short 10uS pulse to the trigger input to start the ranging."
+        print('triggering...', time.time())
         GPIO.output(self.trigger_pin, 1)
         self.sleep_us(10)
         GPIO.output(self.trigger_pin, 0)
+        print('triggerred...', time.time())
 
     # Return time in microseconds
     def time_us(self):
@@ -76,4 +81,6 @@ class SRF05:
 
 sensor = SRF05(trigger_pin = 23, echo_pin = 24)
 while True:
-    print(sensor.measure())
+    distance = sensor.measure()
+    if distance:
+        print(distance)
