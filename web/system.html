@@ -75,62 +75,7 @@
             </div>
           </div> -->
 
-        <!-- <hr>
-          <h2 id="intelligence">Intelligence</h2>
-          <br><br>
-          <div class="container-fluid">
-            <form id="intelligenceForm">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <div class="checkbox">
-                      <label>
-                        <input class="form-control" id="intelligence-voice-command" name="voice-command" type="checkbox"
-                          data-toggle="toggle" data-on="Enabled" data-off="Disabled" data-onstyle="success"
-                          data-offstyle="danger">
-                        Voice Command
-                      </label>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="checkbox">
-                      <label>
-                        <input class="form-control" id="intelligence-autonomous-driving" name="autonomous-driving"
-                          type="checkbox" data-toggle="toggle" data-on="Enabled" data-off="Disabled"
-                          data-onstyle="success" data-offstyle="danger">
-                        Autonomous Driving
-                      </label>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="checkbox">
-                      <label>
-                        <input class="form-control" id="intelligence-nightvision-camera" name="nightvision-camera"
-                          type="checkbox" data-toggle="toggle" data-on="Enabled" data-off="Disabled"
-                          data-onstyle="success" data-offstyle="danger">
-                        Night Vision Camera
-                      </label>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="checkbox">
-                      <label>
-                        <input class="form-control" id="intelligence-ultrasonic-distance-meter"
-                          name="ultrasonic-distance-meter" type="checkbox" data-toggle="toggle" data-on="Enabled"
-                          data-off="Disabled" data-onstyle="success" data-offstyle="danger">
-                        Ultra Sonic Distance Meter
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                </div>
-              </div>
-              <div class="text-center">
-                <button type="submit" class="btn btn-success" id="intelligenceSaveButton">Save</button>
-              </div>
-            </form>
-          </div> -->
+
         <div class="container-fluid">
           <div class="row">
             <div class="col-md-5">
@@ -196,30 +141,34 @@
             <pre id="jupyterTabContent" class="pre-scrollable">Log file is loading...</pre>
           </div>
         </div>
-
-        <!-- <h2 id="logs">Logs</h2> -->
-        <!-- <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-12">
-                <h3>Events</h3>
-                <textarea rows="20" cols="150" id="eventsview" readonly></textarea>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <h3>Syslog</h3>
-                <textarea rows="20" cols="150" id="logsview" readonly></textarea>
-              </div>
-            </div>
-          </div> -->
-      </main>
+                <hr>
+                <h3 id="serviceshead">Services
+                  <button type="submit" class="btn  btn-success btn-sm" id="servicesSaveButton">
+                  <span data-feather="save">Save</span>
+                </button>
+              </h3>
+                <br><br>
+                <div class="container-fluid">
+                  <form id="servicesForm">
+                    <div class="row">
+                      <div class="col-md-6" id="serviceslist">
+                        
+                      </div>
+                      <div class="col-md-6">
+                      </div>
+                    </div>
+                  </form>
+                </div>
     </div>
+    </main>
+  </div>
   </div>
   <script type="text/javascript" src="assets/js/node_modules/jquery-3.4.1.js"></script>
   <script type="text/javascript" src="assets/js/node_modules/jquery.form.js"></script>
   <script type="text/javascript" src="assets/js/node_modules/popper.min.js"></script>
   <script type="text/javascript" src="assets/js/node_modules/bootstrap.js"></script>
   <script type="text/javascript" src="assets/js/node_modules/feather.min.js"></script>
+  <script type="text/javascript" src="assets/js/node_modules/bootstrap-toggle.min.js"></script>
 
   <script type="text/javascript" src="assets/js/node_modules/user-agent.js"></script>
   <script type="text/javascript" src="assets/js/system.js"></script>

@@ -12,6 +12,7 @@ import tornado.ioloop
 import tornado.websocket
 from tornado import web
 from tornado.options import define, options
+from xmlrpc.client import ServerProxy, Error
 
 from api.wireless.wireless import WifiManager, WifiAccessPointManager
 
@@ -31,7 +32,7 @@ class Application(web.Application):
     def __init__(self, model):
         self.model = model
         handlers = [
-            (r"/api/system/data", SystemDataHandler),
+            (r"/api/system/services", ServicesHandler),
             (r"/api/system", SystemHandler),
             (r"/api/wifi-status", WifiStatusHandler),
             (r"/api/wifi", WifiHandler),
@@ -226,38 +227,18 @@ class IntelligenceHandler(BaseHandler):
         update_config_file(intelligence_conf)
 
 
-class SystemDataHandler(BaseHandler):
+class ServicesHandler(BaseHandler):
     def get(self):
-        config = get_config_file()
-        self.write(json.dumps(config.get('supervisord')))
+        server = ServerProxy('http://127.0.0.1:9001/RPC2')
+        self.write(json.dumps(server.supervisor.getAllProcessInfo()))
 
     def post(self):
         data = tornado.escape.json_decode(self.request.body)
-        if data['command'] == 'shutdown':
-            self._shutdown()
-        elif data['command'] == 'reboot':
-            self._reboot()
-        elif data['command'] == 'reset_factory':
-            self._reset_factory()
-
-    def _uptime(self):
-        uptime_string = None
-        with open('/proc/uptime', 'r') as f:
-            uptime_seconds = float(f.readline().split()[0])
-            uptime_string = str(timedelta(seconds=uptime_seconds))
-        return uptime_string
-
-    def _shutdown(self):
-        add_event('Shutting Down')
-        cmd(['shutdown', '-h', 'now'])
-
-    def _reboot(self):
-        add_event('Rebooting')
-        cmd(['reboot'])
-
-    def _reset_factory(self):
-        add_event('Restarting to Factory')
-        print('Reset to Factory...')
+        supervisord_conf = {'supervisord': {}}
+        for k,v in data.get('supervisord').items():
+            supervisord_conf['supervisord'][k] = v
+        add_event(supervisord_conf)
+        update_config_file(supervisord_conf)
 
 class SystemHandler(BaseHandler):
     def get(self):

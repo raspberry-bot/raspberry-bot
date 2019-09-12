@@ -3,21 +3,21 @@ var serverURL = "http://raspberrybot.local";
 
 const logsUrl = serverURL + '/api/logs';
 const eventsUrl = serverURL + '/api/events';
-const intelligenceUrl = serverURL + '/api/intelligence';
+const servicesUrl = serverURL + '/api/system/services';
 const updateUrl = serverURL + '/api/update';
 
-function getFormDataInJson(form){
+function getFormDataInJson(form) {
   var object = {};
-  form.forEach((item) => {object[item.name] = item.value});
+  form.forEach((item) => { object[item.name] = item.value });
   return JSON.stringify(object);
 }
-function getToggleFormDataInJson(form){
+function getToggleFormDataInJson(form) {
   var object = {};
-  form.forEach((item) => {object[item.name] = item.value});
+  form.forEach((item) => { object[item.name] = item.value });
   return JSON.stringify(object);
 }
 
-function populateLogs(){
+function populateLogs() {
   $.getJSON(logsUrl + '?t=' + new Date().getTime(), function (data) {
     document.querySelector("#syslogTabContent").innerHTML = data.syslog;
     document.querySelector("#eventsTabContent").innerHTML = data.events;
@@ -28,66 +28,77 @@ function populateLogs(){
   });
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
   'use strict'
   populateLogs();
   $('#refreshLogs').click(populateLogs);
-  // Populate Intelligence Toggle Form
-  // $.getJSON(intelligenceUrl, function (data) {
-  //   for (var item in data) {
-  //     let toggle = $("#intelligence-" + item);
-  //     if (data[item] == true) {
-  //       toggle.bootstrapToggle('on');
-  //     } else {
-  //       toggle.bootstrapToggle('off');
-  //     }
-      
-  //   }
-  // });
+  // Populate Services Toggle Form
+  $.getJSON(servicesUrl, function (data) {
+    // <div class="form-group"><div class="checkbox"><label><input class="form-control" id="service_x" name="voice-command" type="checkbox" data-toggle="toggle" data-on="Enabled" data-off="Disabled" data-onstyle="success" data-offstyle="danger">Service_X</label></div></div>
+    var serviceslist = $('serviceslist');
+    console.log(data);
+    for (var service in data) {
+      var newFormGroupOpen = '<div class="form-group"><div class="checkbox"><label>';
+      var newFormGroupClose = '</label></div></div>';
+      var newService = $('<input class="form-control" type="checkbox" data-toggle="toggle" data-on="Enabled" data-off="Disabled" data-onstyle="success" data-offstyle="danger">')
+        .attr('id', service.name)
+        .attr('name', service.name)
+        .attr('value', service.name);
 
-  // $("#intelligenceForm").submit(function(e) {
-  //   e.preventDefault();
-  // });
+      var formGroup = newFormGroupOpen + newService + newFormGroupClose;
 
-  // $('#intelligenceSaveButton').click( function() {
-  //   console.log('intelligenceSaveButton is clicked...')
-  //   $.ajax({
-  //       url: intelligenceUrl,
-  //       type: 'post',
-  //       dataType: 'json',
-  //       data: getToggleFormDataInJson($('form#intelligenceForm').serializeArray()),
-  //       success: function(data) {
-  //         console.log('Saving Intelligence Modules Configuration...')
-  //       }
-  //   });
-  // });
+      if (service.statename == 'RUNNING') {
+        formGroup.bootstrapToggle('on');
+      } else {
+        formGroup.bootstrapToggle('off');
+      }
+      serviceslist.appendChild(formGroup);
+    }
+  });
 
-  
+  $("#servicesForm").submit(function (e) {
+    e.preventDefault();
+  });
+
+  $('#servicesSaveButton').click(function () {
+    console.log('servicesSaveButton is clicked...')
+    $.ajax({
+      url: servicesUrl,
+      type: 'post',
+      dataType: 'json',
+      data: getToggleFormDataInJson($('form#servicesForm').serializeArray()),
+      success: function (data) {
+        console.log('Saving Services Modules Configuration...')
+      }
+    });
+  });
+
+
   function countdown(remaining) {
-    if(remaining <= 0)
-        location.reload(true);
-        document.querySelector("#updateInfo").innerHTML = "Updating... \n Page will be refreshed after " + remaining + " seconds...";
-    setTimeout(function(){ countdown(remaining - 1); }, 1000);
+    if (remaining <= 0)
+      location.reload(true);
+    document.querySelector("#updateInfo").innerHTML = "Updating... \n Page will be refreshed after " + remaining + " seconds...";
+    setTimeout(function () { countdown(remaining - 1); }, 1000);
   }
 
-  $("#updateForm").submit(function(e) {
+  $("#updateForm").submit(function (e) {
     e.preventDefault();
     countdown(30);
   });
 
-  $('#updateButton').click( function() {
+  $('#updateButton').click(function () {
     console.log('connectButton is clicked...')
     let formDataInJson = getFormDataInJson($('form#updateForm').serializeArray());
     $.ajax({
-        url: updateUrl,
-        type: 'post',
-        dataType: 'json',
-        data: JSON.stringify(formDataInJson),
-        success: function(data) {
-          console.log('Getting response back from git...')
-          debugger;
-          $('#gitresult').val(data);
-        }
+      url: updateUrl,
+      type: 'post',
+      dataType: 'json',
+      data: JSON.stringify(formDataInJson),
+      success: function (data) {
+        console.log('Getting response back from git...')
+        debugger;
+        $('#gitresult').val(data);
+      }
     });
   });
 
