@@ -75,6 +75,8 @@ class SRF05:
     def sleep_us(self, us):
         time.sleep(us / 1000000.0)
 
-sensor = SRF05.SRF05(trigger_pin = 23, echo_pin = 24)
+sensor = SRF05(trigger_pin = 23, echo_pin = 24)
 while True:
-    print(sensor.measure())
+    distance = sensor.measure()
+    if distance:
+        print(distance)
