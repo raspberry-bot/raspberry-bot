@@ -235,12 +235,14 @@ class ServicesHandler(BaseHandler):
     def post(self):
         data = tornado.escape.json_decode(self.request.body)
         server = ServerProxy('http://127.0.0.1:9001/RPC2')
+        processes = server.supervisor.getAllProcessInfo()
         supervisord_conf = {'supervisord': {}}
         for name,enabled in data.items():
+            proc = [p for p in processes if p.name == name][0]
             supervisord_conf['supervisord'][name] = enabled
             if enabled is False:
                 server.supervisor.stopProcess(name)
-            elif enabled:
+            elif enabled and proc.get('statename') not in ['RUNNING']:
                 server.supervisor.startProcess(name)
         add_event(supervisord_conf)
         update_config_file(supervisord_conf)
