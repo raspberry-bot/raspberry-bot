@@ -5,7 +5,7 @@ import argparse
 import tornado.ioloop
 from tornado import web
 
-from api.handlers.gyroscope import GyroscopeSensorHandler
+from api.handlers.gyroscope import GyroscopeSensorHandler, DistanceMeterSensorHandler
 
 from api.sensors.sensors_service import SensorService
 
@@ -15,6 +15,7 @@ class Application(web.Application):
         self.sensors_service = sensors_service
         handlers = [
             (r"/api/sensors/gyroscope", GyroscopeSensorHandler),
+            (r"/api/sensors/distance", DistanceMeterSensorHandler),
         ]
         web.Application.__init__(self, handlers, debug=True)
 
