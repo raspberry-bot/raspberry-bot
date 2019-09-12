@@ -240,7 +240,7 @@ class ServicesHandler(BaseHandler):
         for name, enabled in data.items():
             proc = [p for p in processes if p.get('name') == name][0]
             supervisord_conf['supervisord'][name] = enabled
-            if enabled is False and proc.get('statename') not in ['NOT_RUNNING']:
+            if enabled is False and proc.get('statename') not in ['NOT_RUNNING', 'FATAL', 'STOPPED']:
                 server.supervisor.stopProcess(name)
             elif enabled and proc.get('statename') not in ['RUNNING']:
                 server.supervisor.startProcess(name)
