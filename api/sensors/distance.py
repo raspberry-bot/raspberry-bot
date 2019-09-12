@@ -22,6 +22,7 @@ class SRF05:
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.echo_pin, GPIO.IN)
         GPIO.setup(self.trigger_pin, GPIO.OUT)
+        self.timeout  = 60
 
     def measure(self):
         now = self.time_us()
@@ -39,7 +40,7 @@ class SRF05:
 
         # "The SRF05 will send out an 8 cycle burst of ultrasound at 40khz and raise its echo line high (or trigger line in mode 2)"
         # Wait no longer than 30ms
-        if GPIO.wait_for_edge(self.echo_pin, GPIO.RISING, timeout=30) is None:
+        if GPIO.wait_for_edge(self.echo_pin, GPIO.RISING, timeout=self.timeout) is None:
             print('1- out - if GPIO.wait_for_edge(self.echo_pin, GPIO.RISING, timeout=30) is None', time.time())
             return None
 
@@ -47,7 +48,7 @@ class SRF05:
 
         # Measure pulse duration, again do not wait more than 30ms
         # "If nothing is detected then the SRF05 will lower its echo line anyway after about 30mS."
-        if GPIO.wait_for_edge(self.echo_pin, GPIO.FALLING, timeout=30) is None:
+        if GPIO.wait_for_edge(self.echo_pin, GPIO.FALLING, timeout=self.timeout) is None:
             print('2- out - if GPIO.wait_for_edge(self.echo_pin, GPIO.FALLING, timeout=30) is None:', time.time())
             return None
 
