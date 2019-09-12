@@ -31,6 +31,7 @@ class Application(web.Application):
     def __init__(self, model):
         self.model = model
         handlers = [
+            (r"/api/system/data", SystemDataHandler),
             (r"/api/system", SystemHandler),
             (r"/api/wifi-status", WifiStatusHandler),
             (r"/api/wifi", WifiHandler),
@@ -72,6 +73,9 @@ def update_config_file(new_dict):
             'firmware': {
                 'version': '1.0',
                 'last_update': ''
+            },
+            'supervisord': {
+                '<program_name>': '<status>',
             }
         }
     '''
@@ -221,6 +225,39 @@ class IntelligenceHandler(BaseHandler):
         add_event(intelligence_conf)
         update_config_file(intelligence_conf)
 
+
+class SystemDataHandler(BaseHandler):
+    def get(self):
+        config = get_config_file()
+        self.write(json.dumps(config.get('supervisord')))
+
+    def post(self):
+        data = tornado.escape.json_decode(self.request.body)
+        if data['command'] == 'shutdown':
+            self._shutdown()
+        elif data['command'] == 'reboot':
+            self._reboot()
+        elif data['command'] == 'reset_factory':
+            self._reset_factory()
+
+    def _uptime(self):
+        uptime_string = None
+        with open('/proc/uptime', 'r') as f:
+            uptime_seconds = float(f.readline().split()[0])
+            uptime_string = str(timedelta(seconds=uptime_seconds))
+        return uptime_string
+
+    def _shutdown(self):
+        add_event('Shutting Down')
+        cmd(['shutdown', '-h', 'now'])
+
+    def _reboot(self):
+        add_event('Rebooting')
+        cmd(['reboot'])
+
+    def _reset_factory(self):
+        add_event('Restarting to Factory')
+        print('Reset to Factory...')
 
 class SystemHandler(BaseHandler):
     def get(self):
