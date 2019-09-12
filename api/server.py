@@ -237,7 +237,7 @@ class ServicesHandler(BaseHandler):
         print(data)
         self.write(json.dumps(data))
         supervisord_conf = {'supervisord': {}}
-        for k,v in data.get('supervisord').items():
+        for k,v in data.items():
             supervisord_conf['supervisord'][k] = v
         add_event(supervisord_conf)
         update_config_file(supervisord_conf)
