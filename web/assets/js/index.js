@@ -221,6 +221,7 @@ $(document).ready(function () {
     joyInit();
 
     initGyroscope();
+    initDistanceMeter();
 
     function resizeCanvas() {
         canvasContainer.width = window.innerWidth;
