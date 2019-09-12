@@ -5,13 +5,16 @@ import urllib.request
 import numpy as np
 import time
 import argparse
+import os
 
 from sensors_service import SensorService
 
 ss = SensorService()
 
-drive_f = open('/opt/raspberry-bot/src/data/drive.log', 'w+')
-gyroscope_f = open('/opt/raspberry-bot/src/data/gyroscope.log', 'w+')
+DATA_PATH = '/opt/raspberry-bot/src/data/'
+
+drive_f = open(os.path.join(DATA_PATH, 'drive.log'), 'w+')
+gyroscope_f = open(os.path.join(DATA_PATH, 'gyroscope.log'), 'w+')
 
 
 def sensors():
@@ -33,7 +36,7 @@ def sensors():
 
 def store_image():
     with urllib.request.urlopen('http://raspberrybot.local:5000/?action=stream') as stream:
-        img_file_path = '/opt/raspberry-bot/src/data/images/' + str(int(time.time() * 1000)) + '.jpg'
+        img_file_path = open(os.path.join(DATA_PATH,'images/' + str(int(time.time() * 1000)) + '.jpg'))
         img_bytes = b""
         while True:
             img_bytes += stream.read(1024)
