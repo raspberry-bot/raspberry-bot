@@ -28,10 +28,18 @@ def read():
     GPIO.output(GPIO_TRIGGER, True)
     time.sleep(0.00001)
     GPIO.output(GPIO_TRIGGER, False)
+
+    # "The SRF05 will send out an 8 cycle burst of ultrasound at 40khz and raise its echo line high (or trigger line in mode 2)"
+    # Wait no longer than 30ms
+    if GPIO.wait_for_edge(self.echo_pin, GPIO.RISING, timeout=30) is None:
+        return None
+
     start = time.time()
 
-    while GPIO.input(GPIO_ECHO)==0:
-        start = time.time()
+    # Measure pulse duration, again do not wait more than 30ms
+    # "If nothing is detected then the SRF05 will lower its echo line anyway after about 30mS."
+    if GPIO.wait_for_edge(self.echo_pin, GPIO.FALLING, timeout=30) is None:
+        return None
 
     while GPIO.input(GPIO_ECHO)==1:
         stop = time.time()
