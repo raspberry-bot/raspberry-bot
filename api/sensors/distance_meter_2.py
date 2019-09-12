@@ -41,7 +41,7 @@ class SRF05_sensor(Thread):
         GPIO.setup(self.TRIG_PIN,GPIO.OUT)
         GPIO.setup(self.ECHO_PIN,GPIO.IN)
 
-    def compute_distance(self):
+    def measure_distance(self):
 
         GPIO.output(self.TRIG_PIN,True)
         time.sleep(0.00001)
@@ -57,12 +57,8 @@ class SRF05_sensor(Thread):
 
         # We multiply with the sonic speed divide by 2
         # Because of the wave there and back
-        self.distance = duration * self.sonic_speed/2
         print("sensor %s " %self.sensor_name, self.distance)
-
-    def get_distance(self):
-        self.compute_distance()
-	    return self.distance
+        return duration * self.sonic_speed/2
 
 
 if __name__ == '__main__':
@@ -73,9 +69,8 @@ if __name__ == '__main__':
 
     try :
         while True :
-            d1 = sensor_1.get_distance()
-            print(d1)
-                time.sleep(0.5)
+            print(sensor_1.measure_distance())
+            time.sleep(0.5)
             sensor_1.join()
 
     except KeyboardInterrupt:
