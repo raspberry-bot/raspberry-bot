@@ -36,7 +36,7 @@ def sensors():
 
 def store_image():
     with urllib.request.urlopen('http://raspberrybot.local:5000/?action=stream') as stream:
-        img_file_path = open(os.path.join(DATA_PATH,'images/' + str(int(time.time() * 1000)) + '.jpg'), 'w+')
+        img_file_path = open(os.path.join(DATA_PATH,'images/') + str(int(time.time() * 1000)) + '.jpg', 'w+')
         img_bytes = b""
         while True:
             img_bytes += stream.read(1024)
