@@ -6,6 +6,7 @@ from PIL import Image
 import base64
 import smbus
 import math
+import RPi.GPIO as GPIO
 
 
 class BaseSensor:
