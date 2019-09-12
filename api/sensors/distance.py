@@ -1,9 +1,6 @@
 import RPi.GPIO as GPIO
-import SRF05
-
-GPIO.setmode(GPIO.BCM)
-import RPi.GPIO as GPIO
 import time
+GPIO.setmode(GPIO.BCM)
 
 # A very simple Python interface to SFR05 module (probably will work with SFR04 too but I have no tried).
 # Just call measure() method and it will return you distance in centimeters or None.
