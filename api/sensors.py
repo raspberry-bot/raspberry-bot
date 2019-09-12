@@ -5,7 +5,8 @@ import argparse
 import tornado.ioloop
 from tornado import web
 
-from api.handlers.gyroscope import GyroscopeSensorHandler, DistanceMeterSensorHandler
+from api.handlers.gyroscope import GyroscopeSensorHandler
+from api.handlers.distance import DistanceMeterSensorHandler
 
 from api.sensors.sensors_service import SensorService
 
