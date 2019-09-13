@@ -25,7 +25,7 @@ VERSION_FILE = os.path.join(BOT_ROOT, 'src/VERSION')
 CONFIG_FILE = os.path.join(BOT_ROOT, 'src/configs/bot-config.json')
 SUPERVISORD_LOGS_PATH = os.path.join(BOT_ROOT, 'supervisor/logs/')
 
-REPO_LATEST_VERSION_URL = 'https://raw.githubusercontent.com/aeldaly/The-Green-Bots/master/VERSION'
+REPO_LATEST_VERSION_URL = 'https://raw.githubusercontent.com/raspberry-bot/raspberry-bot/master/VERSION'
 
 
 class Application(web.Application):

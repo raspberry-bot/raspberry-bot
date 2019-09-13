@@ -35,6 +35,7 @@ $(document).ready(function () {
     //    <label><input class="form-control" id="service_x" name="voice-command" type="checkbox" data-toggle="toggle" data-on="Enabled" data-off="Disabled" data-onstyle="success" data-offstyle="danger">Service_X</label>
     //  </div>
     // </div>
+    // <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="service.name" data-content="textttttt">Status</button>
     document.querySelector("#supervisordStatusContent").innerHTML = JSON.stringify(data, null, 4);
     $.each(data,
       function (key, service) {
@@ -48,7 +49,7 @@ $(document).ready(function () {
         var label = document.createElement('label');
 
         var newService = document.createElement('input');
-        newService.setAttribute('id', service.name);
+        newService.setAttribute('id', service.name + 'Input');
         newService.setAttribute('type', 'checkbox')
         newService.setAttribute('data-toggle', 'toggle')
         newService.setAttribute('data-on', 'Enabled')
@@ -61,6 +62,16 @@ $(document).ready(function () {
 
         label.appendChild(newService);
         label.innerHTML += service.name;
+
+
+        // var newPopover = document.createElement('button');
+        // newPopover.setAttribute('id', service.name + 'Button');
+        // newPopover.setAttribute('type', 'button');
+        // newPopover.setAttribute('class', 'btn btn-lg btn-danger');
+        // newPopover.setAttribute('data-toggle', 'popover');
+        // newPopover.setAttribute('title', service.name);
+        // newPopover.setAttribute('data-content', JSON.stringify(service, null, 4));
+        // label.innerHTML += newPopover.innerHTML;
 
         checkbox.appendChild(label);
         formGroup.appendChild(checkbox);

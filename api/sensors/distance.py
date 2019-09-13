@@ -22,7 +22,7 @@ class SRF05:
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.echo_pin, GPIO.IN)
         GPIO.setup(self.trigger_pin, GPIO.OUT)
-        self.timeout  = 60
+        self.timeout  = 30
 
     def measure(self):
         now = self.time_us()
@@ -60,7 +60,6 @@ class SRF05:
 
         # ...and by that logic we should not have real measurement with pulse longer than 30ms anyway
         if width > 30000:
-            print('3- out - if width > 30000:', time.time())
             return None
 
         # "If the width of the pulse is measured in uS, then dividing by 58 will give you the distance in cm,
