@@ -24,10 +24,16 @@ function populateLogs() {
   });
 }
 
+function JSON2Text(jsonObj) {
+  var text = '';
+  $.each(jsonObj, function (key, value) {
+    text += key + ' = ' + value + '\n';
+  });
+  return text;
+}
+
 $(document).ready(function () {
   'use strict'
-  populateLogs();
-  $('#refreshLogs').click(populateLogs);
   // Populate Services Toggle Form
   $.getJSON(servicesUrl, function (data) {
     // <div class="form-group">
@@ -35,7 +41,8 @@ $(document).ready(function () {
     //    <label><input class="form-control" id="service_x" name="voice-command" type="checkbox" data-toggle="toggle" data-on="Enabled" data-off="Disabled" data-onstyle="success" data-offstyle="danger">Service_X</label>
     //  </div>
     // </div>
-    // <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="service.name" data-content="textttttt">Status</button>
+    // <button type="button" class="btn btn-primary" data-toggle="tooltip" data-html="true" title = "<em>Tooltip</em> <u>with</u> <b>HTML</b>" > Tooltip with HTML </button >
+    // <a tabindex="0" class="btn btn-lg btn-danger" role="button" data-toggle="popover" data-trigger="focus" title="Dismissible popover" data-content="And here's some amazing content. It's very engaging. Right?">Dismissible popover</a>
     document.querySelector("#supervisordStatusContent").innerHTML = JSON.stringify(data, null, 4);
     $.each(data,
       function (key, service) {
@@ -49,7 +56,7 @@ $(document).ready(function () {
         var label = document.createElement('label');
 
         var newService = document.createElement('input');
-        newService.setAttribute('id', service.name + 'Input');
+        newService.setAttribute('id', service.name);
         newService.setAttribute('type', 'checkbox')
         newService.setAttribute('data-toggle', 'toggle')
         newService.setAttribute('data-on', 'Enabled')
@@ -59,19 +66,8 @@ $(document).ready(function () {
         newService.setAttribute('class', 'form-control')
         newService.setAttribute('name', service.name);
 
-
         label.appendChild(newService);
         label.innerHTML += service.name;
-
-
-        // var newPopover = document.createElement('button');
-        // newPopover.setAttribute('id', service.name + 'Button');
-        // newPopover.setAttribute('type', 'button');
-        // newPopover.setAttribute('class', 'btn btn-lg btn-danger');
-        // newPopover.setAttribute('data-toggle', 'popover');
-        // newPopover.setAttribute('title', service.name);
-        // newPopover.setAttribute('data-content', JSON.stringify(service, null, 4));
-        // label.innerHTML += newPopover.innerHTML;
 
         checkbox.appendChild(label);
         formGroup.appendChild(checkbox);
@@ -86,6 +82,8 @@ $(document).ready(function () {
       }
     );
   });
+  populateLogs();
+  $('#refreshLogs').click(populateLogs);
 
   $("#servicesForm").submit(function (e) {
     e.preventDefault();
