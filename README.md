@@ -7,6 +7,7 @@ source .venv/bin/activate.[fish/sh]
 
 
 ## Linux image
+https://www.raspberrypi.org/forums/viewtopic.php?f=26&t=5947&start=25
 ### Steps
 run dd to get image from sd card
 mount it to a loop device
