@@ -107,23 +107,23 @@ class WifiAccessPointManager:
     @staticmethod
     def setup():
         WifiAccessPointManager.backup()
-        os.system('mv /opt/raspberry-bot/src/configs/wifi/hostapd.conf.wpa /etc/hostapd/hostapd.conf 2>/dev/null')
-        os.system('mv /etc/dnsmasq.conf.original /etc/dnsmasq.conf')
-        os.system('mv /etc/dhcpcd.conf.original /etc/dhcpcd.conf')
+        os.system('cp /opt/raspberry-bot/src/configs/wifi/hostapd.conf.wpa /etc/hostapd/hostapd.conf 2>/dev/null')
+        os.system('cp /etc/dnsmasq.conf.original /etc/dnsmasq.conf')
+        os.system('cp /etc/dhcpcd.conf.original /etc/dhcpcd.conf')
         os.system('reboot')
 
     @staticmethod
     def backup():
-        os.system('mv /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf.original')
-        os.system('mv /etc/dnsmasq.conf /etc/dnsmasq.conf.original')
-        os.system('mv /etc/dhcpcd.conf /etc/dhcpcd.conf.original')
-        os.system('mv /etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf.original')
+        os.system('cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf.original')
+        os.system('cp /etc/dnsmasq.conf /etc/dnsmasq.conf.original')
+        os.system('cp /etc/dhcpcd.conf /etc/dhcpcd.conf.original')
+        os.system('cp /etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf.original')
 
     @staticmethod
     def restore():
-        os.system('mv /etc/wpa_supplicant/wpa_supplicant.conf.original /etc/wpa_supplicant/wpa_supplicant.conf 2>/dev/null')
-        os.system('mv /etc/dnsmasq.conf.original /etc/dnsmasq.conf 2>/dev/null')
-        os.system('mv /etc/dhcpcd.conf.original /etc/dhcpcd.conf 2>/dev/null')
+        os.system('cp /etc/wpa_supplicant/wpa_supplicant.conf.original /etc/wpa_supplicant/wpa_supplicant.conf 2>/dev/null')
+        os.system('cp /etc/dnsmasq.conf.original /etc/dnsmasq.conf 2>/dev/null')
+        os.system('cp /etc/dhcpcd.conf.original /etc/dhcpcd.conf 2>/dev/null')
     
     @staticmethod
     def disable():
