@@ -1,8 +1,12 @@
 interface=wlan0
+country_code=GB
 driver=nl80211
 hw_mode=g
+ieee80211n=1
 channel=1
-wmm_enabled=0
+wmm_enabled=1
+# Enable 40MHz channels with 20ns guard interval
+ht_capab=[HT40][SHORT-GI-20][DSSS_CCK-40]
 macaddr_acl=0
 auth_algs=1
 wpa=2
