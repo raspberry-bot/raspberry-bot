@@ -108,8 +108,8 @@ class WifiAccessPointManager:
     def setup():
         WifiAccessPointManager.backup()
         os.system('cp /opt/raspberry-bot/src/configs/wifi/hostapd.conf.wpa /etc/hostapd/hostapd.conf 2>/dev/null')
-        os.system('cp /etc/dnsmasq.conf.original /etc/dnsmasq.conf')
-        os.system('cp /etc/dhcpcd.conf.original /etc/dhcpcd.conf')
+        os.system('cp /opt/raspberry-bot/src/configs/wifi/dnsmasq.conf /etc/dnsmasq.conf')
+        os.system('cp /opt/raspberry-bot/src/configs/wifi/dhcpcd.conf /etc/dhcpcd.conf')
         os.system('reboot')
 
     @staticmethod
